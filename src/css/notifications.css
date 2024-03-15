@@ -1,0 +1,45 @@
+.notifications{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.notifications__new__container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+}
+
+.notifications__new__container h1{
+    margin: 10px;
+    font-size: 25px;
+    color: #193e4e;
+}
+
+.notifications__new{
+    width: 100%;
+    height: 125px;
+    padding: 20px 0;
+    background-color: #C5B28A;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.notifications p{
+    width: 60%;
+}
+
+.notifications img{
+    height: 90px;
+    width: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.notifications__options{
+    height: 100%;
+    padding: 20px 0;
+}
