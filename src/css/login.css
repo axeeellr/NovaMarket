@@ -1,17 +1,7 @@
-.body{
-    height: 90vh;
-    width: 100%;
-	overflow: hidden;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-
 .main{
-	height: 500px;
+	height: 100vh;
 	background: #193e4e;
-	overflow: hidden;
-	border-radius: 10px;
+	overflow-y: hidden;
 	box-shadow: 5px 20px 50px #000;
 }
 
@@ -22,12 +12,20 @@
 .signup{
 	position: relative;
 	width:100%;
-	height: 100%;
+	height: 100vh;
 }
 
-label{
+.inputs{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 20px;
+}
+
+.signup label, .login label{
 	color: #f2ebcf;
-	font-size: 2.3em;
+	font-size: 37px;
 	display: flex;
 	justify-content: center;
     align-items: center;
@@ -37,30 +35,25 @@ label{
 	transition: .5s ease-in-out;
 }
 
-input{
-	width: 60%;
-	height: 35px;
+.inputs input{
+	width: 70%;
+	height: 50px;
 	background: #e0dede;
-	justify-content: center;
-	display: flex;
-	margin: 20px auto;
 	padding: 20px 15px;
 	border: none;
 	outline: none;
 	border-radius: 5px;
+	font-size: 15px;
 }
 
-button{
-	width: 60%;
-	height: 45px;
-	margin: 10px auto;
-	justify-content: center;
-	display: block;
+.inputs > button{
+	width: 30%;
+	height: 50px;
+	margin: 15px auto;
 	background-color: #c5b28a;
     color: #756748;
-	font-size: 1.1em;
+	font-size: 20px;
 	font-weight: bold;
-	margin-top: 30px;
 	outline: none;
 	border: none;
 	border-radius: 5px;
@@ -69,27 +62,60 @@ button{
 }
 
 button:hover{
-	background-color: #897c5f;
+	background-color: #928567;
     color: #4b412d;
 }
 
 .login{
-	height: 460px;
+	height: 100vh;
 	background: #eee;
-	border-radius: 60% / 10%;
-	transform: translateY(-180px);
+	border-radius: 30px;
+	transform: translateY(-200px);
 	transition: .8s ease-in-out;
 }
 
 .login label{
 	color: #193e4e;
-	transform: scale(.6);
-	padding: 15px 0 0 0;
-	margin-bottom: 40px;
+	transform: scale(.7);
+	padding: 20px 0 0 0;
+	margin-bottom: 30px;
+}
+
+.social{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+	font-size: 30px;
+	color: #f2ebcf;
+}
+
+.socialTextLogin{
+	color: #193e4e;
+	text-align: center;
+	font-size: 18px;
+	margin: 20px 0 15px 0;
+	font-weight: 500;
+}
+
+.login .social{
+	color: #193e4e;
+}
+
+.login button{
+	background: #193e4e;
+	color: #eee;
+}
+
+.socialTextSign{
+	text-align: center;
+	color: #f2ebcf;
+	font-size: 18px;
+	margin: 25px 0 15px 0;
 }
 
 #chk:checked ~ .login{
-	transform: translateY(-500px);
+	transform: translateY(-100vh);
 }
 
 #chk:checked ~ .login label{
@@ -98,5 +124,5 @@ button:hover{
 }
 
 #chk:checked ~ .signup label{
-	transform: scale(.6);
+	transform: scale(.7);
 }

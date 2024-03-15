@@ -12,5 +12,13 @@
 
 body{
   background-color: #f2ebcf;
+  min-heights: 100vh;
 }
 
+.colors{
+  color: #9ABB54;
+  color: #B2CFD7;
+  color: #193E4E;
+  color: #F2EBCF;
+  color: #C5B28A;
+}

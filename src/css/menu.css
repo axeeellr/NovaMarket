@@ -2,6 +2,15 @@ a{
     color: inherit;
 }
 
+.menu__container{
+    position: fixed;
+    height: 100px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #f2ebcf;
+}
+
 .menu{
     background-color: #193e4e;
     color: #f2ebcf;
