@@ -4,7 +4,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: start;
-    padding: 25px;
+    padding: 20px;
     margin-bottom: 100px;
 }
 
@@ -43,6 +43,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    color: #193E4E;
 }
 
 .profile__favorites h2{
@@ -72,6 +73,7 @@
     width: 100%;
     display: flex;
     align-items: center;
+    color: #193e4e;
 }
 
 .item__info p{

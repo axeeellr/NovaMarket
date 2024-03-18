@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import '../css/menu.css';
 import qrCode from '../assets/qrCode.png'
 
@@ -11,25 +11,25 @@ function Menu() {
     <div className="menu__container">
       <div className="menu">
         <div className="menu__left">
-          <Link to="/"> {/* Agrega un enlace al ícono de inicio */}
+          <NavLink to="/" activeClassName="active"> {/* Agrega un enlace al ícono de inicio */}
             <FontAwesomeIcon icon={faHome} />
-          </Link>
-          <Link to="/shop"> {/* Agrega un enlace al ícono de la tienda */}
+          </NavLink>
+          <NavLink to="/shop" activeClassName="active"> {/* Agrega un enlace al ícono de la tienda */}
             <FontAwesomeIcon icon={faStore} />
-          </Link>
+          </NavLink>
         </div>
         <div className="menu__center">
-          <Link to="/scanner"> {/* Agrega un enlace al ícono de la tienda */}
+          <NavLink to="/scanner" activeClassName="active"> {/* Agrega un enlace al ícono de la tienda */}
             <img src={qrCode} className='scannerIcon' />
-          </Link>
+          </NavLink>
         </div>
-        <div className="menu__right">
-          <Link to="/notifications"> {/* Agrega un enlace al ícono de notificaciones */}
+        <div className="menu__right" activeClassName="active">
+          <NavLink to="/notifications"> {/* Agrega un enlace al ícono de notificaciones */}
             <FontAwesomeIcon icon={faBell} />
-          </Link>
-          <Link to="/profile"> {/* Agrega un enlace al ícono de configuración */}
+          </NavLink>
+          <NavLink to="/profile" activeClassName="active"> {/* Agrega un enlace al ícono de configuración */}
             <FontAwesomeIcon icon={faCog} />
-          </Link>
+          </NavLink>
         </div>
       </div>
     </div>

@@ -53,4 +53,6 @@ a{
     border-radius: 50%;
 }
 
-
+.active{
+    color: #C5B28A;
+}
