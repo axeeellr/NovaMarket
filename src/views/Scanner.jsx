@@ -1,12 +1,17 @@
-import React from 'react';
+import CodeReader from '../components/CodeReader';
 
-function Scanner() {
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowCircleLeft } from '@fortawesome/free-solid-svg-icons';
+
+const Scanner = () => {
   return (
-    <>
-      <div>
-          <h1>Holaaaa</h1>
+    <div className='scanner__container'>
+      <div className="scanner__title">
+        <FontAwesomeIcon icon={faArrowCircleLeft} className='title__icon'/>
+        <h1>Escáner</h1>
       </div>
-    </>
+      <CodeReader/>
+    </div>
   );
 };
 

@@ -1,26 +1,43 @@
-import React, { useEffect, useRef } from 'react';
-import QRCode from 'html5-qrcode';
+import { Html5QrcodeScanner } from "html5-qrcode";
+import { useEffect, useState } from "react";
 
-function CodeReader() {
-    const videoRef = useRef();
+import '../css/scanner.css';
+
+const CodeReader = () => {
+
+    const [scanResult, setScanResult] = useState(null);
 
     useEffect(() => {
-        const qrCodeScanner = new QRCode(videoRef.current, {
-            fps: 10,
-            qrbox: 250,
-        });
+        const scanner = new Html5QrcodeScanner('reader', {
+            qrbox: {
+                width: 250,
+                height: 250,
+            },
+            fps: 5,
+        })
+    
+        scanner.render(success, error);
+    
+        function success(result) {
+            scanner.clear();
+            setScanResult(result);
+        }
+    
+        function error(err) {
+            //console.warn(err);
+        }
+  },[]);
 
-        qrCodeScanner.start();
+  return (
+    <div className="scanner">
+      { scanResult
+      ? <div>Success <a href={"http://"+scanResult}>{scanResult}</a></div>
+      : <div id="reader">
+      </div>
+      }
+    </div>
+  );
 
-        return () => {
-            qrCodeScanner.stop();
-        };
-    }, []);
-
-    return <video ref={videoRef} style={{ width: '100%', height: 'auto' }} />;
 }
 
 export default CodeReader;
-
-
-  
