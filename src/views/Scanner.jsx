@@ -3,6 +3,8 @@ import CodeReader from '../components/CodeReader';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowCircleLeft } from '@fortawesome/free-solid-svg-icons';
 
+//import '../css/scanner.css';
+
 const Scanner = () => {
   return (
     <div className='scanner__container'>
