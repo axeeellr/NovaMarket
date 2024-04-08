@@ -1,4 +1,7 @@
 import React from 'react';
+
+import { useParams } from 'react-router-dom';
+
 import '../css/root.css';
 import '../css/product.css';
 
@@ -8,6 +11,8 @@ import { faSquareMinus, faSquarePlus, faCartShopping, faArrowCircleLeft } from '
 import Menu from '../components/Menu';
 
 function Product() {
+    const { data } = useParams();
+
     return(
         <>
         <div className="product__title">
@@ -22,7 +27,7 @@ function Product() {
                 <button>Añadir al carrito <FontAwesomeIcon icon={faCartShopping}/></button>
                 <div className="product__info__details">
                     <div className="details__name">
-                        <h2>Cereal Trix</h2>
+                        <h2>{decodeURIComponent(data)}</h2>
                         <p>Nestle</p>
                     </div>
                     <div className="details__data">
