@@ -1,8 +1,21 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCaretDown, faBell } from '@fortawesome/free-solid-svg-icons';
+
+import Notifications from './Notifications';
+
 import '../css/header.css';
 
 function Header() {
+
+  const [showNotifications, setShowNotifications] = useState(false);
+
+  const toggleNotifications = () => {
+    setShowNotifications(!showNotifications);
+  };
+
   return (
     <div className="header">
       <div className="header__info">
@@ -11,14 +24,13 @@ function Header() {
           <p>¿Qué comprarás hoy?</p>
         </div>
         <div className="header__info__img">
-          <Link to="/login">
-            <img src="https://i.pinimg.com/736x/e8/12/d5/e812d5e3dd7809db8a75a158125a79be.jpg" alt="" />
-          </Link>
+          <FontAwesomeIcon icon={faBell} className='notis' onClick={toggleNotifications}/>
         </div>
       </div>
       <form className="header__search">
-        <input type="search" name="" id="" placeholder="Busca tus próximas compras" />
+        <input type="search" name="" id="" placeholder="¿Algún comentario? Contáctate con nosotros" />
       </form>
+      {showNotifications && <Notifications />}
     </div>
   );
 }

@@ -3,7 +3,7 @@ import '../css/root.css';
 import '../css/profile.css';
 
 import Menu from '../components/Menu';
-import Header from '../components/Header';
+import TitlePage from '../components/TitlePage';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight, faHeart, faSignOut, faPlusCircle, faEdit, faArrowCircleLeft } from '@fortawesome/free-solid-svg-icons';
@@ -12,10 +12,7 @@ function Profile() {
     return(
         <>
             <div className="profile">
-                <div className="profile__title">
-                    <FontAwesomeIcon icon={faArrowCircleLeft} className='title__icon'/>
-                    <h1>Menú</h1>
-                </div>
+                <TitlePage/>
                 <div className="profile__data">
                     <h2>Mis datos</h2>
                     <button>Editar mis datos &nbsp;<FontAwesomeIcon icon={faEdit} /></button>

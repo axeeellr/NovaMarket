@@ -8,6 +8,7 @@ import Scanner from './views/Scanner';
 import Shop from './views/Shop';
 import Login from './views/Login';
 import Product from './views/Product';
+import Cart from './views/Cart';
 
 const AppRouter = () => {
   return (
@@ -19,6 +20,7 @@ const AppRouter = () => {
         <Route path="/scanner" element={<Scanner />} />
         <Route path="/shop" element={<Shop />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/cart" element={<Cart />} />
         <Route path="/product/:data" element={<Product />} />
       </Routes>
     </Router>

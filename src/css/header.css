@@ -18,10 +18,17 @@
     color: white;
 }
 
+.header__info__img{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
 .header__info__img img{
     position: relative;
-    height: 55px;
-    width: 55px;
+    height: 50px;
+    width: 50px;
     border-radius: 50%;
     object-fit: cover;
 }
@@ -44,4 +51,8 @@
 
 .header__search input::placeholder{
     color: rgb(168, 168, 168);
+}
+
+.notis{
+    font-size: 26px;
 }

@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 
 import CodeReader from '../components/CodeReader';
+import TitlePage from '../components/TitlePage';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowCircleLeft, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
@@ -16,10 +17,7 @@ const Scanner = () => {
 
   return (
     <div className='scanner__container'>
-      <div className="scanner__title">
-        <FontAwesomeIcon icon={faArrowCircleLeft} className='title__icon'/>
-        <h1>Escáner</h1>
-      </div>
+      <TitlePage/>
       <CodeReader/>
       <div className="scanner__info">
         <FontAwesomeIcon icon={faInfoCircle} className='info__icon' onClick={toggleVisibility}/>

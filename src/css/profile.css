@@ -243,17 +243,3 @@
 	transition: .2s ease-in;
 	cursor: pointer;
 }
-
-.profile__title{
-    display: flex;
-    justify-content: start;
-    align-items: center;
-    width: 100%;
-    color: #193E4E;
-    font-size: 15px;
-    gap: 7px;
-}
-
-.title__icon{
-    font-size: 22px;
-}

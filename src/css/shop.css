@@ -1,0 +1,40 @@
+.shop__container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+}
+
+.shop__img{
+    height: 70%;
+    width: 100%;
+}
+
+#img-mapper{
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.shop__img img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.shop__menu{
+    height: 30%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+  
+area {
+    background-color: green;
+}
+
+  
+  

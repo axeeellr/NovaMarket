@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import '../css/content.css';
 
 function IndexContent() {
@@ -10,7 +11,9 @@ function IndexContent() {
       <div className="content__info">
         <h4>Empieza a escanear</h4>
         <p>Añade tus productos al carrito escanenado el código QR de cada uno.</p>
-        <button>Escanear</button>
+        <Link to="/scanner" style={{ textDecoration: 'none' }}>
+          <button>Escanear</button>
+        </Link>
       </div>
     </div>
   );
