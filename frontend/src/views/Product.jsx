@@ -1,6 +1,5 @@
 import React from 'react';
-
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom'
 
 import '../css/root.css';
 import '../css/product.css';
@@ -9,31 +8,37 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquareMinus, faSquarePlus, faCartShopping, faArrowCircleLeft } from '@fortawesome/free-solid-svg-icons';
 
 import Menu from '../components/Menu';
+import TitlePage from '../components/TitlePage';
 
 function Product() {
-    const { data } = useParams();
+    const { data: name } = useParams();
+    const { state } = useLocation();
+    const product = state?.productData;
+
+    if (!product) {
+        return <p>Producto no encontrado</p>;
+    }
 
     return(
         <>
-        <div className="product__title">
-            <FontAwesomeIcon icon={faArrowCircleLeft} className='title__icon'/>
-            <h1>Cereal Trix</h1>
+        <div className="title__product">
+            <TitlePage/>
         </div>
         <div className="product__container">
             <div className="product__img">
-                <img src="https://www.nestle-cereals.com/cl/sites/g/files/qirczx891/files/styles/1_1_768px_width/public/2023-08/Trix.PNG.png.webp?itok=rWibg3ur" alt="" />
+                <img src={product.img} alt="" />
             </div>
             <div className="product__info">
                 <button>Añadir al carrito <FontAwesomeIcon icon={faCartShopping}/></button>
                 <div className="product__info__details">
                     <div className="details__name">
-                        <h2>{decodeURIComponent(data)}</h2>
-                        <p>Nestle</p>
+                        <h2>{product.name}</h2>
+                        <p>{product.brand}</p>
                     </div>
                     <div className="details__data">
-                        <p>110 cal.</p>
-                        <p>$3.99</p>
-                        <p>330 gr.</p>
+                        <p>{product.calories}</p>
+                        <p>{product.price}</p>
+                        <p>{product.weight}</p>
                     </div>
                     <div className="details__count">
                         <FontAwesomeIcon icon={faSquareMinus}/>
@@ -43,7 +48,7 @@ function Product() {
                 </div>
             </div>
         </div>
-        <Menu />
+        <Menu className="menuProduct"/>
         </>
     )
 }

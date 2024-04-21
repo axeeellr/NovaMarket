@@ -7,13 +7,18 @@ import { faArrowCircleLeft } from '@fortawesome/free-solid-svg-icons';
 
 function TitlePage() {
     const location = useLocation();
-    const pageTitles = {
-        '/profile': 'Perfil',
-        '/settings': 'Ajustes',
-        '/cart':  'Carrito'
-    };
+    let currentPage = ''
 
-    const currentPage = pageTitles[location.pathname];
+    if(location.pathname.startsWith('/product/')){
+        currentPage = decodeURIComponent(location.pathname.split('/product/')[1]);
+    }else{
+        const pageTitles = {
+            '/profile': 'Perfil',
+            '/cart':  'Carrito',
+            '/scanner':  'Escáner'
+        };
+        currentPage = pageTitles[location.pathname];
+    }
 
     const goBack = () => {
         window.history.back();
@@ -25,7 +30,7 @@ function TitlePage() {
                 <Link to="#" onClick={goBack}>
                     <FontAwesomeIcon icon={faArrowCircleLeft} className='title__icon'/>
                 </Link>
-                <h1>{currentPage || 'Menú'}</h1>
+                <h1>{currentPage}</h1>
             </div>
         </>
     );

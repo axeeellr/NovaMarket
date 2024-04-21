@@ -96,6 +96,14 @@
     padding: 20px;
 }
 
-.menu__container{
-    background-colors: #C5B28A;
+.menu__container__product{
+    background-color: #C5B28A;
+}
+
+.menu__container__product .menu__center{
+    background-color: #C5B28A
+}
+
+.title__product{
+    padding: 20px;
 }
