@@ -50,7 +50,7 @@ function Profile() {
                             </div>
                         </div>
                         <div className="favorites__item">
-                            <img src="https://walmartsv.vtexassets.com/arquivos/ids/423007/Pa-ales-Pampers-Swaddlers-Talla-1-96-Unidades-1-4748.jpg?v=638452930266330000" alt="" />
+                            <img src="https://bevmo.com/cdn/shop/products/36a5683f-2c96-43b8-8445-88b68d300b90.png?v=1701164720" alt="" />
                             <div className="item__info">
                                 <p>Pampers Swaddlers 96pcs</p>
                                 <FontAwesomeIcon icon={faHeart} />
