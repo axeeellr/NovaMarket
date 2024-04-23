@@ -29,10 +29,15 @@
 	display: flex;
 	justify-content: center;
     align-items: center;
+	gap: 10px;
 	margin: 60px;
 	font-weight: bold;
 	cursor: pointer;
 	transition: .5s ease-in-out;
+}
+
+.title__icon__login{
+	font-size: 25px;
 }
 
 .inputs input{

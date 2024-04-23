@@ -20,7 +20,7 @@ function Header() {
     <div className="header">
       <div className="header__info">
         <div className="header__info__text">
-          <h2>Hey, Ricardo!</h2>
+          <h2>Hey!</h2>
           <p>¿Qué comprarás hoy?</p>
         </div>
         <div className="header__info__img">

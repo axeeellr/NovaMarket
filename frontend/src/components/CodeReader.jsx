@@ -38,7 +38,6 @@ const CodeReader = (props) => {
         }}
         style={{ width: '100%' }}
       />
-      <p>{data}</p>
     </>
   );
 };

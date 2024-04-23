@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle, faFacebook, faTwitter } from '@fortawesome/free-brands-svg-icons';
+import { faArrowCircleLeft } from '@fortawesome/free-solid-svg-icons';
 
 import '../css/root.css';
 import '../css/login.css';
 
 function Login() {
+
     const [loginEmail, setLoginEmail] = useState('');
     const [loginPassword, setLoginPassword] = useState('');
     
@@ -19,6 +22,8 @@ function Login() {
         axios.post('http://localhost:1001/login', { email: loginEmail, password: loginPassword })
             .then(response => {
                 console.log(response.data);
+                localStorage.setItem('isAuthenticated', 'true');
+                window.location.href = '/';
                 // Manejar la respuesta del servidor (redireccionar, mostrar mensaje, etc.)
             })
             .catch(error => {
@@ -30,6 +35,8 @@ function Login() {
         axios.post('http://localhost:1001/registro', { name: registroNombre, email: registroEmail, password: registroPassword })
             .then(response => {
                 console.log(response.data);
+                localStorage.setItem('isAuthenticated', 'true');
+                window.location.href = '/';
                 // Manejar la respuesta del servidor (redireccionar, mostrar mensaje, etc.)
             })
             .catch(error => {
@@ -42,7 +49,7 @@ function Login() {
             <input type="checkbox" id="chk" aria-hidden="true" />
             <div className="signup">
                 <form method="post">
-                    <label htmlFor="chk" aria-hidden="true">Registro</label>
+                    <label htmlFor="chk" aria-hidden="true"><Link to="/"><FontAwesomeIcon icon={faArrowCircleLeft} className='title__icon__login'/></Link>Registro</label>
                     <div className="inputs">
                         <input type="text" name="txt" placeholder="Nombre" value={registroNombre} onChange={(e) => setRegistroNombre(e.target.value)} required />
                         <input type="email" name="email" placeholder="Correo electrónico" value={registroEmail} onChange={(e) => setRegistroEmail(e.target.value)} required />
@@ -59,7 +66,7 @@ function Login() {
             </div>
             <div className="login">
                 <form method="post">
-                    <label htmlFor="chk" aria-hidden="true">Iniciar Sesión</label>
+                    <label htmlFor="chk" aria-hidden="true"><Link to="/"><FontAwesomeIcon icon={faArrowCircleLeft} className='title__icon__login'/></Link>Iniciar Sesión</label>
                     <div className="inputs">
                         <input type="email" name="email" placeholder="Correo electrónico" value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} required />
                         <input type="password" name="pswd" placeholder="Contraseña" value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} required />

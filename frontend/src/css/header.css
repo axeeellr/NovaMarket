@@ -47,6 +47,7 @@
     height: 45px;
     width: 100%;
     padding: 15px;
+    outline: none;
 }
 
 .header__search input::placeholder{
