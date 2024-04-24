@@ -103,12 +103,33 @@ app.post('/login', (req, res) => {
     });
 });
 
+app.get('/data/:id', (req, res) => {
+    const id = req.params.id;
+    // console.log(id);
+
+    db.query('SELECT * FROM users WHERE id = ?', [id], (err, results) => {
+        if (err) {
+            console.error("Error al obtener los datos del usuario:", err);
+            return res.status(500).json({ error: 'Error al obtener los datos del usuario' });
+        }
+
+        const user = results[0];
+
+        // console.log(user);
+
+        return res.status(200).json({
+            message: 'Usuario obtenido exitosamente',
+            user: user
+        });
+    });
+});
 
 
 
 
+const port = 1001;
 
-app.listen(1001, ()=>{
-    console.log("listening on")
+app.listen(port, ()=>{
+    console.log("listening on", port)
 })
 

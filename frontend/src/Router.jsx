@@ -27,7 +27,7 @@ const AppRouter = () => {
         <Route path="/cart" element={isAuthenticated === 'true' ? <Cart /> : <Navigate to="/login" />}/>
         <Route path="/product/:data" element={isAuthenticated === 'true' ? <Product /> : <Navigate to="/login" />}/>
       </Routes>
-    </Router>
+    </Router> 
   );
 }
 

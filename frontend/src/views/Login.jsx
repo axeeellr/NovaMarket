@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import { useUser } from '../UserContext';
@@ -14,6 +14,7 @@ import '../css/login.css';
 function Login() {
 
     const { setUser } = useUser();
+    const navigate = useNavigate();
 
     const [loginEmail, setLoginEmail] = useState('');
     const [loginPassword, setLoginPassword] = useState('');
@@ -25,32 +26,34 @@ function Login() {
     const handleLogin = () => {
 
         axios.post('http://localhost:1001/login', { email: loginEmail, password: loginPassword })
-            .then(response => {
-                const user = response.data.user;
-                setUser(user);
-                console.log(response.data);
-                console.log(user);
-                localStorage.setItem('isAuthenticated', 'true');
-                window.location.href = '/';
-            })
-            .catch(error => {
-                console.error(error);
-            });
+        .then(response => {
+            const user = response.data.user;
+            setUser(user);
+            localStorage.setItem('userId', user.id);
+            localStorage.setItem('isAuthenticated', 'true');
+            console.log(response.data);
+            console.log(user);
+            navigate('/');
+        })
+        .catch(error => {
+            console.error(error);
+        });
     };
 
     const handleRegistro = () => {
         axios.post('http://localhost:1001/registro', { name: registroNombre, email: registroEmail, password: registroPassword })
-            .then(response => {
-                const user = response.data.user;
-                setUser(user);
-                console.log(response.data);
-                console.log(user);
-                localStorage.setItem('isAuthenticated', 'true');
-                window.location.href = '/';
-            })
-            .catch(error => {
-                console.error(error);
-            });
+        .then(response => {
+            const user = response.data.user;
+            setUser(user);
+            localStorage.setItem('userId', user.id);
+            localStorage.setItem('isAuthenticated', 'true');
+            console.log(response.data);
+            console.log(user);
+            navigate('/'); 
+        })
+        .catch(error => {
+            console.error(error);
+        });
     };
 
     return (

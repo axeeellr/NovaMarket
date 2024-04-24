@@ -8,11 +8,24 @@ import TitlePage from '../components/TitlePage';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight, faHeart, faSignOut, faPlusCircle, faEdit, faArrowCircleLeft } from '@fortawesome/free-solid-svg-icons';
 
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+
 function Profile() {
-    return(
+
+    const navigate = useNavigate();
+
+
+    const logOut = () => {
+        navigate("/");
+        localStorage.removeItem("userId");
+        localStorage.removeItem("isAuthenticated");
+    }
+
+    return (
         <>
             <div className="profile">
-                <TitlePage/>
+                <TitlePage />
                 <div className="profile__data">
                     <h2>Mis datos</h2>
                     <button>Editar mis datos &nbsp;<FontAwesomeIcon icon={faEdit} /></button>
@@ -66,44 +79,44 @@ function Profile() {
                                 <div className="front">
                                     <img src="https://i.ibb.co/PYss3yv/map.png" alt="Map" className="map-img" />
                                     <div className="row">
-                                    <img src="https://i.ibb.co/G9pDnYJ/chip.png" alt="Chip" width="40px" />
-                                    <img src="https://i.ibb.co/WHZ3nRJ/visa.png" alt="Visa" width="60px" />
-                                </div>
-                                <div className="row card-no">
-                                    <p>5244</p>
-                                    <p>2150</p>
-                                    <p>8252</p>
-                                    <p>6420</p>
-                                </div>
-                                <div className="row card-holder">
-                                    <p>CARD HOLDER</p>
-                                    <p>VALID TILL</p>
-                                </div>
-                                <div className="row name">
-                                    <p>RANDALL RICARDO</p>
-                                    <p>10 / 25</p>
-                                </div>
-                            </div>
-                            <div className="back">
-                                <img src="https://i.ibb.co/PYss3yv/map.png" alt="Map" className="map-img" />
-                                <div className="bar"></div>
-                                <div className="row card-cvv">
-                                    <div>
-                                        <img src="https://i.ibb.co/S6JG8px/pattern.png" alt="Pattern" />
+                                        <img src="https://i.ibb.co/G9pDnYJ/chip.png" alt="Chip" width="40px" />
+                                        <img src="https://i.ibb.co/WHZ3nRJ/visa.png" alt="Visa" width="60px" />
                                     </div>
-                                    <p>824</p>
+                                    <div className="row card-no">
+                                        <p>5244</p>
+                                        <p>2150</p>
+                                        <p>8252</p>
+                                        <p>6420</p>
+                                    </div>
+                                    <div className="row card-holder">
+                                        <p>CARD HOLDER</p>
+                                        <p>VALID TILL</p>
+                                    </div>
+                                    <div className="row name">
+                                        <p>RANDALL RICARDO</p>
+                                        <p>10 / 25</p>
+                                    </div>
                                 </div>
-                                <div className="row signature">
-                                    <p>NovaMarket</p>
-                                    <img src="https://i.ibb.co/WHZ3nRJ/visa.png" alt="Visa" width="80px" />
+                                <div className="back">
+                                    <img src="https://i.ibb.co/PYss3yv/map.png" alt="Map" className="map-img" />
+                                    <div className="bar"></div>
+                                    <div className="row card-cvv">
+                                        <div>
+                                            <img src="https://i.ibb.co/S6JG8px/pattern.png" alt="Pattern" />
+                                        </div>
+                                        <p>824</p>
+                                    </div>
+                                    <div className="row signature">
+                                        <p>NovaMarket</p>
+                                        <img src="https://i.ibb.co/WHZ3nRJ/visa.png" alt="Visa" width="80px" />
+                                    </div>
                                 </div>
-                            </div>
                             </div>
                         </div>
                     </div>
                     <button className='payment__new'>Añadir nuevo &nbsp;<FontAwesomeIcon icon={faPlusCircle} /></button>
                 </div>
-                <div className="profile__logout">
+                <div className="profile__logout" onClick={logOut}>
                     <h2>Cerrar Sesión</h2>
                     <button>Cerrar Sesión &nbsp;<FontAwesomeIcon icon={faSignOut} /></button>
                 </div>
