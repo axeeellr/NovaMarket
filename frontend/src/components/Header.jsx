@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Link } from 'react-router-dom';
+import { useUser } from '../UserContext';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown, faBell } from '@fortawesome/free-solid-svg-icons';
@@ -9,6 +9,9 @@ import Notifications from './Notifications';
 import '../css/header.css';
 
 function Header() {
+
+  const { user } = useUser();
+  console.log("Valor del usuario:", user);
 
   const [showNotifications, setShowNotifications] = useState(false);
 
@@ -20,7 +23,7 @@ function Header() {
     <div className="header">
       <div className="header__info">
         <div className="header__info__text">
-          <h2>Hey!</h2>
+          {user ? (<h2>Hey, {user.name}!</h2>) : (<h2>Hey!</h2>)}
           <p>¿Qué comprarás hoy?</p>
         </div>
         <div className="header__info__img">

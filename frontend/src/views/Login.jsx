@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
+import { useUser } from '../UserContext';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle, faFacebook, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { faArrowCircleLeft } from '@fortawesome/free-solid-svg-icons';
@@ -11,6 +13,8 @@ import '../css/login.css';
 
 function Login() {
 
+    const { setUser } = useUser();
+
     const [loginEmail, setLoginEmail] = useState('');
     const [loginPassword, setLoginPassword] = useState('');
     
@@ -19,12 +23,15 @@ function Login() {
     const [registroPassword, setRegistroPassword] = useState('');
 
     const handleLogin = () => {
+
         axios.post('http://localhost:1001/login', { email: loginEmail, password: loginPassword })
             .then(response => {
+                const user = response.data.user;
+                setUser(user);
                 console.log(response.data);
+                console.log(user);
                 localStorage.setItem('isAuthenticated', 'true');
                 window.location.href = '/';
-                // Manejar la respuesta del servidor (redireccionar, mostrar mensaje, etc.)
             })
             .catch(error => {
                 console.error(error);
@@ -34,10 +41,12 @@ function Login() {
     const handleRegistro = () => {
         axios.post('http://localhost:1001/registro', { name: registroNombre, email: registroEmail, password: registroPassword })
             .then(response => {
+                const user = response.data.user;
+                setUser(user);
                 console.log(response.data);
+                console.log(user);
                 localStorage.setItem('isAuthenticated', 'true');
                 window.location.href = '/';
-                // Manejar la respuesta del servidor (redireccionar, mostrar mensaje, etc.)
             })
             .catch(error => {
                 console.error(error);

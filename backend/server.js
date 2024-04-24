@@ -39,6 +39,7 @@ const bodyParser = require('body-parser');
 // Configura body-parser para que pueda manejar solicitudes JSON.
 app.use(bodyParser.json());
 
+
 // Ruta para el registro de usuarios.
 app.post('/registro', (req, res) => {
     const { name, email, password } = req.body;
@@ -50,10 +51,28 @@ app.post('/registro', (req, res) => {
             console.error("Error al registrar usuario:", err);
             return res.status(500).json({ error: 'Error al registrar usuario' });
         }
-        
+
         // Verifica si se insertó correctamente
         if (result.affectedRows > 0) {
-            return res.status(200).json({ message: 'Usuario registrado exitosamente' });
+            // Obtener el ID del usuario recién registrado
+            const userId = result.insertId;
+
+            // Realizar una consulta para obtener los datos del usuario recién registrado
+            db.query('SELECT * FROM users WHERE id = ?', [userId], (err, results) => {
+                if (err) {
+                    console.error("Error al obtener los datos del usuario:", err);
+                    return res.status(500).json({ error: 'Error al obtener los datos del usuario' });
+                }
+
+                // Tomar el primer resultado (el usuario recién registrado)
+                const user = results[0];
+
+                // Devolver los datos del usuario junto con un mensaje de éxito
+                return res.status(200).json({
+                    message: 'Usuario registrado exitosamente',
+                    user: user
+                });
+            });
         } else {
             return res.status(500).json({ error: 'Error al registrar usuario' });
         }
@@ -72,7 +91,12 @@ app.post('/login', (req, res) => {
             return res.status(500).json({ error: 'Error al iniciar sesión' });
         }
         if (results.length > 0) {
-            return res.status(200).json({ message: 'Inicio de sesión exitoso' });
+            const user = results[0];
+
+            return res.status(200).json({
+                message: 'Inicio de sesión exitoso',
+                user: user
+            });
         } else {
             return res.status(401).json({ error: 'Credenciales inválidas' });
         }
