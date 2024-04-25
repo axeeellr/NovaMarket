@@ -18,6 +18,12 @@
     color: white;
 }
 
+.header__info__text{
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
 .header__info__img{
     display: flex;
     justify-content: center;
@@ -48,6 +54,7 @@
     width: 100%;
     padding: 15px;
     outline: none;
+    box-shadow: 0px 0px 25px 0px rgba(0,0,0,0.55);
 }
 
 .header__search input::placeholder{
