@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -24,15 +24,14 @@ function Login() {
     const [registroPassword, setRegistroPassword] = useState('');
 
     const handleLogin = () => {
-
         axios.post('http://localhost:1001/login', { email: loginEmail, password: loginPassword })
         .then(response => {
             const user = response.data.user;
             setUser(user);
             localStorage.setItem('userId', user.id);
             localStorage.setItem('isAuthenticated', 'true');
-            console.log(response.data);
-            console.log(user);
+            //console.log(response.data);
+            //console.log(user);
             navigate('/');
         })
         .catch(error => {
@@ -47,8 +46,8 @@ function Login() {
             setUser(user);
             localStorage.setItem('userId', user.id);
             localStorage.setItem('isAuthenticated', 'true');
-            console.log(response.data);
-            console.log(user);
+            //console.log(response.data);
+            //console.log(user);
             navigate('/'); 
         })
         .catch(error => {

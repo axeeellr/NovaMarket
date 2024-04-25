@@ -11,18 +11,15 @@ const CodeReader = (props) => {
         fetch(`http://localhost:1001/product?code=${encodeURIComponent(data)}`)
             .then(response => response.json())
             .then(data => {
-                if (data.error) {
-                    console.error(data.error);
-                } else {
-                    // Navega a la página del producto y pasa los datos del producto a través del estado
-                    navigate(`/product/${encodeURIComponent(data.name)}`, { state: { productData: data } });
-                }
+              if (data.error) {
+                  console.error(data.error);
+              } else {
+                  navigate(`/product/${encodeURIComponent(data.name)}`, { state: { productData: data } });
+              }
             })
             .catch(error => console.error('Error al consultar el servidor:', error));
     }
   }, [data, navigate]);
-
-
 
   return (
     <>

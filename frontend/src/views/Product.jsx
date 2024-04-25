@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useLocation } from 'react-router-dom'
 
 import '../css/root.css';
@@ -18,6 +18,24 @@ function Product() {
     if (!product) {
         return <p>Producto no encontrado</p>;
     }
+
+
+
+    const [quantity, setQuantity] = useState(1);
+
+    useEffect(() => {
+        localStorage.setItem('productQuantity', quantity);
+    }, [quantity]);
+
+    const incrementQuantity = () => {
+        setQuantity(prevQuantity => prevQuantity + 1);
+    };
+
+    const decrementQuantity = () => {
+        if (quantity > 1) {
+        setQuantity(prevQuantity => prevQuantity - 1);
+        }
+    };
 
     return(
         <>
@@ -41,9 +59,9 @@ function Product() {
                         <p>{product.weight}</p>
                     </div>
                     <div className="details__count">
-                        <FontAwesomeIcon icon={faSquareMinus}/>
-                        <p>1</p>
-                        <FontAwesomeIcon icon={faSquarePlus}/>
+                        <FontAwesomeIcon icon={faSquareMinus} onClick={decrementQuantity} />
+                            <p>{quantity}</p>
+                        <FontAwesomeIcon icon={faSquarePlus} onClick={incrementQuantity} />
                     </div>
                 </div>
             </div>

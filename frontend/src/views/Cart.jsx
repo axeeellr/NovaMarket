@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSquareMinus, faSquarePlus } from '@fortawesome/free-solid-svg-icons';
+import { faSquareMinus, faSquarePlus, faEdit } from '@fortawesome/free-solid-svg-icons';
 
 import '../css/cart.css';
 
@@ -9,12 +9,15 @@ import TitlePage from '../components/TitlePage';
 import Menu from '../components/Menu';
 
 const Cart = () => {
-
     return(
         <>
             <div className="cart__container">
                 <TitlePage/>
                 <div className="cart__products">
+                    <div className="cart__name">
+                        <input type="text" name="" id="" placeholder='Nombre del carrito...'/>
+                        <FontAwesomeIcon icon={faEdit} className='editName'/>
+                    </div>
                     <div className="cart__product">
                         <div className="product__image">
                             <img src="https://www.nestle-cereals.com/cl/sites/g/files/qirczx891/files/styles/1_1_768px_width/public/2023-08/Trix.PNG.png.webp?itok=rWibg3ur" alt="" />

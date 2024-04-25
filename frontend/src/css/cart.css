@@ -9,6 +9,32 @@
     margin-bottom: 100px  ;
 }
 
+.cart__name{
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    width: 100%;
+}
+
+.cart__name input{
+    position: relative;
+    width: 70%;
+    border: none;
+    border: 1px solid #193E4E;
+    border-radius: 5px;
+    background-color: transparent;
+    outline: none;
+    font-size: 16px;
+    color: #193E4E;
+    padding: 5px 5px 5px 35px;
+}
+
+.editName{
+    position: absolute;
+    left: 30px;
+    color: #193E4E;
+}
+
 .cart__products{
     display: flex;
     flex-direction: column;
