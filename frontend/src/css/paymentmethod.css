@@ -1,0 +1,171 @@
+.method__container{
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 25px;
+}
+
+.method__cards{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    width: 100%;
+    padding-bottom: 10px;
+}
+
+.container {
+    position: relative;
+    height: 150px;
+    width: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card {
+    width: 300px;
+    height: 100%;
+    color: #fff;
+    cursor: pointer;
+    perspective: 1000px;
+}
+
+.card-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transition: transform 1s;
+    transform-style: preserve-3d;
+}
+
+.front, .back {
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(45deg, #193E4E, #B2CFD7);
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 20px 30px;
+    border-radius: 10px;
+    overflow: hidden;
+    z-index: 1;
+    backface-visibility: hidden;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.map-img {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0.3;
+    z-index: -1;
+}
+
+.card-no {
+    font-size: 15px;
+    margin-top: 20px;
+}
+
+.card-holder {
+    font-size: 10px;
+    margin-top: 10px;
+}
+
+.name {
+    font-size: 15px;
+}
+
+.bar {
+    background: #222;
+    margin-left: -30px;
+    margin-right: -30px;
+    height: 20px;
+    margin-top: 10px;
+}
+
+.card-cvv {
+    margin-top: 10px;
+}
+
+.card-cvv div {
+    flex: 1;
+}
+
+.card-cvv img {
+    width: 100%;
+    display: block;
+    line-height: 0;
+}
+
+.card-cvv p {
+    background: #fff;
+    color: #000;
+    font-size: 15px;
+    padding: 5px 10px;
+}
+
+.signature {
+    margin-top: 20px;
+}
+
+.signature p{
+    font-size: 15px;
+}
+
+.signature img{
+    height: 15px;
+    width: 50px;
+}
+
+.back {
+    transform: rotateY(180deg);
+}
+
+.card:hover .card-inner {
+    transform: rotateY(-180deg);
+}
+
+.method__button{
+    width: 100%;
+}
+
+.method__button button{
+    background-color: #193E4E;
+    color: #F2EBCF;
+	font-size: 18px;
+	font-weight: bold;
+    width: 100%;
+    padding: 13px 20px;
+	outline: none;
+	border: none;
+	border-radius: 10px;
+	transition: .2s ease-in;
+	cursor: pointer;
+}
+
+button:hover{
+	background-color: #928567;
+    color: #4b412d;
+}
+
+
+.method__info{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    color: #193E4E;
+}
+
+.method__icon{
+    font-size: 20px;
+}

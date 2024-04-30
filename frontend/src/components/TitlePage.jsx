@@ -15,7 +15,8 @@ function TitlePage() {
         const pageTitles = {
             '/profile': 'Perfil',
             '/cart':  'Carrito',
-            '/scanner':  'Escáner'
+            '/scanner':  'Escáner',
+            '/paymentmethod':  'Método de Pago'
         };
         currentPage = pageTitles[location.pathname];
     }

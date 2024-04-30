@@ -10,6 +10,7 @@ import Shop from './views/Shop';
 import Login from './views/Login';
 import Product from './views/Product';
 import Cart from './views/Cart';
+import PaymentMethod from './views/PaymentMethod';
 
 const AppRouter = () => {
 
@@ -26,6 +27,7 @@ const AppRouter = () => {
         <Route path="/shop" element={<Shop />} />
         <Route path="/cart" element={isAuthenticated ? <Cart /> : <Navigate to="/login" />}/>
         <Route path="/product/:data" element={isAuthenticated ? <Product /> : <Navigate to="/login" />}/>
+        <Route path="/paymentmethod" element={<PaymentMethod />} />
       </Routes>
     </Router> 
   );
