@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useLocation } from 'react-router-dom'
+import { Toaster, toast } from 'react-hot-toast';
 
 import '../css/root.css';
 import '../css/product.css';
@@ -9,11 +10,13 @@ import { faSquareMinus, faSquarePlus, faCartShopping, faArrowCircleLeft } from '
 
 import Menu from '../components/Menu';
 import TitlePage from '../components/TitlePage';
+import Cart from '../components/AddToCart';
 
 function Product() {
     const { data: name } = useParams();
     const { state } = useLocation();
     const product = state?.productData;
+    const { addToCart } = Cart();
 
     if (!product) {
         return <p>Producto no encontrado</p>;
@@ -47,7 +50,7 @@ function Product() {
                 <img src={product.img} alt="" />
             </div>
             <div className="product__info">
-                <button>Añadir al carrito <FontAwesomeIcon icon={faCartShopping}/></button>
+                <button onClick={() => addToCart(product, quantity)}>Añadir al carrito <FontAwesomeIcon icon={faCartShopping}/></button>
                 <div className="product__info__details">
                     <div className="details__name">
                         <h2>{product.name}</h2>
@@ -65,6 +68,13 @@ function Product() {
                     </div>
                 </div>
             </div>
+            <Toaster toastOptions={{
+                duration: 3000,
+                style:{
+                    background: '#193E4E',
+                    color: '#F2EBCF',
+                },
+            }}/>
         </div>
         <Menu className="menuProduct"/>
         </>

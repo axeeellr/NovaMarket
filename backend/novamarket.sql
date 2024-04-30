@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 22-04-2024 a las 05:26:53
+-- Tiempo de generación: 30-04-2024 a las 05:45:31
 -- Versión del servidor: 10.4.24-MariaDB
 -- Versión de PHP: 8.1.6
 
@@ -67,7 +67,13 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`) VALUES
-(1, 'axelk', 'axek@gmail.com', 'sdjhdjsd');
+(1, 'axelk', 'axek@gmail.com', 'sdjhdjsd'),
+(2, 'axel', 'axel@gmail.com', '12345'),
+(3, 'ddd', 'ddd@gmail.com', '12345'),
+(4, 'sexo', 'sexo@gmail.com', '12345'),
+(5, 'ozuna', 'ozuna@gmail.com', '12345'),
+(6, 'lop', 'lop@fmas.com', '243243'),
+(7, 'axelitouu', 'axelito@gmail.com', '12345');
 
 --
 -- Índices para tablas volcadas
@@ -99,7 +105,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

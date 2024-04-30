@@ -14,21 +14,11 @@ function Header() {
   const [userr, setUserr] = useState(null); 
   const [userIdStorage, setUserIdStorage] = useState(null);
 
-  let userContext = null;
+  // Obtiene el contexto del usuario
+  const userContext = useUser();  
+  const { user } = userContext || {};
 
-  if (!userContext) {
-    userContext = useUser();
-  }  
-
-  const { user } = userContext ? userContext : {};
-
-  // useEffect(() => {
-  //   if (user && user.id) {
-  //     localStorage.setItem('userId', user.id);
-  //     setUserId(user.id);
-  //   }
-  // }, [user]);
-
+  // Almacena el ID del usuario en el estado si está presente en localStorage
   useEffect(() => {
     const storedUserId = localStorage.getItem('userId');
     if (storedUserId) {
@@ -36,20 +26,17 @@ function Header() {
     }
   }, []);
 
+  // Realiza la petición de datos si se tiene un ID de usuario almacenado
   useEffect(() => {
     if (userIdStorage) {
-      const handleData = () => {
-        axios.get(`http://localhost:1001/data/${userIdStorage}`)
-          .then(response => {
-            const userrData = response.data.user.name;
-            setUserr(userrData);
-          })
-          .catch(error => {
-            console.error(error);
-          });
-      };
-
-      handleData();
+      axios.get(`http://localhost:1001/data/${userIdStorage}`)
+        .then(response => {
+          const userrData = response.data.user.name;
+          setUserr(userrData);
+        })
+        .catch(error => {
+          console.error(error);
+        });
     }
   }, [userIdStorage]);
 

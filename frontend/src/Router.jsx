@@ -21,11 +21,11 @@ const AppRouter = () => {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/notifications" element={<Notifications />} />
-        <Route path="/profile" element={isAuthenticated === 'true' ? <Profile /> : <Navigate to="/login" />}/>
-        <Route path="/scanner" element={isAuthenticated === 'true' ? <Scanner /> : <Navigate to="/login" />}/>
+        <Route path="/profile" element={isAuthenticated ? <Profile /> : <Navigate to="/login" />}/>
+        <Route path="/scanner" element={isAuthenticated ? <Scanner /> : <Navigate to="/login" />}/>
         <Route path="/shop" element={<Shop />} />
-        <Route path="/cart" element={isAuthenticated === 'true' ? <Cart /> : <Navigate to="/login" />}/>
-        <Route path="/product/:data" element={isAuthenticated === 'true' ? <Product /> : <Navigate to="/login" />}/>
+        <Route path="/cart" element={isAuthenticated ? <Cart /> : <Navigate to="/login" />}/>
+        <Route path="/product/:data" element={isAuthenticated ? <Product /> : <Navigate to="/login" />}/>
       </Routes>
     </Router> 
   );

@@ -103,9 +103,10 @@ app.post('/login', (req, res) => {
     });
 });
 
+
+//Ruta para obtener los datos del usuario
 app.get('/data/:id', (req, res) => {
     const id = req.params.id;
-    // console.log(id);
 
     db.query('SELECT * FROM users WHERE id = ?', [id], (err, results) => {
         if (err) {
@@ -115,8 +116,6 @@ app.get('/data/:id', (req, res) => {
 
         const user = results[0];
 
-        // console.log(user);
-
         return res.status(200).json({
             message: 'Usuario obtenido exitosamente',
             user: user
@@ -125,6 +124,50 @@ app.get('/data/:id', (req, res) => {
 });
 
 
+// Ruta para actualizar los datos del usuario
+app.put('/data/:id', (req, res) => {
+    const id = req.params.id;
+    const { name, email, oldPassword, newPassword } = req.body;
+
+    // Consulta para verificar la contraseña antigua si se está intentando cambiar la contraseña
+    if (oldPassword && newPassword) {
+        // Verifica si la contraseña antigua coincide
+        db.query('SELECT password FROM users WHERE id = ?', [id], (err, results) => {
+            if (err) {
+                console.error("Error al verificar la contraseña antigua:", err);
+                return res.status(500).json({ error: 'Error al verificar la contraseña antigua' });
+            }
+
+            const currentPassword = results[0]?.password;
+
+            // Verifica si la contraseña antigua es correcta
+            if (currentPassword === oldPassword) {
+                // Si la contraseña antigua es correcta, actualiza la contraseña a la nueva
+                db.query('UPDATE users SET name = ?, email = ?, password = ? WHERE id = ?', [name, email, newPassword, id], (err, result) => {
+                    if (err) {
+                        console.error("Error al actualizar datos del usuario:", err);
+                        return res.status(500).json({ error: 'Error al actualizar datos del usuario' });
+                    }
+
+                    return res.status(200).json({ message: 'Datos del usuario actualizados exitosamente' });
+                });
+            } else {
+                // Si la contraseña antigua es incorrecta, devuelve un error
+                return res.status(401).json({ error: 'Contraseña antigua incorrecta' });
+            }
+        });
+    } else {
+        // Si no se intenta cambiar la contraseña, actualiza solo el nombre y el email
+        db.query('UPDATE users SET name = ?, email = ? WHERE id = ?', [name, email, id], (err, result) => {
+            if (err) {
+                console.error("Error al actualizar datos del usuario:", err);
+                return res.status(500).json({ error: 'Error al actualizar datos del usuario' });
+            }
+
+            return res.status(200).json({ message: 'Datos del usuario actualizados exitosamente' });
+        });
+    }
+});
 
 
 const port = 1001;

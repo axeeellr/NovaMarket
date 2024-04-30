@@ -3,17 +3,19 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 20px;
     height: 90vh;
+    width: 100%;
 }
 
 .product__img{
-    height: 250px;
     object-fit: cover;
     height: 45%;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 0;
+    padding: 0;
 }
 
 .product__img img{
@@ -28,10 +30,10 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 100%;
     padding: 30px 30px 130px 30px;
     gap: 20px;
     height: 55%;
+    width: 100%;
 }
 
 .product__info button{
@@ -108,6 +110,7 @@
 
 .menu__container__product{
     background-color: #C5B28A;
+    width: 100%;
 }
 
 .menu__container__product .menu__center{
