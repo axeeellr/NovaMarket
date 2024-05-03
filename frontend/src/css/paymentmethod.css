@@ -169,3 +169,27 @@ button:hover{
 .method__icon{
     font-size: 20px;
 }
+
+.method__summary{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+}
+
+.method__summary h3{
+    margin-bottom: 5px;
+    color: #193E4E;
+    font-size: 21px;
+}
+
+.method__summary p{
+    color: #193E4E;
+    font-size: 17px;
+}
+
+hr{
+    height: 1px;
+    background-color: #193E4E;
+    border: none;
+}

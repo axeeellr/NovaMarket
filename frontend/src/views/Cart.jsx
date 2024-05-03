@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Toaster, toast } from 'react-hot-toast';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquareMinus, faSquarePlus, faEdit } from '@fortawesome/free-solid-svg-icons';
@@ -7,6 +8,8 @@ import TitlePage from '../components/TitlePage';
 import Menu from '../components/Menu';
 
 const Cart = () => {
+    const navigate = useNavigate();
+
     const [cartProducts, setCartProducts] = useState([]);
     const [cartName, setCartName] = useState('');
     
@@ -49,7 +52,8 @@ const Cart = () => {
         if (!cartName) {
             toast('¡La compra aún no tiene nombre!');
         } else{
-            toast('Ok')
+            localStorage.setItem('cartPrice', calculateTotal());
+            navigate('/paymentmethod'); 
         }
     };
 
@@ -88,6 +92,7 @@ const Cart = () => {
                         <p className='emptyCart'>No hay productos en el carrito...</p>
                     )}
                 </div>
+                
                 <div className="cart__button">
                     <button onClick={handleContinue}>
                         <span>Continuar</span>
