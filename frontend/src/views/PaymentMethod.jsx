@@ -12,6 +12,7 @@ const PaymentMethod = () => {
     // Estado local para las tarjetas de crédito
     const [cards, setCards] = useState([]);
     const userId = localStorage.getItem('userId');
+    const [selectedCard, setSelectedCard] = useState(null);
 
     // Función para obtener las tarjetas de crédito del usuario
     const fetchUserCards = async () => {
@@ -33,6 +34,14 @@ const PaymentMethod = () => {
         fetchUserCards();
     }, []);
 
+    const handleCardSelect = (card) => {
+        if (selectedCard && selectedCard.id === card.id) {
+            setSelectedCard(null); // Quita la selección si la tarjeta seleccionada es la misma
+        } else {
+            setSelectedCard(card); // Actualiza el estado con la tarjeta seleccionada
+        }
+    };
+
     return(
     <>
         <div className="method__container">
@@ -40,7 +49,7 @@ const PaymentMethod = () => {
             <div className="method__cards">
                 {cards.length > 0 ? (
                     cards.map((card) => (
-                        <div key={card.id} className="container">
+                        <div key={card.id} className={`container ${selectedCard && selectedCard.id === card.id ? 'selected' : ''}`} onClick={() => handleCardSelect(card)}>
                             <div className="card">
                                 <div className="card-inner">
                                     <div className="front">
@@ -91,19 +100,21 @@ const PaymentMethod = () => {
                 <FontAwesomeIcon icon={faInfoCircle} className='method__icon'/>
                 <p>Elige con qué método prefieres pagar</p>
             </div>
-            <div className="method__summary">
-                <div className="summary__card">
-                    <h3>Tarjeta de crédito</h3>
-                    <p>0044 8322 4167</p>
-                    <p>René Cornejo</p>
-                    <p>254</p>
+            {cards.length > 0 && selectedCard && ( // Muestra el resumen solo si hay al menos una tarjeta y una tarjeta seleccionada
+                <div className="method__summary">
+                    <div className="summary__card">
+                        <h3>Tarjeta de crédito</h3>
+                        <p>{selectedCard.number.slice(0, 4)}&nbsp;{selectedCard.number.slice(4, 8)}&nbsp;{selectedCard.number.slice(8, 12)}&nbsp;{selectedCard.number.slice(12, 16)}&nbsp;</p>
+                        <p>{selectedCard.holder}</p>
+                        <p>{selectedCard.cvv}</p>
+                    </div>
+                    <hr />
+                    <div className="summary__total">
+                        <h3>Total:</h3>
+                        <p>$20.00</p>
+                    </div>
                 </div>
-                <hr />
-                <div className="summary__total">
-                    <h3>Total:</h3>
-                    <p>$20.00</p>
-                </div>
-            </div>
+            )}
             <div className="method__button">
                 <button>Continuar</button>
             </div>
