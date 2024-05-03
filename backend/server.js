@@ -86,7 +86,7 @@ app.post('/login', (req, res) => {
 
     // Aquí debes agregar la lógica para verificar las credenciales del usuario.
     // Por ejemplo:
-     db.query('SELECT * FROM users WHERE email = ? AND password = ?', [email, password], (err, results) => {
+    db.query('SELECT * FROM users WHERE email = ? AND password = ?', [email, password], (err, results) => {
         if (err) {
             return res.status(500).json({ error: 'Error al iniciar sesión' });
         }
@@ -168,6 +168,52 @@ app.put('/data/:id', (req, res) => {
         });
     }
 });
+
+//Ruta para agregar tarjetas de crédito
+app.post('/cards', (req, res) => {
+    const { id_user, number, holder, date, cvv } = req.body;
+
+    db.query('INSERT INTO cards (id_user, number, holder, date, cvv) VALUES (?, ?, ?, ?, ?)', [id_user, number, holder, date, cvv], (err, result) => {
+        if (err) {
+            // Maneja el error de la base de datos
+            console.error("Error al registrar la tarjeta:", err);
+            return res.status(500).json({ error: 'Error al registrar la tarjeta' });
+        }
+
+        // Verifica si se insertó correctamente
+        if (result.affectedRows > 0) {
+            // Devolver un mensaje de éxito
+             return res.status(200).json({message: 'Tarjeta registrada exitosamente',});
+        } else {
+            return res.status(500).json({ error: 'Error al registrar usuario' });
+        }
+    });
+
+});
+
+
+// Ruta para obtener los datos de las tarjetas de crédito de un usuario específico
+app.get('/getCards/:userId', (req, res) => {
+    const userId = req.params.userId;
+
+    // Consulta a la base de datos para obtener las tarjetas de crédito asociadas al ID de usuario
+    db.query('SELECT * FROM cards WHERE id_user = ?', [userId], (err, results) => {
+        if (err) {
+            console.error("Error al obtener los datos de las tarjetas de crédito:", err);
+            return res.status(500).json({ error: 'Error al obtener los datos de las tarjetas de crédito' });
+        }
+
+        // Agregar un console.log para verificar los resultados obtenidos
+        console.log('Tarjetas obtenidas:', results);
+
+        // Si la consulta fue exitosa, devuelve los resultados
+        return res.status(200).json({
+            message: 'Tarjetas de crédito obtenidas exitosamente',
+            cards: results
+        });
+    });
+});
+
 
 
 const port = 1001;

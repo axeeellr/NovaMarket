@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 30-04-2024 a las 05:45:31
+-- Tiempo de generación: 03-05-2024 a las 06:42:48
 -- Versión del servidor: 10.4.24-MariaDB
 -- Versión de PHP: 8.1.6
 
@@ -20,6 +20,30 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `novamarket`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `cards`
+--
+
+CREATE TABLE `cards` (
+  `id` int(11) NOT NULL,
+  `id_user` int(11) NOT NULL,
+  `number` varchar(11) NOT NULL,
+  `holder` varchar(100) NOT NULL,
+  `date` date NOT NULL,
+  `cvv` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `cards`
+--
+
+INSERT INTO `cards` (`id`, `id_user`, `number`, `holder`, `date`, `cvv`) VALUES
+(2, 7, '88657567', 'gfdghhhh', '2024-03-01', 434),
+(3, 7, '666664343', 'dsadjk dasjdk', '2024-11-01', 545),
+(4, 7, '2147483647', 'sdas sadsa', '2024-03-01', 444);
 
 -- --------------------------------------------------------
 
@@ -80,6 +104,12 @@ INSERT INTO `users` (`id`, `name`, `email`, `password`) VALUES
 --
 
 --
+-- Indices de la tabla `cards`
+--
+ALTER TABLE `cards`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `products`
 --
 ALTER TABLE `products`
@@ -94,6 +124,12 @@ ALTER TABLE `users`
 --
 -- AUTO_INCREMENT de las tablas volcadas
 --
+
+--
+-- AUTO_INCREMENT de la tabla `cards`
+--
+ALTER TABLE `cards`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `products`

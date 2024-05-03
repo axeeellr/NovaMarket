@@ -82,6 +82,91 @@ function Profile() {
             // Puedes considerar mostrar un mensaje de error al usuario aquí
         }
     };
+
+    // Estado local para las tarjetas de crédito
+    const [cards, setCards] = useState([]);
+    const userId = localStorage.getItem('userId');
+
+    // Estado para el modal de añadir tarjeta de crédito
+    const [isAddCardModalOpen, setIsAddCardModalOpen] = useState(false);
+    
+    // Estados para los datos del formulario de añadir tarjeta de crédito
+    const [cardNumber, setCardNumber] = useState('');
+    const [cardHolder, setCardHolder] = useState('');
+    const [expiryDate, setExpiryDate] = useState('');
+    const [cvv, setCvv] = useState('');
+
+    // Función para mostrar/ocultar el modal de añadir tarjeta de crédito
+    const toggleAddCardModal = () => {
+        setIsAddCardModalOpen(!isAddCardModalOpen);
+    };
+
+    //Función para añadir un 1 a la fecha
+    const adjustExpiryDate = (expiryDate) => {
+        // Completa el valor con '-01' para tener un formato de fecha completo
+        return expiryDate + '-01';
+    };
+
+    //// Función para manejar el envío de los datos de la tarjeta de crédito
+    const handleAddCardSubmit = async (e) => {
+        e.preventDefault();
+        
+        // Datos de la tarjeta de crédito
+        const cardData = {
+            id_user: localStorage.getItem('userId'),
+            number: cardNumber,
+            holder: cardHolder,
+            date: adjustExpiryDate(expiryDate),
+            cvv: cvv
+        };
+    
+        try {
+            const response = await fetch('http://localhost:1001/cards', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(cardData)
+            });
+    
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data.message);
+                // Tarjeta añadida con éxito
+                console.log('Tarjeta añadida con éxito');
+                // Cierra el modal después de enviar los datos
+                toggleAddCardModal();
+                // Recarga la lista de tarjetas de crédito
+                fetchUserCards();
+            } else {
+                const errorData = await response.json();
+                console.error('Error al añadir la tarjeta:', errorData.error);
+            }
+        } catch (error) {
+            console.error('Error al realizar la solicitud:', error);
+        }
+    };
+
+    // Función para obtener las tarjetas de crédito del usuario
+    const fetchUserCards = async () => {
+        try {
+            const response = await fetch(`http://localhost:1001/getCards/${userId}`);
+            if (response.ok) {
+                const data = await response.json();
+                setCards(data.cards);
+            } else {
+                console.error('Error al obtener las tarjetas de crédito');
+            }
+        } catch (error) {
+            console.error('Error al realizar la solicitud:', error);
+        }
+    };
+
+    // Llamar a la función para obtener las tarjetas de crédito cuando el componente se monta
+    useEffect(() => {
+        fetchUserCards();
+    }, []);
+    
     
 
     const logOut = () => {
@@ -116,49 +201,62 @@ function Profile() {
                 </div>
                 <div className="profile__payment">
                     <h2>Método de pago</h2>
-                    <div className="container">
-                        <div className="card">
-                            <div className="card-inner">
-                                <div className="front">
-                                    <img src="https://i.ibb.co/PYss3yv/map.png" alt="Map" className="map-img" />
-                                    <div className="row">
-                                        <img src="https://i.ibb.co/G9pDnYJ/chip.png" alt="Chip" width="40px" />
-                                        <img src="https://i.ibb.co/WHZ3nRJ/visa.png" alt="Visa" width="60px" />
-                                    </div>
-                                    <div className="row card-no">
-                                        <p>5244</p>
-                                        <p>2150</p>
-                                        <p>8252</p>
-                                        <p>6420</p>
-                                    </div>
-                                    <div className="row card-holder">
-                                        <p>CARD HOLDER</p>
-                                        <p>VALID TILL</p>
-                                    </div>
-                                    <div className="row name">
-                                        <p>RANDALL RICARDO</p>
-                                        <p>10 / 25</p>
-                                    </div>
-                                </div>
-                                <div className="back">
-                                    <img src="https://i.ibb.co/PYss3yv/map.png" alt="Map" className="map-img" />
-                                    <div class="bar"></div>
-                                    <div className="row card-cvv">
-                                        <div>
-                                            <img src="https://i.ibb.co/S6JG8px/pattern.png" alt="Pattern" />
+                    <div className="cards">
+                        {cards.length > 0 ? (
+                            cards.map((card) => (
+                                <div key={card.id} className="container">
+                                    <div className="card">
+                                        <div className="card-inner">
+                                            <div className="front">
+                                                <img src="https://i.ibb.co/PYss3yv/map.png" alt="Map" className="map-img" />
+                                                <div className="row">
+                                                    <img src="https://i.ibb.co/G9pDnYJ/chip.png" alt="Chip" width="40px" />
+                                                    <img src="https://i.ibb.co/WHZ3nRJ/visa.png" alt="Visa" width="60px" />
+                                                </div>
+                                                <div className="row card-no">
+                                                    <p>{card.number.slice(0, 4)}</p>
+                                                    <p>{card.number.slice(4, 8)}</p>
+                                                    <p>{card.number.slice(8, 12)}</p>
+                                                    <p>{card.number.slice(12, 16)}</p>
+                                                </div>
+                                                <div className="row card-holder">
+                                                    <p>CARD HOLDER</p>
+                                                    <p>VALID TILL</p>
+                                                </div>
+                                                <div className="row name">
+                                                    <p>{card.holder}</p>
+                                                    <p>{card.date.slice(0, 7)}</p>
+                                                </div>
+                                            </div>
+                                            {/* Parte trasera de la tarjeta */}
+                                            <div className="back">
+                                                <img src="https://i.ibb.co/PYss3yv/map.png" alt="Map" className="map-img" />
+                                                <div className="bar"></div>
+                                                <div className="row card-cvv">
+                                                    <div>
+                                                        <img src="https://i.ibb.co/S6JG8px/pattern.png" alt="Pattern" />
+                                                    </div>
+                                                    <p>{card.cvv}</p>
+                                                </div>
+                                                <div className="row signature">
+                                                    <p>NovaMarket</p>
+                                                    <img src="https://i.ibb.co/WHZ3nRJ/visa.png" alt="Visa" width="80px" />
+                                                </div>
+                                            </div>
                                         </div>
-                                        <p>824</p>
-                                    </div>
-                                    <div className="row signature">
-                                        <p>NovaMarket</p>
-                                        <img src="https://i.ibb.co/WHZ3nRJ/visa.png" alt="Visa" width="80px" />
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+                            ))
+                        ) : (
+                            <p>No hay tarjetas de crédito agregadas.</p>
+                        )}
                     </div>
-                    <button className='payment__new'>Añadir nuevo &nbsp;<FontAwesomeIcon icon={faPlusCircle} /></button>
+                    <button className="payment__new" onClick={toggleAddCardModal}>
+                        Añadir nuevo &nbsp;
+                        <FontAwesomeIcon icon={faPlusCircle} />
+                    </button>
                 </div>
+
                 <div className="profile__logout" onClick={logOut}>
                     <h2>Cerrar Sesión</h2>
                     <button>Cerrar Sesión &nbsp;<FontAwesomeIcon icon={faSignOut} /></button>
@@ -216,6 +314,60 @@ function Profile() {
                             </div>
                             <button type="submit">Guardar Cambios</button>
                             <button type="button" onClick={toggleModal}>Cancelar</button>
+                        </form>
+                    </div>
+                </div>
+            )}
+
+
+            {/* Modal para añadir tarjeta de crédito */}
+            {isAddCardModalOpen && (
+                <div className="modal">
+                    <div className="modal-content">
+                        <h2>Añadir Tarjeta de Crédito</h2>
+                        <form onSubmit={handleAddCardSubmit}>
+                            <div className="form-group">
+                                <label htmlFor="cardNumber">Número de tarjeta</label>
+                                <input
+                                    type="text"
+                                    id="cardNumber"
+                                    value={cardNumber}
+                                    onChange={(e) => setCardNumber(e.target.value)}
+                                    required
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="cardHolder">Titular de la tarjeta</label>
+                                <input
+                                    type="text"
+                                    id="cardHolder"
+                                    value={cardHolder}
+                                    onChange={(e) => setCardHolder(e.target.value)}
+                                    required
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="expiryDate">Fecha de vencimiento</label>
+                                <input
+                                    type="month"
+                                    id="expiryDate"
+                                    value={expiryDate}
+                                    onChange={(e) => setExpiryDate(e.target.value)}
+                                    required
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="cvv">CVV</label>
+                                <input
+                                    type="password"
+                                    id="cvv"
+                                    value={cvv}
+                                    onChange={(e) => setCvv(e.target.value)}
+                                    required
+                                />
+                            </div>
+                            <button type="submit">Añadir Tarjeta</button>
+                            <button type="button" onClick={toggleAddCardModal}>Cancelar</button>
                         </form>
                     </div>
                 </div>
