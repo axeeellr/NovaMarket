@@ -24,7 +24,7 @@ function Cart() {
         localStorage.setItem('cart', JSON.stringify(cart));
         toast('¡Se añadió al carrito!');
     };
-
+    
     return {
         addToCart,
     };

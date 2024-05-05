@@ -12,11 +12,13 @@ const Cart = () => {
 
     const [cartProducts, setCartProducts] = useState([]);
     const [cartName, setCartName] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [productToDeleteIndex, setProductToDeleteIndex] = useState(null);
     
     useEffect(() => {
         const cart = JSON.parse(localStorage.getItem('cart')) || [];
         setCartProducts(cart);
-        const savedCartName = localStorage.getItem('cartName') || ''; 
+        const savedCartName = localStorage.getItem('cartName') || '';
         setCartName(savedCartName);
     }, []);
 
@@ -25,11 +27,24 @@ const Cart = () => {
         const updatedCart = [...cartProducts];
         if (change === 'increment') {
             updatedCart[index].quantity += 1;
-        } else if (change === 'decrement' && updatedCart[index].quantity > 1) {
+        } else if (change === 'decrement') {
+            if (updatedCart[index].quantity === 1) {
+                setProductToDeleteIndex(index);
+                setIsModalOpen(true);
+                return;
+            }
             updatedCart[index].quantity -= 1;
         }
         setCartProducts(updatedCart);
         localStorage.setItem('cart', JSON.stringify(updatedCart));
+    };
+
+    // Función para eliminar un producto del carrito
+    const deleteProduct = () => {
+        const updatedCart = cartProducts.filter((_, index) => index !== productToDeleteIndex);
+        setCartProducts(updatedCart);
+        localStorage.setItem('cart', JSON.stringify(updatedCart));
+        setIsModalOpen(false);
     };
 
     // Calcula el total del carrito
@@ -43,7 +58,6 @@ const Cart = () => {
     const handleNameChange = (event) => {
         const newCartName = event.target.value;
         setCartName(newCartName);
-        // Guarda el nuevo nombre del carrito en localStorage
         localStorage.setItem('cartName', newCartName);
     };
 
@@ -51,9 +65,9 @@ const Cart = () => {
     const handleContinue = () => {
         if (!cartName) {
             toast('¡La compra aún no tiene nombre!');
-        } else{
+        } else {
             localStorage.setItem('cartPrice', calculateTotal());
-            navigate('/paymentmethod'); 
+            navigate('/paymentmethod');
         }
     };
 
@@ -68,7 +82,6 @@ const Cart = () => {
                     </div>
 
                     {cartProducts.length > 0 ? (
-                        // Muestra los productos del carrito si hay productos en el carrito
                         cartProducts.map((product, index) => (
                             <div key={index} className="cart__product">
                                 <div className="product__image">
@@ -100,14 +113,30 @@ const Cart = () => {
                     </button>
                 </div>
             </div>
+
             <Menu />
-            <Toaster toastOptions={{
-                duration: 3000,
-                style:{
-                    background: '#193E4E',
-                    color: '#F2EBCF',
-                },
-            }}/>
+
+            {/* Modal personalizado */}
+            {isModalOpen && (
+                <div className="modal">
+                    <div className="modal-content">
+                        <h2>Confirmar eliminación</h2>
+                        <p>¿Estás seguro de que deseas eliminar este producto del carrito?</p>
+                        <button className='buttonDelete' onClick={deleteProduct}>Sí, eliminar</button>
+                        <button className='buttonCancel' onClick={() => setIsModalOpen(false)}>Cancelar</button>
+                    </div>
+                </div>
+            )}
+
+            <Toaster
+                toastOptions={{
+                    duration: 3000,
+                    style: {
+                        background: '#193E4E',
+                        color: '#F2EBCF',
+                    },
+                }}
+            />
         </>
     );
 };

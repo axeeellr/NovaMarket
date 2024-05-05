@@ -1,48 +1,53 @@
 import React, { useState, useEffect } from 'react';
+
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { Toaster, toast } from 'react-hot-toast';
+
+import { useUser } from '../UserContext';
+
 import '../css/root.css';
 import '../css/profile.css';
+
 import Menu from '../components/Menu';
 import TitlePage from '../components/TitlePage';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleRight, faHeart, faSignOut, faPlusCircle, faEdit } from '@fortawesome/free-solid-svg-icons';
-import { useNavigate } from 'react-router-dom';
+import { faAngleRight, faSignOut, faPlusCircle, faEdit } from '@fortawesome/free-solid-svg-icons';
 
 function Profile() {
+
     const navigate = useNavigate();
+    const { logout, user, login } = useUser();
+
+    const handleLogout = () => {
+        navigate('/')
+        logout();
+    };
 
     // Estados locales para el modal y los datos del usuario
     const [isModalOpen, setIsModalOpen] = useState(false);
+
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
-    const [userIdStorage, setUserIdStorage] = useState(null);
-
-    // Almacena el ID del usuario en el estado si está presente en localStorage
-    useEffect(() => {
-        const storedUserId = localStorage.getItem('userId');
-        if (storedUserId) {
-            setUserIdStorage(storedUserId);
-        }
-    }, []);
+    
 
     // Realiza la petición de datos si se tiene un ID de usuario almacenado
     useEffect(() => {
-        if (userIdStorage) {
-            axios.get(`http://localhost:1001/data/${userIdStorage}`)
+        if (user.id) {
+            axios.get(`http://localhost:1001/data/${user.id}`)
                 .then(response => {
                     const userData = response.data.user;
-                    // Establece los estados locales con los datos del usuario
                     setName(userData.name);
                     setEmail(userData.email);
-                    // Si hay otros datos que necesitas, actualiza los estados locales correspondientes
                 })
                 .catch(error => {
                     console.error('Error al obtener datos del usuario:', error);
                 });
         }
-    }, [userIdStorage]);
+    }, [user.id]);
 
     // Función para manejar la visibilidad del modal
     const toggleModal = () => {
@@ -66,26 +71,30 @@ function Profile() {
         }
     
         try {
-            // Realiza la solicitud HTTP para actualizar los datos del usuario en la base de datos
-            const response = await axios.put(`http://localhost:1001/data/${userIdStorage}`, updatedData);
+            const response = await axios.put(`http://localhost:1001/data/${user.id}`, updatedData);
             
             // Verifica si la respuesta es exitosa
             if (response.status === 200) {
-                console.log('Datos del usuario actualizados con éxito');
-                // Opcional: realiza acciones adicionales como actualizar el estado o mostrar un mensaje de éxito al usuario
+                toast('¡Datos actualizados!');
+                axios.get(`http://localhost:1001/data/${user.id}`)
+                .then(response => {
+                    const userData = response.data.user;
+                    login(userData)
+                })
+                .catch(error => {
+                    console.error('Error al obtener datos del usuario:', error);
+                });
                 toggleModal();
             } else {
                 console.error('Error inesperado al actualizar datos del usuario:', response.status);
             }
         } catch (error) {
             console.error('Error al guardar datos del usuario:', error);
-            // Puedes considerar mostrar un mensaje de error al usuario aquí
         }
     };
 
     // Estado local para las tarjetas de crédito
     const [cards, setCards] = useState([]);
-    const userId = localStorage.getItem('userId');
 
     // Estado para el modal de añadir tarjeta de crédito
     const [isAddCardModalOpen, setIsAddCardModalOpen] = useState(false);
@@ -107,13 +116,13 @@ function Profile() {
         return expiryDate + '-01';
     };
 
-    //// Función para manejar el envío de los datos de la tarjeta de crédito
+    // Función para manejar el envío de los datos de la tarjeta de crédito
     const handleAddCardSubmit = async (e) => {
         e.preventDefault();
         
         // Datos de la tarjeta de crédito
         const cardData = {
-            id_user: localStorage.getItem('userId'),
+            id_user: user.id,
             number: cardNumber,
             holder: cardHolder,
             date: adjustExpiryDate(expiryDate),
@@ -132,10 +141,8 @@ function Profile() {
             if (response.ok) {
                 const data = await response.json();
                 console.log(data.message);
-                // Tarjeta añadida con éxito
-                console.log('Tarjeta añadida con éxito');
-                // Cierra el modal después de enviar los datos
                 toggleAddCardModal();
+                toast('¡Tarjeta agregada!');
                 // Recarga la lista de tarjetas de crédito
                 fetchUserCards();
             } else {
@@ -150,7 +157,7 @@ function Profile() {
     // Función para obtener las tarjetas de crédito del usuario
     const fetchUserCards = async () => {
         try {
-            const response = await fetch(`http://localhost:1001/getCards/${userId}`);
+            const response = await fetch(`http://localhost:1001/getCards/${user.id}`);
             if (response.ok) {
                 const data = await response.json();
                 setCards(data.cards);
@@ -166,15 +173,6 @@ function Profile() {
     useEffect(() => {
         fetchUserCards();
     }, []);
-    
-    
-
-    const logOut = () => {
-        navigate("/");
-        localStorage.removeItem("userId");
-        localStorage.removeItem("isAuthenticated");
-        localStorage.removeItem("cart");
-    };
 
     return (
         <>
@@ -257,12 +255,22 @@ function Profile() {
                     </button>
                 </div>
 
-                <div className="profile__logout" onClick={logOut}>
+                <div className="profile__logout">
                     <h2>Cerrar Sesión</h2>
-                    <button>Cerrar Sesión &nbsp;<FontAwesomeIcon icon={faSignOut} /></button>
+                    <button onClick={handleLogout}>Cerrar Sesión &nbsp;<FontAwesomeIcon icon={faSignOut} /></button>
                 </div>
             </div>
             <Menu />
+
+            <Toaster
+                toastOptions={{
+                    duration: 3000,
+                    style: {
+                        background: '#193E4E',
+                        color: '#F2EBCF',
+                    },
+                }}
+            />
 
             {/* Modal */}
             {isModalOpen && (
@@ -290,7 +298,6 @@ function Profile() {
                                     required
                                 />
                             </div>
-                            {/* Contraseña antigua */}
                             <div className="form-group">
                                 <label htmlFor="oldPassword">Contraseña Antigua</label>
                                 <input
@@ -300,7 +307,6 @@ function Profile() {
                                     onChange={(e) => setOldPassword(e.target.value)}
                                 />
                             </div>
-                            {/* Nueva contraseña */}
                             <div className="form-group">
                                 <label htmlFor="newPassword">Nueva Contraseña</label>
                                 <input
