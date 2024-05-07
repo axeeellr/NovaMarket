@@ -27,9 +27,9 @@
 
 .container.selected{
     border: 4px solid #193E4E;
-    padding: 3px;
-    height: 175px;
-    width: 325px;
+    padding: 4px;
+    height: 180px;
+    width: 320px;
     transition: .3s;
     border-radius: 15px;
 }
@@ -195,6 +195,10 @@ button:hover{
 .method__summary p{
     color: #193E4E;
     font-size: 17px;
+}
+
+.summary__total{
+    color: #193E4E;
 }
 
 hr{

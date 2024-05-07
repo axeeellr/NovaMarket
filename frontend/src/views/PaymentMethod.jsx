@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { Toaster, toast } from 'react-hot-toast';
 
 import TitlePage from '../components/TitlePage';
+
+import { useUser } from '../UserContext';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
@@ -9,15 +12,16 @@ import '../css/paymentmethod.css';
 
 const PaymentMethod = () => {
 
-    // Estado local para las tarjetas de crédito
+    // Estados
     const [cards, setCards] = useState([]);
-    const userId = localStorage.getItem('userId');
+    const { user } = useUser();
     const [selectedCard, setSelectedCard] = useState(null);
+    const price = localStorage.getItem('cartPrice');
 
     // Función para obtener las tarjetas de crédito del usuario
     const fetchUserCards = async () => {
         try {
-            const response = await fetch(`http://localhost:1001/getCards/${userId}`);
+            const response = await fetch(`http://localhost:1001/getCards/${user.id}`);
             if (response.ok) {
                 const data = await response.json();
                 setCards(data.cards);
@@ -39,6 +43,16 @@ const PaymentMethod = () => {
             setSelectedCard(null); // Quita la selección si la tarjeta seleccionada es la misma
         } else {
             setSelectedCard(card); // Actualiza el estado con la tarjeta seleccionada
+        }
+    };
+
+    const continuePayment = async () => {
+        try {
+          // Aquí colocas la lógica de tu promesa
+          await tuPromesa(); // Reemplaza 'tuPromesa' con la promesa real que estás manejando
+          toast.success('Pago completado exitosamente');
+        } catch (error) {
+          toast.error('Hubo un error al procesar el pago');
         }
     };
 
@@ -109,14 +123,14 @@ const PaymentMethod = () => {
                         <p>{selectedCard.cvv}</p>
                     </div>
                     <hr />
-                    <div className="summary__total">
-                        <h3>Total:</h3>
-                        <p>$20.00</p>
-                    </div>
                 </div>
             )}
+            <div className="summary__total">
+                <h3>Total:</h3>
+                <p>{price}</p>
+            </div>
             <div className="method__button">
-                <button>Continuar</button>
+                <button onClick={continuePayment}>Continuar</button>
             </div>
         </div>
     </>

@@ -40,7 +40,7 @@
 	font-size: 25px;
 }
 
-.inputs input{
+.inputs input:not([type="submit"]){
 	width: 70%;
 	height: 50px;
 	background: #e0dede;
@@ -51,8 +51,8 @@
 	font-size: 15px;
 }
 
-.inputs > button{
-	width: 30%;
+.inputs input[type="submit"]{
+	width: 35%;
 	height: 50px;
 	margin: 15px auto;
 	background-color: #c5b28a;
@@ -66,7 +66,7 @@
 	cursor: pointer;
 }
 
-button:hover{
+input[type="submit"]:hover{
 	background-color: #928567;
     color: #4b412d;
 }
@@ -107,7 +107,7 @@ button:hover{
 	color: #193e4e;
 }
 
-.login button{
+.login input[type="submit"]{
 	background: #193e4e;
 	color: #eee;
 }

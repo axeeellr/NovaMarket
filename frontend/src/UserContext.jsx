@@ -27,12 +27,17 @@ export function UserProvider({ children }) {
         // Iniciar sesión
         setUser(user);
         setIsAuthenticated(true);
+        localStorage.get
     };
 
     const logout = () => {
         // Cerrar sesión
         setUser(null);
         setIsAuthenticated(false);
+        localStorage.removeItem('cart')
+        localStorage.removeItem('cartPrice')
+        localStorage.removeItem('cartName')
+        localStorage.removeItem('productQuantity')
     };
 
     return (
