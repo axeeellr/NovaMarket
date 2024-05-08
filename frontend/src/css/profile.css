@@ -43,7 +43,24 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    cursor: default;
     color: #193E4E;
+}
+
+.history__item:hover{
+    font-weight: bold;
+}
+
+.history__more{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 10px;
+    font-size: 17px;
+    font-weight: 600;
+    margin-top: 5px;
+    color: #193E4E;
+    cursor: default;
 }
 
 .profile__favorites h2{
