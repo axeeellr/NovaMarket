@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 03-05-2024 a las 06:42:48
+-- Tiempo de generación: 08-05-2024 a las 06:17:18
 -- Versión del servidor: 10.4.24-MariaDB
 -- Versión de PHP: 8.1.6
 
@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `cards` (
   `id` int(11) NOT NULL,
   `id_user` int(11) NOT NULL,
-  `number` varchar(11) NOT NULL,
+  `number` varchar(100) NOT NULL,
   `holder` varchar(100) NOT NULL,
   `date` date NOT NULL,
   `cvv` int(11) NOT NULL
@@ -41,9 +41,53 @@ CREATE TABLE `cards` (
 --
 
 INSERT INTO `cards` (`id`, `id_user`, `number`, `holder`, `date`, `cvv`) VALUES
-(2, 7, '88657567', 'gfdghhhh', '2024-03-01', 434),
-(3, 7, '666664343', 'dsadjk dasjdk', '2024-11-01', 545),
-(4, 7, '2147483647', 'sdas sadsa', '2024-03-01', 444);
+(6, 11, '4785763478560985', 'Rels B', '2024-04-01', 574),
+(7, 11, '9758984525487594', 'Relsito B', '2024-07-01', 375);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `cart`
+--
+
+CREATE TABLE `cart` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `date` date NOT NULL,
+  `card_id` int(11) NOT NULL,
+  `total` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `cart`
+--
+
+INSERT INTO `cart` (`id`, `user_id`, `name`, `date`, `card_id`, `total`) VALUES
+(11, 11, 'para licuados', '2024-05-08', 7, '24'),
+(12, 11, 'leche', '2024-05-08', 6, '40');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `cart_items`
+--
+
+CREATE TABLE `cart_items` (
+  `id` int(11) NOT NULL,
+  `cart_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `cart_items`
+--
+
+INSERT INTO `cart_items` (`id`, `cart_id`, `product_id`, `quantity`) VALUES
+(17, 11, 2, 1),
+(18, 11, 4, 1),
+(19, 12, 4, 2);
 
 -- --------------------------------------------------------
 
@@ -97,7 +141,11 @@ INSERT INTO `users` (`id`, `name`, `email`, `password`) VALUES
 (4, 'sexo', 'sexo@gmail.com', '12345'),
 (5, 'ozuna', 'ozuna@gmail.com', '12345'),
 (6, 'lop', 'lop@fmas.com', '243243'),
-(7, 'axelitouu', 'axelito@gmail.com', '12345');
+(7, 'axelito', 'axelito@gmail.com', '12345'),
+(8, 'axel2', 'axel2@gmail.com', '12345'),
+(9, 'les', 'les@gmail.com', '12345'),
+(10, 'bellako', 'bellako@gmail.com', '12345'),
+(11, 'rels', 'rels@gmail.com', '12345678A');
 
 --
 -- Índices para tablas volcadas
@@ -107,6 +155,18 @@ INSERT INTO `users` (`id`, `name`, `email`, `password`) VALUES
 -- Indices de la tabla `cards`
 --
 ALTER TABLE `cards`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `cart`
+--
+ALTER TABLE `cart`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `cart_items`
+--
+ALTER TABLE `cart_items`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -129,7 +189,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `cards`
 --
 ALTER TABLE `cards`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT de la tabla `cart`
+--
+ALTER TABLE `cart`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT de la tabla `cart_items`
+--
+ALTER TABLE `cart_items`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT de la tabla `products`
@@ -141,7 +213,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

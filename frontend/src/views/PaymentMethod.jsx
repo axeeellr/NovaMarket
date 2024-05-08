@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 import TitlePage from '../components/TitlePage';
 
@@ -11,6 +12,8 @@ import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import '../css/paymentmethod.css';
 
 const PaymentMethod = () => {
+
+    const navigate = useNavigate();
 
     // Estados
     const [cards, setCards] = useState([]);
@@ -47,14 +50,83 @@ const PaymentMethod = () => {
     };
 
     const continuePayment = async () => {
+        if (!selectedCard) {
+            toast.error('¡Debes seleccionar una tarjeta de crédito primero!');
+            return;
+        }
+
         try {
-          // Aquí colocas la lógica de tu promesa
-          await tuPromesa(); // Reemplaza 'tuPromesa' con la promesa real que estás manejando
-          toast.success('Pago completado exitosamente');
+            await toast.promise((async () => {
+                // Extraer el carrito y los datos asociados desde el local storage.
+                const cart = JSON.parse(localStorage.getItem('cart'));
+                const cartName = localStorage.getItem('cartName');
+                const cartPrice = parseFloat(localStorage.getItem('cartPrice')); // Convertir a número.
+                const userId = user.id; // Obtener el ID del usuario desde el contexto.
+                const cardId = selectedCard.id;
+
+                // 1. Guardar en la tabla `cart`.
+                const cartResponse = await fetch('http://localhost:1001/addCart', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        user_id: userId,
+                        name: cartName,
+                        date: new Date().toISOString(), // Fecha actual.
+                        card_id: cardId,
+                        total: cartPrice
+                    })
+                });
+        
+                if (!cartResponse.ok) {
+                    throw new Error('Error al guardar en la tabla cart');
+                }
+        
+                // Obtener el ID del carrito recién creado.
+                const cartData = await cartResponse.json();
+                const cartId = cartData.cart_id; // Asegúrate de que el servidor devuelve el cart_id.
+    
+                // 2. Guardar en la tabla `cart_items`.
+                // Recorre cada elemento del carrito y guarda en `cart_items`.
+                for (const item of cart) {
+                    const itemResponse = await fetch('http://localhost:1001/addCartItem', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            cart_id: cartId, // El ID del carrito creado.
+                            product_id: item.id,
+                            quantity: item.quantity
+                        })
+                    });
+        
+                    if (!itemResponse.ok) {
+                        throw new Error('Error al guardar en la tabla cart_items');
+                    }
+                }
+                // Borrar `cart`, `cartName`, y `cartPrice` del local storage
+                localStorage.removeItem('cart');
+                localStorage.removeItem('cartName');
+                localStorage.removeItem('cartPrice');
+            })(),
+            {
+                loading: 'Guardando...',
+                success: 'Pago completado exitosamente',
+                error: 'Hubo un error al procesar el pago'
+            }
+            );
+            setTimeout(() => {
+                navigate('/');
+            }, 5000);
         } catch (error) {
-          toast.error('Hubo un error al procesar el pago');
+            // Si hay un error, muestra un mensaje de error.
+            console.error('Error:', error);
         }
     };
+    
+    
 
     return(
     <>
@@ -133,6 +205,16 @@ const PaymentMethod = () => {
                 <button onClick={continuePayment}>Continuar</button>
             </div>
         </div>
+        <Toaster
+            toastOptions={{
+                duration: 4000,
+                style: {
+                    textAlign: 'center',
+                    background: '#193E4E',
+                    color: '#F2EBCF',
+                },
+            }}
+        />
     </>
     )
 };

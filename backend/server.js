@@ -215,6 +215,51 @@ app.get('/getCards/:userId', (req, res) => {
 });
 
 
+app.post('/addCart', (req, res) => {
+    const { user_id, name, date, card_id, total } = req.body;
+
+    // Consulta SQL para insertar datos en la tabla `cart`
+    db.query('INSERT INTO cart (user_id, name, date, card_id, total) VALUES (?, ?, ?, ?, ?)', [user_id, name, date, card_id, total], (err, result) => {
+        if (err) {
+            console.error("Error al registrar el carrito:", err);
+            return res.status(500).json({ error: 'Error al registrar el carrito' });
+        }
+
+        // Verifica si la inserción fue exitosa
+        if (result.affectedRows > 0) {
+            // Devolver el ID del carrito recién creado
+            const cartId = result.insertId;
+            return res.status(200).json({ cart_id: cartId });
+        } else {
+            return res.status(500).json({ error: 'Error al registrar el carrito' });
+        }
+    });
+});
+
+
+
+app.post('/addCartItem', (req, res) => {
+    const { cart_id, product_id, quantity } = req.body;
+
+    // Consulta SQL para insertar datos en la tabla `cart_items`
+    db.query('INSERT INTO cart_items (cart_id, product_id, quantity) VALUES (?, ?, ?)', [cart_id, product_id, quantity], (err, result) => {
+        if (err) {
+            console.error("Error al registrar el elemento del carrito:", err);
+            return res.status(500).json({ error: 'Error al registrar el elemento del carrito' });
+        }
+
+        // Verifica si la inserción fue exitosa
+        if (result.affectedRows > 0) {
+            // Devolver un mensaje de éxito
+            return res.status(200).json({ message: 'Elemento del carrito registrado exitosamente' });
+        } else {
+            return res.status(500).json({ error: 'Error al registrar el elemento del carrito' });
+        }
+    });
+});
+
+
+
 
 const port = 1001;
 
