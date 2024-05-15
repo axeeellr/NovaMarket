@@ -215,6 +215,29 @@ app.get('/getCards/:userId', (req, res) => {
 });
 
 
+// Ruta para obtener los datos de las tarjetas de crédito de un usuario específico
+app.get('/getCarts/:userId', (req, res) => {
+    const userId = req.params.userId;
+
+    // Consulta a la base de datos para obtener las tarjetas de crédito asociadas al ID de usuario
+    db.query('SELECT * FROM cart WHERE user_id = ?', [userId], (err, results) => {
+        if (err) {
+            console.error("Error al obtener los carritos:", err);
+            return res.status(500).json({ error: 'Error al obtener los carritos' });
+        }
+
+        // Agregar un console.log para verificar los resultados obtenidos
+        console.log('Carritos obtenidos:', results);
+
+        // Si la consulta fue exitosa, devuelve los resultados
+        return res.status(200).json({
+            message: 'Carritos obtenidos',
+            carts: results
+        });
+    });
+});
+
+
 app.post('/addCart', (req, res) => {
     const { user_id, name, date, card_id, total } = req.body;
 

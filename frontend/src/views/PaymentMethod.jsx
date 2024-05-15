@@ -19,6 +19,7 @@ const PaymentMethod = () => {
     const [cards, setCards] = useState([]);
     const { user } = useUser();
     const [selectedCard, setSelectedCard] = useState(null);
+    const [isPaymentProcessing, setIsPaymentProcessing] = useState(false);
     const price = localStorage.getItem('cartPrice');
 
     // Función para obtener las tarjetas de crédito del usuario
@@ -56,6 +57,8 @@ const PaymentMethod = () => {
         }
 
         try {
+            setIsPaymentProcessing(true); 
+
             await toast.promise((async () => {
                 // Extraer el carrito y los datos asociados desde el local storage.
                 const cart = JSON.parse(localStorage.getItem('cart'));
@@ -119,10 +122,12 @@ const PaymentMethod = () => {
             );
             setTimeout(() => {
                 navigate('/');
-            }, 5000);
+            }, 4000);
         } catch (error) {
             // Si hay un error, muestra un mensaje de error.
             console.error('Error:', error);
+        } finally {
+            setIsPaymentProcessing(false); // Asegúrate de restablecer el estado, independientemente del resultado
         }
     };
     
@@ -202,7 +207,9 @@ const PaymentMethod = () => {
                 <p>{price}</p>
             </div>
             <div className="method__button">
-                <button onClick={continuePayment}>Continuar</button>
+                <button onClick={continuePayment} disabled={isPaymentProcessing}>
+                    {isPaymentProcessing ? 'Procesando pago...' : 'Continuar'}
+                </button>
             </div>
         </div>
         <Toaster

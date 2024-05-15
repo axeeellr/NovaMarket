@@ -13,7 +13,7 @@ import Menu from '../components/Menu';
 import TitlePage from '../components/TitlePage';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleRight, faSignOut, faPlusCircle, faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faAngleRight, faSignOut, faPlusCircle, faEdit, faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
 
 function Profile() {
 
@@ -169,10 +169,39 @@ function Profile() {
         }
     };
 
+
+    // Estado local para el historial de carritos
+    const [carts, setCarts] = useState([]);
+    const [showAll, setShowAll] = useState(false);
+
+    // Función para obtener los carritos del usuario
+    const fetchUserCarts = async () => {
+        try {
+            const response = await fetch(`http://localhost:1001/getCarts/${user.id}`);
+            if (response.ok) {
+                const data = await response.json();
+                setCarts(data.carts);
+            } else {
+                console.error('Error al obtener los carritos');
+            }
+        } catch (error) {
+            console.error('Error al realizar la solicitud:', error);
+        }
+    };
+
+    const toggleShowAll = () => {
+        setShowAll(!showAll);
+    };
+
     // Llamar a la función para obtener las tarjetas de crédito cuando el componente se monta
     useEffect(() => {
         fetchUserCards();
     }, []);
+
+    // Llamar a la función para obtener los carritos cuando el componente se monta
+    useEffect(() => {
+        fetchUserCarts();
+    }, []); 
 
     return (
         <>
@@ -184,18 +213,19 @@ function Profile() {
                 </div>
                 <div className="profile__history">
                     <h2>Historial</h2>
-                    <div className="history__item">
-                        <p>Bebidas</p>
-                        <FontAwesomeIcon icon={faAngleRight} />
-                    </div>
-                    <div className="history__item">
-                        <p>Compra 3</p>
-                        <FontAwesomeIcon icon={faAngleRight} />
-                    </div>
-                    <div className="history__item">
-                        <p>Solo carnes</p>
-                        <FontAwesomeIcon icon={faAngleRight} />
-                    </div>
+                    {carts.slice(0, showAll ? carts.length : 3).map((cart, index) => (
+                        <div className="history__item" key={index}>
+                            <p>{cart.name}</p>
+                            <FontAwesomeIcon icon={faAngleRight} />
+                        </div>
+                    ))}
+                    {carts.length > 3 && (
+                        <div className="history__more" onClick={toggleShowAll}>
+                            <p>{showAll ? "Mostrar menos" : "Mostrar más"}</p>
+                            <FontAwesomeIcon icon={showAll ? faCaretUp : faCaretDown} />
+                        </div>
+                    )}
+                    {carts.length === 0 && <p>No hay registros de compras.</p>}
                 </div>
                 <div className="profile__payment">
                     <h2>Método de pago</h2>
