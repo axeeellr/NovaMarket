@@ -15,6 +15,7 @@ function TitlePage() {
         const pageTitles = {
             '/profile': 'Perfil',
             '/cart':  'Carrito',
+            '/shop':  'Tienda',
             '/scanner':  'Escáner',
             '/paymentmethod':  'Método de Pago'
         };
@@ -25,9 +26,11 @@ function TitlePage() {
         window.history.back();
     };
 
+    const titleClassName = location.pathname === '/shop' ? 'title title__shop' : 'title';
+
     return (
         <>
-            <div className="title">
+            <div className={titleClassName}>
                 <Link to="#" onClick={goBack}>
                     <FontAwesomeIcon icon={faArrowCircleLeft} className='title__icon'/>
                 </Link>

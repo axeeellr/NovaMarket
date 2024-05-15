@@ -6,7 +6,74 @@
 }
 
 .shop__container img{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
     height: 100%;
     overflow-y: hidden;
     object-fit: cover;
+    z-index: -1;
+}
+
+.shop__sections__button{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    margin: 45px 30px;
+    z-index: 3;
+}
+
+.shop__sections__button button{
+    background-color: #193e4e;
+    color: #F2EBCF;
+	font-size: 18px;
+	font-weight: bold;
+    padding: 10px 20px;
+	outline: none;
+	border: none;
+	border-radius: 5px;
+	transition: .2s ease-in;
+	cursor: pointer;
+}
+
+.title__shop{
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin: 20px;
+    z-index: 99;
+    color: #F2EBCF;
+}
+
+.shop__menu{
+    background-color: rgb(0, 0, 0, 0.6);
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: none;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+}
+
+.shop__menu.visible{
+    display: flex;
+}
+
+.shop__menu p{
+    font-size: 20px;
+    color: #F2EBCF;
+    font-weight: 600;
+    cursor: pointer;
+    text-shadow: 0px 0px 10px rgba(0,0,0,0.75);
+}
+
+.shop__menu P:hover{
+    color: #C5B28A;
 }

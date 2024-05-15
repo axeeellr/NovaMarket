@@ -53,11 +53,11 @@
 }
 
 .notification__text h3{
-    font-size: 16px;
+    font-size: 15px;
 }
 
 .notification__text p{
-    font-size: 14px;
+    font-size: 13px;
 }
 
 .notification__icon{
@@ -68,6 +68,6 @@
 .notification__options{
     height: 100%;
     padding: 20px 0;
-    font-size: 18px;
+    font-size: 16px;
     color: #685b40;
 }
