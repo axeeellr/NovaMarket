@@ -4,10 +4,11 @@ import axios from 'axios';
 import { Toaster, toast } from 'react-hot-toast';
 
 import { useUser } from '../UserContext';
+import { encryptData } from '../CryptoUtils';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGoogle, faFacebook, faTwitter } from '@fortawesome/free-brands-svg-icons';
-import { faArrowCircleLeft } from '@fortawesome/free-solid-svg-icons';
+import { faGoogle, faFacebook, faTwitter} from '@fortawesome/free-brands-svg-icons';
+import { faArrowCircleLeft, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 import '../css/root.css';
 import '../css/login.css';
@@ -23,6 +24,12 @@ function Login() {
     const [registroNombre, setRegistroNombre] = useState('');
     const [registroEmail, setRegistroEmail] = useState('');
     const [registroPassword, setRegistroPassword] = useState('');
+
+    const [showPassword, setShowPassword] = useState(false);
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
 
     const validateEmail = (email) => {
         // Utilizamos una expresión regular para validar el formato del correo electrónico
@@ -80,7 +87,9 @@ function Login() {
             return;
         }
 
-        axios.post('http://localhost:1001/registro', { name: registroNombre, email: registroEmail, password: registroPassword })
+        const encryptedPassword = encryptData(registroPassword);
+
+        axios.post('http://localhost:1001/registro', { name: registroNombre, email: registroEmail, password: encryptedPassword })
         .then(response => {
             const user = response.data.user;
             login(user);
@@ -101,7 +110,10 @@ function Login() {
                     <div className="inputs">
                         <input type="text" name="txt" placeholder="Nombre" value={registroNombre} onChange={(e) => setRegistroNombre(e.target.value)} required />
                         <input type="email" name="email" placeholder="Correo electrónico" value={registroEmail} onChange={(e) => setRegistroEmail(e.target.value)} required />
-                        <input type="password" name="pswd" placeholder="Contraseña" value={registroPassword} onChange={(e) => setRegistroPassword(e.target.value)} required />
+                        <div className="inputPassword">
+                            <input type={showPassword ? "text" : "password"} name="pswd" placeholder="Contraseña" value={registroPassword} onChange={(e) => setRegistroPassword(e.target.value)} required />
+                            <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} onClick={togglePasswordVisibility} className="password-toggle-icon" />
+                        </div>
                         <input type="submit" value="Registro"/>
                     </div>
                     <p className='socialTextSign'>También puedes usar...</p>
@@ -117,7 +129,10 @@ function Login() {
                     <label htmlFor="chk" aria-hidden="true"><Link to="/"><FontAwesomeIcon icon={faArrowCircleLeft} className='title__icon__login'/></Link>Iniciar Sesión</label>
                     <div className="inputs">
                         <input type="email" name="email" placeholder="Correo electrónico" value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} required />
-                        <input type="password" name="pswd" placeholder="Contraseña" value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} required />
+                        <div className="inputPassword">
+                            <input type={showPassword ? "text" : "password"} name="pswd" placeholder="Contraseña" value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} required />
+                            <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} onClick={togglePasswordVisibility} className="password-toggle-icon" />
+                        </div>
                         <input type="submit" value="Iniciar Sesión"/>
                     </div>
                     <p className='socialTextLogin'>También puedes usar...</p>
@@ -136,7 +151,8 @@ function Login() {
                 style: {
                     background: '#C5B28A',
                     color: '#193E4E',
-                    textAlign: 'center'
+                    textAlign: 'center',
+                    fontSize: '15px'
                 },
             }}
         />

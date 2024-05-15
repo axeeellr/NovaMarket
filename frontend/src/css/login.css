@@ -30,7 +30,7 @@
 	justify-content: center;
     align-items: center;
 	gap: 10px;
-	margin: 60px;
+	margin: 60px 50px;
 	font-weight: bold;
 	cursor: pointer;
 	transition: .5s ease-in-out;
@@ -38,6 +38,22 @@
 
 .title__icon__login{
 	font-size: 25px;
+}
+
+.inputPassword{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	position: relative;
+}
+
+.password-toggle-icon{
+	position: absolute;
+	right: 15%;
+	font-size: 21px;
+	color: #193e4e;
+	margin: 0 15px;
 }
 
 .inputs input:not([type="submit"]){
@@ -110,6 +126,7 @@ input[type="submit"]:hover{
 .login input[type="submit"]{
 	background: #193e4e;
 	color: #eee;
+	width: 45%;
 }
 
 .socialTextSign{
