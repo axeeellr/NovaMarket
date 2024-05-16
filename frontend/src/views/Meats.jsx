@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
-import TitlePage from '../components/TitlePage';
 import { NavLink } from 'react-router-dom';
-import entrance from '../assets/entrance.png';
+import TitlePage from '../components/TitlePage';
+
+import granos from '../assets/granos.jpg';
 import '../css/shop.css';
 
 const Shop = () => {
@@ -16,7 +17,7 @@ const Shop = () => {
         <>
             <TitlePage />
             <div className="shop__container">
-                <img src={entrance}/>
+                <img src={granos}/>
                 <div className={`shop__menu ${menuVisible ? 'visible' : 'hidden'}`}>
                     <NavLink to="/shop/meats"><p>Carnes</p></NavLink>
                     <p>Embutidos</p>

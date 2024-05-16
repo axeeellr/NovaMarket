@@ -17,7 +17,8 @@ function TitlePage() {
             '/cart':  'Carrito',
             '/shop':  'Tienda',
             '/scanner':  'Escáner',
-            '/paymentmethod':  'Método de Pago'
+            '/paymentmethod':  'Método de Pago',
+            '/shop/meats':  'Carnes'
         };
         currentPage = pageTitles[location.pathname];
     }
