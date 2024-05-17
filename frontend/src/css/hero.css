@@ -14,7 +14,7 @@
 .hero::after{
     content: '';
     position: absolute;
-    z-index: -90;
+    z-index: -91;
     width: 100%;
     height: 100%;
     background-color: #193e4e;
@@ -69,8 +69,6 @@
     width: 100%;
     height: 75vh;
     position: relative;
-    border-top-left-radius: 35px;
-    border-top-right-radius: 35px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -85,6 +83,24 @@
     width: 100%;
     height: 100%;
     background-color: #193e4e;
+}
+
+.hero::before{
+    content: '';
+    z-index: -49;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    height: 100%;
+}
+
+.hero img{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -50;
+    border-radius: none;
 }
 
 }
