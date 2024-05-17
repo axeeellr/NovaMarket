@@ -12,6 +12,9 @@ import Login from './views/Login';
 import Product from './views/Product';
 import Cart from './views/Cart';
 import Meats from './views/Meats';
+import Grains from './views/Grains';
+import Cleaning from './views/Cleaning';
+import Fruits from './views/Fruits';
 import PaymentMethod from './views/PaymentMethod';
 
 const AppRouter = () => {
@@ -27,6 +30,9 @@ const AppRouter = () => {
                 <Route path="/scanner" element={isAuthenticated ? <Scanner /> : <Navigate to="/login" />} />
                 <Route path="/shop" element={<Shop />} />
                 <Route path="/shop/meats" element={<Meats />} />
+                <Route path="/shop/grains" element={<Grains />} />
+                <Route path="/shop/cleaning" element={<Cleaning />} />
+                <Route path="/shop/fruits" element={<Fruits />} />
                 <Route path="/cart" element={isAuthenticated ? <Cart /> : <Navigate to="/login" />} />
                 <Route path="/product/:data" element={isAuthenticated ? <Product /> : <Navigate to="/login" />} />
                 <Route path="/paymentmethod" element={isAuthenticated ? <PaymentMethod /> : <Navigate to="/login" />} />

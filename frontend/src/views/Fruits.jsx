@@ -2,10 +2,10 @@ import React, {useState} from 'react';
 import TitlePage from '../components/TitlePage';
 import MenuShop from '../components/MenuShop';
 
-import meats from '../assets/meats.jpg';
+import fruits from '../assets/fruits.jpg';
 import '../css/shop.css';
 
-const Meats = () => {
+const Fruits = () => {
 
     const [menuVisible, setMenuVisible] = useState(false);
 
@@ -17,7 +17,7 @@ const Meats = () => {
         <>
             <TitlePage />
             <div className="shop__container">
-                <img src={meats}/>
+                <img src={fruits}/>
                 <MenuShop menuVisible={menuVisible} toggleMenuVisibility={toggleMenuVisibility} />
                 <div className="shop__sections__button">
                     <button onClick={toggleMenuVisibility}>Pasillos</button>
@@ -27,4 +27,4 @@ const Meats = () => {
     )
 }
 
-export default Meats;
+export default Fruits;

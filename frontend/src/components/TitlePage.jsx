@@ -18,7 +18,10 @@ function TitlePage() {
             '/shop':  'Tienda',
             '/scanner':  'Escáner',
             '/paymentmethod':  'Método de Pago',
-            '/shop/meats':  'Carnes'
+            '/shop/meats':  'Carnes',
+            '/shop/grains':  'Granos básicos',
+            '/shop/cleaning':  'Limpieza',
+            '/shop/fruits':  'Frutas y verduras'
         };
         currentPage = pageTitles[location.pathname];
     }
@@ -27,7 +30,7 @@ function TitlePage() {
         window.history.back();
     };
 
-    const titleClassName = location.pathname === '/shop' ? 'title title__shop' : 'title';
+    const titleClassName = location.pathname.startsWith('/shop') ? 'title title__shop' : 'title';
 
     return (
         <>
