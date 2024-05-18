@@ -114,32 +114,32 @@ function Login() {
                             <input type={showPassword ? "text" : "password"} name="pswd" placeholder="Contraseña" value={registroPassword} onChange={(e) => setRegistroPassword(e.target.value)} required />
                             <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} onClick={togglePasswordVisibility} className="password-toggle-icon" />
                         </div>
-                        <input type="submit" value="Registro"/>
+                        <input type="submit" value="REGISTRO"/>
                     </div>
-                    <p className='socialTextSign'>También puedes usar...</p>
+                    <p className='socialTextSign'>También puedes usar</p>
                     <div className="social">
-                        <FontAwesomeIcon icon={faGoogle} />
-                        <FontAwesomeIcon icon={faFacebook} />
-                        <FontAwesomeIcon icon={faTwitter} />
+                        <FontAwesomeIcon icon={faGoogle} className='socialIcon'/>
+                        <FontAwesomeIcon icon={faFacebook} className='socialIcon'/>
+                        <FontAwesomeIcon icon={faTwitter} className='socialIcon'/>
                     </div>
                 </form>
             </div>
             <div className="login">
                 <form method="post" onSubmit={handleLogin}>
                     <label htmlFor="chk" aria-hidden="true"><Link to="/"><FontAwesomeIcon icon={faArrowCircleLeft} className='title__icon__login'/></Link>Iniciar Sesión</label>
-                    <div className="inputs">
+                    <div className="inputs inputsLogin">
                         <input type="email" name="email" placeholder="Correo electrónico" value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} required />
                         <div className="inputPassword">
                             <input type={showPassword ? "text" : "password"} name="pswd" placeholder="Contraseña" value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} required />
                             <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} onClick={togglePasswordVisibility} className="password-toggle-icon" />
                         </div>
-                        <input type="submit" value="Iniciar Sesión"/>
+                        <input type="submit" value="INICIAR"/>
                     </div>
-                    <p className='socialTextLogin'>También puedes usar...</p>
+                    <p className='socialTextLogin'>También puedes usar</p>
                     <div className="social">
-                        <FontAwesomeIcon icon={faGoogle} />
-                        <FontAwesomeIcon icon={faFacebook} />
-                        <FontAwesomeIcon icon={faTwitter} />
+                        <FontAwesomeIcon icon={faGoogle} className='socialIcon'/>
+                        <FontAwesomeIcon icon={faFacebook} className='socialIcon'/>
+                        <FontAwesomeIcon icon={faTwitter} className='socialIcon'/>
                     </div>
                 </form>
             </div>

@@ -70,17 +70,25 @@
 @media only screen and (min-width: 768px){
     .header{
         width: 100%;
-        height: 25vh;
+        height: 15vh;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         gap: 20px;
         background-color: #193e4e;
+        box-shadow: 0px 0px 25px 0px rgba(0,0,0,0.50);
+    }
+
+    .header__info__text{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 10px;
     }
 
     .header__info h2{
-        font-size: 30px;
+        font-size: 28px;
     }
 
     .header__info p{
@@ -88,12 +96,12 @@
     }
 
     .header__search input{
-        border-radius: 10px;
-        border: none;
-        height: 55px;
-        width: 100%;
-        padding: 15px;
-        outline: none;
-        box-shadow: 0px 0px 25px 0px rgba(0,0,0,0.55);
+        display: none;
+        visibility: hidden;
+    }
+
+    .notis{
+        font-size: 30px;
+        cursor: pointer;
     }
 }

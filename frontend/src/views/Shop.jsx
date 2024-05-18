@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import TitlePage from '../components/TitlePage';
 import MenuShop from '../components/MenuShop';
-import entrance from '../assets/entrance.png';
+import entrance from '../assets/entrancee.jpg';
 import '../css/shop.css';
 
 const Shop = () => {

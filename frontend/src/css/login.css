@@ -59,12 +59,14 @@
 .inputs input:not([type="submit"]){
 	width: 70%;
 	height: 50px;
-	background: #e0dede;
+	background: #f2ebcf;
+	color: #4b412d;
 	padding: 20px 15px;
 	border: none;
 	outline: none;
 	border-radius: 5px;
 	font-size: 15px;
+	box-shadow: 0px 0px 25px 0px rgba(0,0,0,0.30);
 }
 
 .inputs input[type="submit"]{
@@ -80,20 +82,31 @@
 	border-radius: 5px;
 	transition: .2s ease-in;
 	cursor: pointer;
+	letter-spacing: 1px;
 }
 
-input[type="submit"]:hover{
+.inputsLogin input[type="submit"]{
+	background-color: #193e4e !important;
+	color: #F2EBCF !important;
+}
+
+.inputs input:not([type="submit"])::placeholder{
+	color: #928567;
+}
+
+input[type="submit"]:hover, .inputsLogin input[type="submit"]:hover{
 	background-color: #928567;
     color: #4b412d;
 }
 
 .login{
 	height: 100vh;
-	background: #eee;
+	background: #f2ebcf;
 	border-radius: 30px;
 	transform: translateY(-200px);
 	transition: .8s ease-in-out;
 }
+
 
 .login label{
 	color: #193e4e;
@@ -109,6 +122,10 @@ input[type="submit"]:hover{
 	gap: 10px;
 	font-size: 30px;
 	color: #f2ebcf;
+}
+
+.socialIcon:hover{
+	color: #928567;
 }
 
 .socialTextLogin{
@@ -147,4 +164,101 @@ input[type="submit"]:hover{
 
 #chk:checked ~ .signup label{
 	transform: scale(.7);
+}
+
+@media only screen and (min-width: 768px){
+	.signup{
+		margin: 0 auto;
+		position: relative;
+		width:33%;
+		height: 100vh;
+	}
+
+	.login form{
+		margin: 0 auto;
+		position: relative;
+		width:33%;
+		height: 100vh;
+	}
+
+	.inputs{
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		gap: 25px;
+	}
+
+	.inputs input[type="submit"]{
+		width: 35%;
+		height: 50px;
+		margin: 15px auto;
+		background-color: #c5b28a;
+		color: #756748;
+		font-size: 20px;
+		font-weight: bold;
+		outline: none;
+		border: none;
+		border-radius: 5px;
+		transition: .2s ease-in;
+		cursor: pointer;
+		box-shadow: 0px 0px 25px 0px rgba(0,0,0,0.35);
+	}
+
+	input[type="submit"]:hover{
+		background-color: #928567;
+		color: #4b412d;
+	}
+
+	.inputs input:not([type="submit"]){
+		width: 100%;
+		height: 55px;
+		padding: 20px 15px;
+		border: none;
+		outline: none;
+		border-radius: 5px;
+		font-size: 18px;
+		box-shadow: 0px 0px 25px 0px rgba(0,0,0,0.35);
+	}
+
+	.inputsLogin input:not([type="submit"]){
+		box-shadow: 0px 0px 25px 0px rgba(0,0,0,0.30);
+		color: #193e4e;
+	}
+
+	.inputsLogin input:not([type="submit"])::placeholder{
+		color: #193e4e9f;
+	}
+
+	.socialTextSign{
+		text-align: center;
+		color: #f2ebcf;
+		font-size: 20px;
+		margin: 25px 0 15px 0;
+	}
+
+	.socialTextLogin{
+		text-align: center;
+		color: #193e4e;
+		font-size: 20px;
+		margin: 25px 0 15px 0;
+	}
+
+	.social{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 12px;
+		font-size: 30px;
+		color: #f2ebcf;
+	}
+
+	.password-toggle-icon{
+		position: absolute;
+		right: 0;
+		font-size: 20px;
+		color: #193e4e;
+		margin: 0 15px;
+	}
+	
 }

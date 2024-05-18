@@ -12,7 +12,7 @@ function IndexContent() {
         <h4>Empieza a escanear</h4>
         <p>Añade tus productos al carrito escanenado el código QR de cada uno.</p>
         <Link to="/scanner" style={{ textDecoration: 'none' }}>
-          <button>Escanear</button>
+          <button>ESCANEAR</button>
         </Link>
       </div>
     </div>
