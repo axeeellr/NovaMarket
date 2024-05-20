@@ -1,22 +1,15 @@
 .shop__container{
     position: relative;
     height: 100vh;
-    right: 0;
     overflow-x: scroll;
     overflow-y: hidden;
 }
 
-.shop__container img{
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 100%;
+.shop__container img {
     width: 1600px;
-    overflow-y: hidden;
+    height: 100vh;
+    display: block;
     object-fit: cover;
-    z-index: -1;
 }
 
 .shop__sections__button{
@@ -87,15 +80,8 @@ a{
 
 @media only screen and (min-width: 768px){
     .shop__container img{
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: 100%;
+        position: static;
         width: 100%;
-        overflow-y: hidden;
-        object-fit: cover;
-        z-index: -1;
+        height: 100vh;
     }
 }
