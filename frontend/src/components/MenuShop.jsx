@@ -1,6 +1,5 @@
-import React from "react"
+import React from "react";
 import { NavLink } from 'react-router-dom';
-
 
 const MenuShop = ({ menuVisible, toggleMenuVisibility }) => {
     return (
@@ -19,4 +18,4 @@ const MenuShop = ({ menuVisible, toggleMenuVisibility }) => {
     );
 };
 
-export default MenuShop
+export default MenuShop;

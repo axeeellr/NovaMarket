@@ -1,15 +1,15 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import ImageMapper from 'react-image-mapper';
 import { isMobile } from 'react-device-detect';
 import { useNavigate } from 'react-router-dom';
 
 import TitlePage from '../components/TitlePage';
 import MenuShop from '../components/MenuShop';
+import PulseEffect from '../components/PulseEffect'; // Import the PulseEffect component
 import entrance from '../assets/entrancee.jpg';
 import '../css/shop.css';
 
 const Shop = () => {
-
     const navigate = useNavigate();
     const [menuVisible, setMenuVisible] = useState(false);
     const [hoveredArea, setHoveredArea] = useState(null);
@@ -43,18 +43,26 @@ const Shop = () => {
         setHoveredArea(null);
     };
 
-    return(
+    return (
         <>
             <TitlePage />
-            <div className="shop__container">
+            <div className={`shop__container ${menuVisible ? 'blur' : ''}`}>
                 <ImageMapper 
                     src={entrance} 
                     map={MAP} 
                     onClick={handleClick}
                     onMouseEnter={handleMouseEnter}
-                    onMouseLeave={handleMouseLeave}  
+                    onMouseLeave={handleMouseLeave}
                     className="container__img"
                 />
+                {MAP.areas.map((area, index) => (
+                    <PulseEffect 
+                        key={index}
+                        x={area.coords[0] - area.coords[2]} // Adjust for the radius
+                        y={area.coords[1] - area.coords[2]} // Adjust for the radius
+                        size={area.coords[2] * 2} // Diameter of the circle
+                    />
+                ))}
                 <MenuShop menuVisible={menuVisible} toggleMenuVisibility={toggleMenuVisibility} />
                 <div className="shop__sections__button">
                     <button onClick={toggleMenuVisibility}>Pasillos</button>

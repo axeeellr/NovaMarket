@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 import TitlePage from '../components/TitlePage';
 import MenuShop from '../components/MenuShop';
+import PulseEffect from '../components/PulseEffect';
 
 import fruits from '../assets/fruits.jpg';
 import '../css/shop.css';
@@ -76,6 +77,14 @@ const Fruits = () => {
                     onMouseLeave={handleMouseLeave}  
                     className="container__img"
                 />
+                {MAP.areas.map((area, index) => (
+                    <PulseEffect 
+                        key={index}
+                        x={area.coords[0] - area.coords[2]} // Adjust for the radius
+                        y={area.coords[1] - area.coords[2]} // Adjust for the radius
+                        size={area.coords[2] * 2} // Diameter of the circle
+                    />
+                ))}
                 <MenuShop menuVisible={menuVisible} toggleMenuVisibility={toggleMenuVisibility} />
                 <div className="shop__sections__button">
                     <button onClick={toggleMenuVisibility}>Pasillos</button>
