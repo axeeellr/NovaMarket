@@ -131,7 +131,9 @@ const PaymentMethod = () => {
         }
     };
     
-    
+    const goProfile = () => {
+        navigate('/profile')
+    }
 
     return(
     <>
@@ -184,7 +186,12 @@ const PaymentMethod = () => {
                         </div>
                     ))
                 ) : (
-                    <p>No hay tarjetas de crédito agregadas.</p>
+                    <>
+                        <div className="method__add__cards">
+                            <p>No hay tarjetas de crédito agregadas.</p>
+                            <button onClick={goProfile}>Añadir</button>
+                        </div>
+                    </>
                 )}
             </div>
             <div className="method__info">
@@ -208,7 +215,7 @@ const PaymentMethod = () => {
             </div>
             <div className="method__button">
                 <button onClick={continuePayment} disabled={isPaymentProcessing}>
-                    {isPaymentProcessing ? 'Procesando pago...' : 'Continuar'}
+                    {isPaymentProcessing ? 'PROCESANDO PAGO...' : 'CONTINUAR'}
                 </button>
             </div>
         </div>

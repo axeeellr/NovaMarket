@@ -16,7 +16,7 @@ function Hero() {
         <video src={videobackground} className='background' autoPlay muted loop></video>
           <div className="hero__info">
             <img src={logo} className='logo' />
-            <h1>¡Donde puedes comprar sin esperar...!</h1>
+            <h1>¡Donde puedes comprar sin esperar!</h1>
             {isAuthenticated === true ? (
             <Link to="/shop" style={{ textDecoration: 'none' }}>
               <button>COMPRAR</button>

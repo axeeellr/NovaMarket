@@ -28,11 +28,11 @@ const AppRouter = () => {
                 <Route path="/notifications" element={isAuthenticated ? <Notifications /> : <Navigate to="/login" />} />
                 <Route path="/profile" element={isAuthenticated ? <Profile /> : <Navigate to="/login" />} />
                 <Route path="/scanner" element={isAuthenticated ? <Scanner /> : <Navigate to="/login" />} />
-                <Route path="/shop" element={<Shop />} />
-                <Route path="/shop/meats" element={<Meats />} />
-                <Route path="/shop/grains" element={<Grains />} />
-                <Route path="/shop/cleaning" element={<Cleaning />} />
-                <Route path="/shop/fruits" element={<Fruits />} />
+                <Route path="/shop" element={isAuthenticated ? <Shop /> : <Navigate to="/login" />} />
+                <Route path="/shop/meats" element={isAuthenticated ? <Meats /> : <Navigate to="/login" />} />
+                <Route path="/shop/grains" element={isAuthenticated ? <Grains /> : <Navigate to="/login" />} />
+                <Route path="/shop/cleaning" element={isAuthenticated ? <Cleaning /> : <Navigate to="/login" />} />
+                <Route path="/shop/fruits" element={isAuthenticated ? <Fruits /> : <Navigate to="/login" />} />
                 <Route path="/cart" element={isAuthenticated ? <Cart /> : <Navigate to="/login" />} />
                 <Route path="/product/:data" element={isAuthenticated ? <Product /> : <Navigate to="/login" />} />
                 <Route path="/paymentmethod" element={isAuthenticated ? <PaymentMethod /> : <Navigate to="/login" />} />

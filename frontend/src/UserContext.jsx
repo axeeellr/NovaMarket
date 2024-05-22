@@ -38,6 +38,7 @@ export function UserProvider({ children }) {
         localStorage.removeItem('cartPrice')
         localStorage.removeItem('cartName')
         localStorage.removeItem('productQuantity')
+        localStorage.removeItem('firstVisit')
     };
 
     return (

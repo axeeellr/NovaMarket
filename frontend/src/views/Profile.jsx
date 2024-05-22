@@ -13,11 +13,12 @@ import Menu from '../components/Menu';
 import TitlePage from '../components/TitlePage';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleRight, faSignOut, faPlusCircle, faEdit, faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
+import { faAngleRight, faSignOut, faPlusCircle, faEdit, faCaretDown, faCaretUp, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 function Profile() {
 
     const navigate = useNavigate();
+    const [showPassword, setShowPassword] = useState(false);
     const { logout, user, login } = useUser();
 
     const handleLogout = () => {
@@ -193,6 +194,10 @@ function Profile() {
         setShowAll(!showAll);
     };
 
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
+
     // Llamar a la función para obtener las tarjetas de crédito cuando el componente se monta
     useEffect(() => {
         fetchUserCards();
@@ -205,11 +210,13 @@ function Profile() {
 
     return (
         <>
-            <div className="profile">
+            <div className="title__product">
                 <TitlePage />
+            </div>
+            <div className="profile">
                 <div className="profile__data">
                     <h2>Mis datos</h2>
-                    <button onClick={toggleModal}>Editar mis datos &nbsp;<FontAwesomeIcon icon={faEdit} /></button>
+                    <button onClick={toggleModal}>EDITAR MIS DATOS &nbsp;<FontAwesomeIcon icon={faEdit} /></button>
                 </div>
                 <div className="profile__history">
                     <h2>Historial</h2>
@@ -280,14 +287,14 @@ function Profile() {
                         )}
                     </div>
                     <button className="payment__new" onClick={toggleAddCardModal}>
-                        Añadir nuevo &nbsp;
+                        AÑADIR NUEVO &nbsp;
                         <FontAwesomeIcon icon={faPlusCircle} />
                     </button>
                 </div>
 
                 <div className="profile__logout">
                     <h2>Cerrar Sesión</h2>
-                    <button onClick={handleLogout}>Cerrar Sesión &nbsp;<FontAwesomeIcon icon={faSignOut} /></button>
+                    <button onClick={handleLogout}>CERRAR SESIÓN &nbsp;<FontAwesomeIcon icon={faSignOut} /></button>
                 </div>
             </div>
             <Menu />
@@ -328,24 +335,34 @@ function Profile() {
                                     required
                                 />
                             </div>
-                            <div className="form-group">
+                            <div className="form-group password-input">
                                 <label htmlFor="oldPassword">Contraseña Antigua</label>
                                 <input
-                                    type="password"
+                                    type={showPassword ? "text" : "password"}
                                     id="oldPassword"
                                     value={oldPassword}
                                     onChange={(e) => setOldPassword(e.target.value)}
                                 />
+                                <FontAwesomeIcon
+                                    icon={showPassword ? faEyeSlash : faEye}
+                                    onClick={togglePasswordVisibility}
+                                    className="password-icon"
+                                />
                             </div>
-                            <div className="form-group">
+                            <div className="form-group password-input">
                                 <label htmlFor="newPassword">Nueva Contraseña</label>
                                 <input
-                                    type="password"
+                                   type={showPassword ? "text" : "password"}
                                     id="newPassword"
                                     value={newPassword}
                                     onChange={(e) => setNewPassword(e.target.value)}
                                     // Solo requerir nueva contraseña si se ha ingresado la contraseña antigua
                                     required={oldPassword.length > 0}
+                                />
+                                <FontAwesomeIcon
+                                    icon={showPassword ? faEyeSlash : faEye}
+                                    onClick={togglePasswordVisibility}
+                                    className="password-icon"
                                 />
                             </div>
                             <button type="submit">Guardar Cambios</button>

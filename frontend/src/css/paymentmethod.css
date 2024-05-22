@@ -14,6 +14,25 @@
     overflow-y: hidden;
     width: 100%;
     padding-bottom: 10px;
+    color: #193E4E;
+}
+
+.method__add__cards button{
+    margin: 10px 0;
+    background-color: #193E4E;
+    color: #F2EBCF;
+	font-weight: bold;
+    padding: 10px 25px;
+	outline: none;
+	border: none;
+	border-radius: 10px;
+	transition: .2s ease-in;
+	cursor: pointer;
+}
+
+.method__add__cards button:hover {
+    background-color: #091f29;
+    color: #F2EBCF;
 }
 
 .container {
@@ -159,11 +178,12 @@
 	border-radius: 10px;
 	transition: .2s ease-in;
 	cursor: pointer;
+    letter-spacing: 1px;
 }
 
-button:hover{
-	background-color: #928567;
-    color: #4b412d;
+.method__button button:hover {
+    background-color: #091f29;
+    color: #F2EBCF;
 }
 
 

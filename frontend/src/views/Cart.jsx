@@ -108,7 +108,7 @@ const Cart = () => {
                 
                 <div className="cart__button">
                     <button onClick={handleContinue}>
-                        <span>Continuar</span>
+                        <span>CONTINUAR</span>
                         <span>${calculateTotal()}</span>
                     </button>
                 </div>

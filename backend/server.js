@@ -16,6 +16,9 @@ app.get('/', (req, res) => {
     return res.json("From backend side")
 })
 
+const { decryptData } = require('./cryptoutils');
+
+
 app.get('/product', (req, res) => {
     const qrCode = req.query.code;
     db.query('SELECT * FROM products WHERE code = ?', [qrCode], (err, results) => {
@@ -84,20 +87,34 @@ app.post('/registro', (req, res) => {
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
 
-    // Aquí debes agregar la lógica para verificar las credenciales del usuario.
-    // Por ejemplo:
-    db.query('SELECT * FROM users WHERE email = ? AND password = ?', [email, password], (err, results) => {
+    // Aquí agregamos la lógica para verificar las credenciales del usuario.
+    // En primer lugar, recuperamos el usuario con el correo electrónico proporcionado.
+    db.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
         if (err) {
             return res.status(500).json({ error: 'Error al iniciar sesión' });
         }
+
+        // Verificamos si se encontró un usuario con el correo electrónico proporcionado
         if (results.length > 0) {
             const user = results[0];
+            const encryptedPasswordFromDB = user.password;
 
-            return res.status(200).json({
-                message: 'Inicio de sesión exitoso',
-                user: user
-            });
+            // Desciframos la contraseña almacenada en la base de datos
+            const decryptedPasswordFromDB = decryptData(encryptedPasswordFromDB);
+
+            // Verificamos si la contraseña proporcionada coincide con la contraseña almacenada descifrada
+            if (password === decryptedPasswordFromDB) {
+                // Si las contraseñas coinciden, se inicia sesión correctamente
+                return res.status(200).json({
+                    message: 'Inicio de sesión exitoso',
+                    user: user
+                });
+            } else {
+                // Si las contraseñas no coinciden, devolvemos un error de credenciales inválidas
+                return res.status(401).json({ error: 'Credenciales inválidas la contra' });
+            }
         } else {
+            // Si no se encuentra un usuario con el correo electrónico proporcionado, devolvemos un error
             return res.status(401).json({ error: 'Credenciales inválidas' });
         }
     });

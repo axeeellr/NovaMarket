@@ -2,10 +2,11 @@
     display: flex;
     gap: 30px;
     flex-direction: column;
-    justify-content: center;
+    justify-content: start;
     align-items: start;
-    padding: 20px;
+    padding: 0 20px 20px 20px;
     margin-bottom: 100px;
+    min-height: 100vh;
 }
 
 .profile__data, .profile__history, .profile__favorites, .profile__payment, .profile__logout{
@@ -24,7 +25,7 @@
 .profile__data button{
 	background-color: #c5b28a;
     color: #756748;
-	font-size: 18px;
+	font-size: 17px;
 	font-weight: bold;
     padding: 10px 20px;
 	outline: none;
@@ -32,10 +33,20 @@
 	border-radius: 5px;
 	transition: .2s ease-in;
 	cursor: pointer;
+    letter-spacing: 1px;
+}
+
+.profile__data button:hover{
+	background-color: #928567;
+    color: #4b412d;
 }
 
 .profile__history h2{
     color: #193e4e;
+}
+
+.profile__history p{
+    color: #193E4E;
 }
 
 .history__item{
@@ -244,7 +255,7 @@
     margin-top: 5px;
     background-color: #c5b28a;
     color: #756748;
-	font-size: 18px;
+	font-size: 17px;
 	font-weight: bold;
     padding: 10px 20px;
 	outline: none;
@@ -252,6 +263,12 @@
 	border-radius: 5px;
 	transition: .2s ease-in;
 	cursor: pointer;
+    letter-spacing: 1px;
+}
+
+.payment__new:hover{
+	background-color: #928567;
+    color: #4b412d;
 }
 
 .profile__logout h2{
@@ -261,7 +278,7 @@
 .profile__logout button{
     background-color: #c5b28a;
     color: #756748;
-	font-size: 18px;
+	font-size: 17px;
 	font-weight: bold;
     padding: 10px 20px;
 	outline: none;
@@ -269,6 +286,12 @@
 	border-radius: 5px;
 	transition: .2s ease-in;
 	cursor: pointer;
+    letter-spacing: 1px;
+}
+
+.profile__logout button:hover{
+	background-color: #928567;
+    color: #4b412d;
 }
 
 
@@ -317,9 +340,21 @@
     border: 2px solid #c5b28a;
     border-radius: 4px;
     background-color: transparent;
+    outline: none;
 }
 
-button {
+.password-input {
+    position: relative;
+}
+
+.password-icon {
+    position: absolute;
+    right: 10px;
+    top: 35px;
+    color: #193E4E;
+}
+
+.modal button {
     margin-right: 10px;
     padding: 10px 15px;
     background-color: #193E4E;
@@ -332,16 +367,16 @@ button {
     transition: background-color 0.3s;
 }
 
-button:hover {
+.modal button:hover {
     background-color: #0056b3;
 }
 
-button[type="button"] {
+.modal button[type="button"] {
     background-color: #6c757d;
     color: #F2EBCF;
 }
 
-button[type="button"]:hover {
-    background-color: #5a6268;
+.modal button[type="button"]:hover {
+    background-color: #3b3d3f;
 }
 

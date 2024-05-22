@@ -50,7 +50,7 @@ function Product() {
                 <img src={product.img} alt="" />
             </div>
             <div className="product__info">
-                <button onClick={() => addToCart(product, quantity)}>Añadir al carrito <FontAwesomeIcon icon={faCartShopping}/></button>
+                <button onClick={() => addToCart(product, quantity)}>AÑADIR AL CARRITO &nbsp;<FontAwesomeIcon icon={faCartShopping}/></button>
                 <div className="product__info__details">
                     <div className="details__name">
                         <h2>{product.name}</h2>

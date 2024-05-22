@@ -115,24 +115,27 @@
 .cart__button button{
     background-color: #193E4E;
     color: #F2EBCF;
-	font-size: 18px;
+	font-size: 17px;
 	font-weight: bold;
     width: 100%;
     padding: 13px 20px;
 	outline: none;
 	border: none;
-	border-radius: 15px;
+	border-radius: 10px;
 	transition: .2s ease-in;
 	cursor: pointer;
     display: flex;
     justify-content: space-between;
     align-items: center;
-
 }
 
-button:hover{
-	background-color: #928567;
-    color: #4b412d;
+.cart__button span:nth-child(1){
+    letter-spacing: 1px;
+}
+
+.cart__button button:hover {
+    background-color: #091f29;
+    color: #F2EBCF;
 }
 
 .emptyCart{
@@ -180,29 +183,12 @@ button:hover{
     margin-bottom: 15px;
 }
 
-button {
-    margin-right: 10px;
-    padding: 10px 15px;
-    background-color: #193E4E;
-    color: #F2EBCF;
-    font-weight: bold;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s;
-}
-
-button:hover {
-    background-color: #0056b3;
-}
-
-button[type="button"], .buttonCancel {
+.buttonCancel {
     background-color: #6c757d;
     color: #F2EBCF;
 }
 
-button[type="button"]:hover {
+.buttonCancel:hover {
     background-color: #5a6268;
 }
 

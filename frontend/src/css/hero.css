@@ -64,6 +64,11 @@
     letter-spacing: 1px;
 }
 
+.hero button:hover {
+    background-color: #091f29;
+    color: #F2EBCF;
+}
+
 .logo{
     display: none;
 }
