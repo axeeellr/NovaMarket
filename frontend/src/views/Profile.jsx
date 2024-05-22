@@ -26,6 +26,10 @@ function Profile() {
         logout();
     };
 
+    const handleHistoryClick = (cartId) => {
+        navigate(`/historial/${cartId}`);
+    };
+
     // Estados locales para el modal y los datos del usuario
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -91,6 +95,11 @@ function Profile() {
             }
         } catch (error) {
             console.error('Error al guardar datos del usuario:', error);
+            if (error.response && error.response.status === 401) {
+                toast.error('Contraseña antigua incorrecta.');
+            } else {
+                toast.error('Error al actualizar datos del usuario.');
+            }
         }
     };
 
@@ -221,7 +230,7 @@ function Profile() {
                 <div className="profile__history">
                     <h2>Historial</h2>
                     {carts.slice(0, showAll ? carts.length : 3).map((cart, index) => (
-                        <div className="history__item" key={index}>
+                        <div className="history__item" key={index} onClick={() => handleHistoryClick(cart.cart_id)}>
                             <p>{cart.name}</p>
                             <FontAwesomeIcon icon={faAngleRight} />
                         </div>

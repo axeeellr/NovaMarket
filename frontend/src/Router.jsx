@@ -16,6 +16,7 @@ import Grains from './views/Grains';
 import Cleaning from './views/Cleaning';
 import Fruits from './views/Fruits';
 import PaymentMethod from './views/PaymentMethod';
+import Historial from './views/Historial';
 
 const AppRouter = () => {
     const { isAuthenticated } = useUser();
@@ -36,6 +37,7 @@ const AppRouter = () => {
                 <Route path="/cart" element={isAuthenticated ? <Cart /> : <Navigate to="/login" />} />
                 <Route path="/product/:data" element={isAuthenticated ? <Product /> : <Navigate to="/login" />} />
                 <Route path="/paymentmethod" element={isAuthenticated ? <PaymentMethod /> : <Navigate to="/login" />} />
+                <Route path="/historial/:cartId" element={isAuthenticated ? <Historial /> : <Navigate to="/login" />} />
             </Routes>
         </Router>
     );

@@ -300,6 +300,37 @@ app.post('/addCartItem', (req, res) => {
 
 
 
+// Ruta para obtener el historial de compras de un usuario
+app.get('/history/:userId', (req, res) => {
+    const userId = req.params.userId;
+
+    const query = `
+        SELECT c.date, c.total, ci.quantity, p.name, p.price, p.img, p.weight 
+        FROM cart c
+        JOIN cart_items ci ON c.cart_id = ci.cart_id
+        JOIN products p ON ci.product_id = p.code
+        WHERE c.user_id = ?
+        ORDER BY c.date DESC
+    `;
+
+    db.query(query, [userId], (err, results) => {
+        if (err) {
+            console.error("Error al obtener el historial de compras:", err);
+            return res.status(500).json({ error: 'Error al obtener el historial de compras' });
+        }
+
+        return res.status(200).json({
+            message: 'Historial de compras obtenido exitosamente',
+            history: results
+        });
+    });
+});
+
+
+
+
+
+
 
 const port = 1001;
 

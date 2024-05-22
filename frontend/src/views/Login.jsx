@@ -66,6 +66,7 @@ function Login() {
         })
         .catch(error => {
             console.error(error);
+            toast('¡Datos incorrectos!');
         });
     };
 
