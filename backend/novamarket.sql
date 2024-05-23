@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 08-05-2024 a las 06:17:18
+-- Tiempo de generación: 23-05-2024 a las 07:07:56
 -- Versión del servidor: 10.4.24-MariaDB
 -- Versión de PHP: 8.1.6
 
@@ -41,8 +41,7 @@ CREATE TABLE `cards` (
 --
 
 INSERT INTO `cards` (`id`, `id_user`, `number`, `holder`, `date`, `cvv`) VALUES
-(6, 11, '4785763478560985', 'Rels B', '2024-04-01', 574),
-(7, 11, '9758984525487594', 'Relsito B', '2024-07-01', 375);
+(1, 1, '4657398754673472', 'Axel Ramirez', '2027-07-01', 567);
 
 -- --------------------------------------------------------
 
@@ -64,8 +63,7 @@ CREATE TABLE `cart` (
 --
 
 INSERT INTO `cart` (`id`, `user_id`, `name`, `date`, `card_id`, `total`) VALUES
-(11, 11, 'para licuados', '2024-05-08', 7, '24'),
-(12, 11, 'leche', '2024-05-08', 6, '40');
+(1, 1, 'verduras', '2024-05-23', 1, '16.2');
 
 -- --------------------------------------------------------
 
@@ -85,9 +83,9 @@ CREATE TABLE `cart_items` (
 --
 
 INSERT INTO `cart_items` (`id`, `cart_id`, `product_id`, `quantity`) VALUES
-(17, 11, 2, 1),
-(18, 11, 4, 1),
-(19, 12, 4, 2);
+(1, 1, 3, 3),
+(2, 1, 11, 1),
+(3, 1, 9, 2);
 
 -- --------------------------------------------------------
 
@@ -111,11 +109,36 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `code`, `name`, `brand`, `price`, `img`, `calories`, `weight`) VALUES
-(1, 'nm-trix-0', 'Cereal Trix', 'Nestle', 3.99, 'https://www.nestle-cereals.com/cl/sites/g/files/qirczx891/files/styles/1_1_768px_width/public/2023-08/Trix.PNG.png.webp?itok=rWibg3ur', '120kcal', '460g'),
-(2, 'nm-bandejade300fresas-0', 'Bandeja de Fresas', 'NovaMarket', 4, 'https://static.vecteezy.com/system/resources/previews/035/995/131/non_2x/freshly-picked-large-red-strawberries-in-trays-png.png', '100kcal', '300g'),
-(3, 'nm-bandejade500fresas-0', 'Bandeja de Fresas', 'NovaMarket', 6, 'https://png.pngtree.com/png-clipart/20231016/original/pngtree-plump-strawberries-arranged-in-a-plastic-tray-with-photo-png-image_13320445.png', '100kcal', '500g'),
-(4, 'nm-nido1-0', 'Leche Nido 1+', 'Nestle', 20, 'https://www.nestleagustoconlavida.com/sites/default/files/2022-05/NIDO-1%2B-Proteccion-400g-Lata_0.png', '50kcal', '400g'),
-(5, 'nm-nidofortificada-0', 'Leche Nido Fortificada', 'Nestle', 25, 'https://www.goodnes.com/sites/g/files/jgfbjl321/files/gdn_product/field_product_images/nido-905b9b717c8dae50049f3cbd5aa347a977f6af85.png', '150kcal', '77oz');
+(1, 'nm-mandarina-0', 'Mandarinas', 'NovaMarket', 2.25, 'https://tienda.frutamare.com/cdn/shop/products/mandarinas-premium-min_1024x1024_2x_d79f85f7-dd4c-4e54-9247-c6ae1f20e974.webp?v=1680175833&width=533', '318kcal', '454g'),
+(2, 'nm-pera-0', 'Peras', 'NovaMarket', 1.75, 'https://lpdimportexport.com.br/wp-content/uploads/2023/05/17a.png', '228kcal', '454g'),
+(3, 'nm-tomate-0', 'Tomates', 'NovaMarket', 2.35, 'https://obahortifruti.vtexassets.com/arquivos/ids/5692016/Tomate-Italiano-Organico-500-G.png?v=638390190788400000', '72kcal', '454g'),
+(4, 'nm-uva-0', 'Uvas', 'NovaMarket', 2.3, 'https://phygital-files.mercafacil.com/comercial-tradicao/uploads/produto/uva_red_glob_bdj_500g_e87da9c8-0224-4133-b006-08442252b53e.png', '228kcal', '454g'),
+(5, 'nm-manzana-0', 'Manzana Roja', 'NovaMarket', 2.3, 'https://hebmx.vtexassets.com/arquivos/ids/726706/825799_image.png?v=638498029419570000', '468kcal', '500g'),
+(6, 'nm-naranja-0', 'Naranjas', 'NovaMarket', 2.75, 'https://naranjassanjose.com/wp-content/uploads/2023/06/f9c33f36-d60f-42b9-8193-6ad8e9d65f9f.png', '141kcal', '454g'),
+(7, 'nm-mango-0', 'Mangos', 'NovaMarket', 2.75, 'https://mnib.gd/wp-content/uploads/2021/07/CeylonMango-1.png', '180kcal', '454g'),
+(8, 'nm-rabano-0', 'Rábanos', 'NovaMarket', 1.5, 'https://www.calfruitos.com/fotos/pr_191_20211015113501.png', '176kcal', '454g'),
+(9, 'nm-cilantro-0', 'Cilantro Orgánico', 'NovaMarket', 2.75, 'https://www.florempaque.com/web/media/pictures/_productos2/4-1.png', '69kcal', '260g'),
+(10, 'nm-pepino-0', 'Pepino', 'NovaMarket', 1.35, 'https://smattcom.com/img/header-pepino2@x1.png', '45kcal', '454g'),
+(11, 'nm-papa-0', 'Papa Americana', 'NovaMarket', 3.65, 'https://stoller.com.gt/sv/wp-content/uploads/2019/05/papa-1.png', '225kcal', '454g'),
+(12, 'nm-carnemol-0', 'Carne Molida de Res Especial', 'DonCristóbal ', 3.9, 'https://i0.wp.com/supeyfruteriaaj.com/wp-content/uploads/2023/07/8020-removebg-preview.png?fit=360%2C360&ssl=1', '132kcal', '454g'),
+(13, 'nm-filete-0', 'Filete de Res sabor Chimichurri', 'DiacoFoods', 3.9, 'https://diacofoods.sv/wp-content/uploads/2023/01/EmpaqueFileteChimichurri_v001.png', '135kcal', '454g'),
+(14, 'nm-molleja-0', 'Mollejas de Res', 'RumbaMeats', 1.9, 'https://rumbameats.com/wp-content/uploads/2017/08/53001_RumbaMeats_Sweetbreads_FRESH_Mockup_FA_cp-768x664.png', '534kcal', '454g'),
+(15, 'nm-lomo-0', 'Lomo de Res', 'DonCristobal', 5.46, 'https://perulabecologic.com.pe/wp-content/uploads/2020/05/RES-LOMO-FINO.png', '166kcal', '454g'),
+(16, 'nm-tomahawk-0', 'Tomahawk', 'CarnesGrin', 6.16, 'https://carnesgrin.com/wp-content/uploads/2020/04/tomahawk.png', '149kcal', '454g'),
+(17, 'nm-churrasco-0', 'Churrasco Redondo Parrillero de Res', 'MarketCircolo', 3.45, 'https://aceleralastatic.nyc3.cdn.digitaloceanspaces.com/files/uploads/1499/1637589934-58-churrasco-redondo-png.png', '130kcal', '454g'),
+(18, 'nm-hueso-0', 'Hueso Especial de Res', 'Pronaca', 2.25, 'https://pronacatqma.com/images/stories/virtuemart/product/hueso-carnudo-300.png', '104kcal', '454g'),
+(19, 'nm-costilla-0', 'Costilla Corta de Res', 'RumbaMeats', 3.95, 'https://rumbameats.com/wp-content/uploads/2021/08/Short-Ribs-Flanken_1100-1-768x591.png', '400g', '454g'),
+(20, 'nm-carnehambur-0', 'Carne de Hamburguesa Premium', 'RanchoEl17', 9.99, 'https://www.ranchoel17.com/cdn/shop/files/HAMBURGUESAPREMIUM_bb0f7c33-8f78-436f-9c01-4cb4082110b5.png?v=1701121772', '295kcal', '500g'),
+(21, 'nm-jamon-0', 'Jamón de Pavo Premium', 'LaSelva', 2.95, 'https://laselva.es/wp-content/uploads/2021/06/CorteCharcutero_PechugaPavoCocida_780x780.png', '126kcal', '290g'),
+(22, 'nm-jamonvirgi-0', 'Jamón de Pavo Virginia', 'Toledo', 2.25, 'https://toledoalimentos.com/panama/wp-content/uploads/sites/3/2022/05/Jamon-de-pavo-tipo-virginia-450g.png', '108kcal', '230g'),
+(23, 'nm-salchicha-0', 'Salchicha de Pavo', 'Fritz', 2.15, 'https://www.fritz.com.ec/images/virtuemart/product/Salchicha%20de%20pavo%20400%20g.png', '120kcal', '400g'),
+(24, 'nm-chorizomex-0', 'Chorizo de Cerdo Mexicano', 'Berard', 2.34, 'https://productosberard.com.pa/wp-content/uploads/2017/11/chorizo_mexicano_nw.png', '187kcal', '400g'),
+(25, 'nm-chorizoargen-0', 'Chorizo Argentino', 'Chata', 2.4, 'https://productoschata.com/wp-content/uploads/2023/05/chorizo-argentino.png', '258kcal', '330g'),
+(26, 'nm-tocino-0', 'Tocino Ahumado', 'LaPreferida', 3.75, 'https://s3.amazonaws.com/bsalemarket/58394/product/9292.png', '541kcal', '170g'),
+(27, 'nm-pepperoni-0', 'Pepperoni', 'FieldRoast', 2.3, 'https://fieldroast.com/wp-content/uploads/2021/06/PepperoniRender_FOP1.png', '494kcal', '200g'),
+(28, 'nm-salami-0', 'Salami Español Premium', 'Berard', 4.15, 'https://productosberard.com.pa/wp-content/uploads/2017/11/berard_salami_espanol_nw.png', '336kcal', '100g'),
+(29, 'nm-salchichajalp-0', 'Salchichas para Asar Jalapeño', 'Bafar', 2.5, 'https://bafar.com/wp-content/uploads/2022/05/6145_400px.png', '642kcal', '400g'),
+(30, 'nm-detergente-0', 'Detergente Liquido', 'Aby', 4.99, 'https://www.ahorromas.cl/cdn/shop/products/lav-detergente-azul5l.png?v=1677162885', '', '5L');
 
 -- --------------------------------------------------------
 
@@ -135,17 +158,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`) VALUES
-(1, 'axelk', 'axek@gmail.com', 'sdjhdjsd'),
-(2, 'axel', 'axel@gmail.com', '12345'),
-(3, 'ddd', 'ddd@gmail.com', '12345'),
-(4, 'sexo', 'sexo@gmail.com', '12345'),
-(5, 'ozuna', 'ozuna@gmail.com', '12345'),
-(6, 'lop', 'lop@fmas.com', '243243'),
-(7, 'axelito', 'axelito@gmail.com', '12345'),
-(8, 'axel2', 'axel2@gmail.com', '12345'),
-(9, 'les', 'les@gmail.com', '12345'),
-(10, 'bellako', 'bellako@gmail.com', '12345'),
-(11, 'rels', 'rels@gmail.com', '12345678A');
+(1, 'axel', 'axelramireezz@gmail.com', 'U2FsdGVkX1/v1tGZjkR9+ZKT1kFr2xLohI7j6up3ho0=');
 
 --
 -- Índices para tablas volcadas
@@ -189,31 +202,31 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `cards`
 --
 ALTER TABLE `cards`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `cart_items`
 --
 ALTER TABLE `cart_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

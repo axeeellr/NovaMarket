@@ -300,35 +300,42 @@ app.post('/addCartItem', (req, res) => {
 
 
 
-// Ruta para obtener el historial de compras de un usuario
-app.get('/history/:userId', (req, res) => {
-    const userId = req.params.userId;
 
-    const query = `
-        SELECT c.date, c.total, ci.quantity, p.name, p.price, p.img, p.weight 
-        FROM cart c
-        JOIN cart_items ci ON c.cart_id = ci.cart_id
-        JOIN products p ON ci.product_id = p.code
-        WHERE c.user_id = ?
-        ORDER BY c.date DESC
-    `;
-
-    db.query(query, [userId], (err, results) => {
+//Añadir al carrito desde shop
+app.get('/productByName', (req, res) => {
+    const productName = req.query.name;
+    db.query('SELECT * FROM products WHERE name = ?', [productName], (err, results) => {
         if (err) {
-            console.error("Error al obtener el historial de compras:", err);
-            return res.status(500).json({ error: 'Error al obtener el historial de compras' });
+            return res.status(500).json({ error: 'Error al consultar la base de datos' });
         }
-
-        return res.status(200).json({
-            message: 'Historial de compras obtenido exitosamente',
-            history: results
-        });
+        if (results.length > 0) {
+            res.json(results[0]);
+        } else {
+            res.status(404).json({ error: 'Producto no encontrado' });
+        }
     });
 });
 
 
 
+// Ruta para obtener el historial de compras de un usuario específico
+app.get('/getCartDetails/:cartId', (req, res) => {
+    const cartId = req.params.cartId;
 
+    // Consulta a la base de datos para obtener los detalles del carrito con el cartId
+    db.query('SELECT * FROM cart_items ci JOIN products p ON ci.product_id = p.id WHERE ci.cart_id = ?', [cartId], (err, results) => {
+        if (err) {
+            console.error("Error al obtener los detalles del carrito:", err);
+            return res.status(500).json({ error: 'Error al obtener los detalles del carrito' });
+        }
+        
+        // Si la consulta fue exitosa, devuelve los resultados
+        return res.status(200).json({
+            message: 'Detalles del carrito obtenidos exitosamente',
+            products: results
+        });
+    });
+});
 
 
 

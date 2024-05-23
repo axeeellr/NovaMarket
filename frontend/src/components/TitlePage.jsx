@@ -11,6 +11,8 @@ function TitlePage() {
 
     if(location.pathname.startsWith('/product/')){
         currentPage = decodeURIComponent(location.pathname.split('/product/')[1]);
+    }else if(location.pathname.startsWith('/historial/')){
+        currentPage = 'Historial';
     }else{
         const pageTitles = {
             '/profile': 'Perfil',

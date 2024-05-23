@@ -2,71 +2,60 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Toaster, toast } from 'react-hot-toast';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { faSquarePlus } from '@fortawesome/free-solid-svg-icons';
 import '../css/cart.css';
 import TitlePage from '../components/TitlePage';
 import Menu from '../components/Menu';
 
 const Historial = () => {
     const { cartId } = useParams();
-    const [history, setHistory] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [cartDetails, setCartDetails] = useState(null);
 
     useEffect(() => {
-        fetch(`/history/${cartId}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.error) {
-                    toast.error(data.error);
-                } else {
-                    setHistory(data.history);
-                }
-            })
-            .catch(error => {
-                toast.error('Error al cargar el historial de compras');
-                console.error('Error:', error);
-            })
-            .finally(() => {
-                setLoading(false);
-            });
+        fetchCartDetails(cartId);
     }, [cartId]);
+
+
+    const fetchCartDetails = async (cartId) => {
+        try {
+            const response = await fetch(`http://localhost:1001/getCartDetails/${cartId}`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch cart details');
+            }
+            const data = await response.json();
+            setCartDetails(data);
+        } catch (error) {
+            console.error('Error fetching cart details:', error);
+        }
+    };
+    
 
     return (
         <>
             <div className="cart__container">
                 <TitlePage title="Historial de Compras" />
                 <div className="cart__products">
-                    {loading ? (
-                        <p>Cargando...</p>
-                    ) : history.length > 0 ? (
-                        history.map((item, index) => (
-                            <div className="cart__product" key={index}>
-                                <div className="product__image">
-                                    <img src={item.img} alt={item.name} />
-                                </div>
-                                <div className="product__information">
-                                    <h3>{item.name}</h3>
-                                    <p>{item.weight}</p>
-                                    <p>${item.price}</p>
-                                </div>
-                                <div className="product__quantity">
-                                    <div className="quantity">
-                                        <p>Cantidad: {item.quantity}</p>
-                                    </div>
-                                </div>
-                                <div className="product__date">
-                                    <p>{new Date(item.date).toLocaleDateString()}</p>
+                    {cartDetails && cartDetails.products.map((product, index) => (
+                        <div className="cart__product" key={index}>
+                            <div className="product__image">
+                                <img src={product.img} alt={product.name} />
+                            </div>
+                            <div className="product__information">
+                                <h3>{product.name}</h3>
+                                <p>{product.weight}</p>
+                                <p>${product.price}</p>
+                            </div>
+                            <div className="product__quantity">
+                                <div className="quantity">
+                                    <FontAwesomeIcon icon={faSquarePlus} />
+                                    <p>{product.quantity}</p>
                                 </div>
                             </div>
-                        ))
-                    ) : (
-                        <p>No hay registros de compras.</p>
-                    )}
+                            <div className="product__date">
+                                <p>{product.date}</p>
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </div>
 

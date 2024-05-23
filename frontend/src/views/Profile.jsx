@@ -1,22 +1,16 @@
 import React, { useState, useEffect } from 'react';
-
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Toaster, toast } from 'react-hot-toast';
-
 import { useUser } from '../UserContext';
-
 import '../css/root.css';
 import '../css/profile.css';
-
 import Menu from '../components/Menu';
 import TitlePage from '../components/TitlePage';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight, faSignOut, faPlusCircle, faEdit, faCaretDown, faCaretUp, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 function Profile() {
-
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
     const { logout, user, login } = useUser();
@@ -28,18 +22,15 @@ function Profile() {
 
     const handleHistoryClick = (cartId) => {
         navigate(`/historial/${cartId}`);
+        console.log(cartId)
     };
 
-    // Estados locales para el modal y los datos del usuario
     const [isModalOpen, setIsModalOpen] = useState(false);
-
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
-    
 
-    // Realiza la petición de datos si se tiene un ID de usuario almacenado
     useEffect(() => {
         if (user.id) {
             axios.get(`http://localhost:1001/data/${user.id}`)
@@ -54,41 +45,30 @@ function Profile() {
         }
     }, [user.id]);
 
-    // Función para manejar la visibilidad del modal
     const toggleModal = () => {
         setIsModalOpen(!isModalOpen);
     };
 
-    // Función para manejar el envío del formulario
     const handleFormSubmit = async (e) => {
         e.preventDefault();
-        
-        // Define los datos que se enviarán a la base de datos
-        const updatedData = {
-            name,
-            email
-        };
-        
-        // Solo agregar campos de contraseña si ambos están llenos
+        const updatedData = { name, email };
         if (oldPassword && newPassword) {
             updatedData.oldPassword = oldPassword;
             updatedData.newPassword = newPassword;
         }
-    
+
         try {
             const response = await axios.put(`http://localhost:1001/data/${user.id}`, updatedData);
-            
-            // Verifica si la respuesta es exitosa
             if (response.status === 200) {
                 toast('¡Datos actualizados!');
                 axios.get(`http://localhost:1001/data/${user.id}`)
-                .then(response => {
-                    const userData = response.data.user;
-                    login(userData)
-                })
-                .catch(error => {
-                    console.error('Error al obtener datos del usuario:', error);
-                });
+                    .then(response => {
+                        const userData = response.data.user;
+                        login(userData);
+                    })
+                    .catch(error => {
+                        console.error('Error al obtener datos del usuario:', error);
+                    });
                 toggleModal();
             } else {
                 console.error('Error inesperado al actualizar datos del usuario:', response.status);
@@ -103,57 +83,58 @@ function Profile() {
         }
     };
 
-    // Estado local para las tarjetas de crédito
     const [cards, setCards] = useState([]);
-
-    // Estado para el modal de añadir tarjeta de crédito
     const [isAddCardModalOpen, setIsAddCardModalOpen] = useState(false);
-    
-    // Estados para los datos del formulario de añadir tarjeta de crédito
     const [cardNumber, setCardNumber] = useState('');
     const [cardHolder, setCardHolder] = useState('');
     const [expiryDate, setExpiryDate] = useState('');
     const [cvv, setCvv] = useState('');
 
-    // Función para mostrar/ocultar el modal de añadir tarjeta de crédito
     const toggleAddCardModal = () => {
         setIsAddCardModalOpen(!isAddCardModalOpen);
     };
 
-    //Función para añadir un 1 a la fecha
     const adjustExpiryDate = (expiryDate) => {
-        // Completa el valor con '-01' para tener un formato de fecha completo
         return expiryDate + '-01';
     };
 
-    // Función para manejar el envío de los datos de la tarjeta de crédito
     const handleAddCardSubmit = async (e) => {
         e.preventDefault();
-        
-        // Datos de la tarjeta de crédito
         const cardData = {
             id_user: user.id,
             number: cardNumber,
             holder: cardHolder,
             date: adjustExpiryDate(expiryDate),
-            cvv: cvv
+            cvv
         };
-    
+
+        if (!/^\d{16}$/.test(cardNumber)) {
+            toast.error('La tarjeta debe tener 16 dígitos.');
+            return;
+        }
+
+        if (!/^[a-zA-Z]{2,}\s[a-zA-Z]{2,}$/.test(cardHolder)) {
+            toast.error('El titular de la tarjeta debe tener al menos dos nombres.');
+            return;
+        }
+
+        if (!/^\d{3}$/.test(cvv)) {
+            toast.error('El CVV debe tener 3 dígitos.');
+            return;
+        }
+
         try {
             const response = await fetch('http://localhost:1001/cards', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(cardData)
             });
-    
+
             if (response.ok) {
                 const data = await response.json();
                 console.log(data.message);
                 toggleAddCardModal();
                 toast('¡Tarjeta agregada!');
-                // Recarga la lista de tarjetas de crédito
                 fetchUserCards();
             } else {
                 const errorData = await response.json();
@@ -164,7 +145,6 @@ function Profile() {
         }
     };
 
-    // Función para obtener las tarjetas de crédito del usuario
     const fetchUserCards = async () => {
         try {
             const response = await fetch(`http://localhost:1001/getCards/${user.id}`);
@@ -179,12 +159,9 @@ function Profile() {
         }
     };
 
-
-    // Estado local para el historial de carritos
     const [carts, setCarts] = useState([]);
     const [showAll, setShowAll] = useState(false);
 
-    // Función para obtener los carritos del usuario
     const fetchUserCarts = async () => {
         try {
             const response = await fetch(`http://localhost:1001/getCarts/${user.id}`);
@@ -207,15 +184,13 @@ function Profile() {
         setShowPassword(!showPassword);
     };
 
-    // Llamar a la función para obtener las tarjetas de crédito cuando el componente se monta
     useEffect(() => {
         fetchUserCards();
     }, []);
 
-    // Llamar a la función para obtener los carritos cuando el componente se monta
     useEffect(() => {
         fetchUserCarts();
-    }, []); 
+    }, []);
 
     return (
         <>
@@ -229,12 +204,21 @@ function Profile() {
                 </div>
                 <div className="profile__history">
                     <h2>Historial</h2>
-                    {carts.slice(0, showAll ? carts.length : 3).map((cart, index) => (
-                        <div className="history__item" key={index} onClick={() => handleHistoryClick(cart.cart_id)}>
-                            <p>{cart.name}</p>
-                            <FontAwesomeIcon icon={faAngleRight} />
-                        </div>
-                    ))}
+                    {carts.slice(0, showAll ? carts.length : 3).map((cart, index) => {
+                        // Convertir la fecha de cada carrito a un objeto Date
+                        const date = new Date(cart.date);
+                        // Obtener el año, mes y día
+                        const year = date.getFullYear();
+                        const month = date.getMonth() + 1; // Los meses en JavaScript van de 0 a 11, por lo que sumamos 1
+                        const day = date.getDate();
+                        
+                        return (
+                            <div className="history__item" key={index} onClick={() => handleHistoryClick(cart.id)}>
+                                <p>{cart.name} - {day}/{month}/{year}</p>
+                                <FontAwesomeIcon icon={faAngleRight} />
+                            </div>
+                        );
+                    })}
                     {carts.length > 3 && (
                         <div className="history__more" onClick={toggleShowAll}>
                             <p>{showAll ? "Mostrar menos" : "Mostrar más"}</p>
@@ -272,7 +256,6 @@ function Profile() {
                                                     <p>{card.date.slice(0, 7)}</p>
                                                 </div>
                                             </div>
-                                            {/* Parte trasera de la tarjeta */}
                                             <div className="back">
                                                 <img src="https://i.ibb.co/PYss3yv/map.png" alt="Map" className="map-img" />
                                                 <div className="bar"></div>
@@ -314,11 +297,11 @@ function Profile() {
                     style: {
                         background: '#193E4E',
                         color: '#F2EBCF',
+                        textAlign: 'center'
                     },
                 }}
             />
 
-            {/* Modal */}
             {isModalOpen && (
                 <div className="modal">
                     <div className="modal-content">
@@ -361,11 +344,10 @@ function Profile() {
                             <div className="form-group password-input">
                                 <label htmlFor="newPassword">Nueva Contraseña</label>
                                 <input
-                                   type={showPassword ? "text" : "password"}
+                                    type={showPassword ? "text" : "password"}
                                     id="newPassword"
                                     value={newPassword}
                                     onChange={(e) => setNewPassword(e.target.value)}
-                                    // Solo requerir nueva contraseña si se ha ingresado la contraseña antigua
                                     required={oldPassword.length > 0}
                                 />
                                 <FontAwesomeIcon
@@ -381,8 +363,6 @@ function Profile() {
                 </div>
             )}
 
-
-            {/* Modal para añadir tarjeta de crédito */}
             {isAddCardModalOpen && (
                 <div className="modal">
                     <div className="modal-content">
