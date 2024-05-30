@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 23-05-2024 a las 07:07:56
+-- Tiempo de generación: 30-05-2024 a las 04:40:17
 -- Versión del servidor: 10.4.24-MariaDB
 -- Versión de PHP: 8.1.6
 
@@ -120,14 +120,14 @@ INSERT INTO `products` (`id`, `code`, `name`, `brand`, `price`, `img`, `calories
 (9, 'nm-cilantro-0', 'Cilantro Orgánico', 'NovaMarket', 2.75, 'https://www.florempaque.com/web/media/pictures/_productos2/4-1.png', '69kcal', '260g'),
 (10, 'nm-pepino-0', 'Pepino', 'NovaMarket', 1.35, 'https://smattcom.com/img/header-pepino2@x1.png', '45kcal', '454g'),
 (11, 'nm-papa-0', 'Papa Americana', 'NovaMarket', 3.65, 'https://stoller.com.gt/sv/wp-content/uploads/2019/05/papa-1.png', '225kcal', '454g'),
-(12, 'nm-carnemol-0', 'Carne Molida de Res Especial', 'DonCristóbal ', 3.9, 'https://i0.wp.com/supeyfruteriaaj.com/wp-content/uploads/2023/07/8020-removebg-preview.png?fit=360%2C360&ssl=1', '132kcal', '454g'),
-(13, 'nm-filete-0', 'Filete de Res sabor Chimichurri', 'DiacoFoods', 3.9, 'https://diacofoods.sv/wp-content/uploads/2023/01/EmpaqueFileteChimichurri_v001.png', '135kcal', '454g'),
-(14, 'nm-molleja-0', 'Mollejas de Res', 'RumbaMeats', 1.9, 'https://rumbameats.com/wp-content/uploads/2017/08/53001_RumbaMeats_Sweetbreads_FRESH_Mockup_FA_cp-768x664.png', '534kcal', '454g'),
-(15, 'nm-lomo-0', 'Lomo de Res', 'DonCristobal', 5.46, 'https://perulabecologic.com.pe/wp-content/uploads/2020/05/RES-LOMO-FINO.png', '166kcal', '454g'),
+(12, 'nm-carnemol-0', 'Carne Molida de res', 'DonCristóbal ', 3.9, 'https://i0.wp.com/supeyfruteriaaj.com/wp-content/uploads/2023/07/8020-removebg-preview.png?fit=360%2C360&ssl=1', '132kcal', '454g'),
+(13, 'nm-filete-0', 'Filete de res', 'DiacoFoods', 3.9, 'https://diacofoods.sv/wp-content/uploads/2023/01/EmpaqueFileteChimichurri_v001.png', '135kcal', '454g'),
+(14, 'nm-molleja-0', 'Mollejas de res', 'RumbaMeats', 1.9, 'https://rumbameats.com/wp-content/uploads/2017/08/53001_RumbaMeats_Sweetbreads_FRESH_Mockup_FA_cp-768x664.png', '534kcal', '454g'),
+(15, 'nm-lomo-0', 'Lomo de res', 'DonCristobal', 5.46, 'https://perulabecologic.com.pe/wp-content/uploads/2020/05/RES-LOMO-FINO.png', '166kcal', '454g'),
 (16, 'nm-tomahawk-0', 'Tomahawk', 'CarnesGrin', 6.16, 'https://carnesgrin.com/wp-content/uploads/2020/04/tomahawk.png', '149kcal', '454g'),
-(17, 'nm-churrasco-0', 'Churrasco Redondo Parrillero de Res', 'MarketCircolo', 3.45, 'https://aceleralastatic.nyc3.cdn.digitaloceanspaces.com/files/uploads/1499/1637589934-58-churrasco-redondo-png.png', '130kcal', '454g'),
-(18, 'nm-hueso-0', 'Hueso Especial de Res', 'Pronaca', 2.25, 'https://pronacatqma.com/images/stories/virtuemart/product/hueso-carnudo-300.png', '104kcal', '454g'),
-(19, 'nm-costilla-0', 'Costilla Corta de Res', 'RumbaMeats', 3.95, 'https://rumbameats.com/wp-content/uploads/2021/08/Short-Ribs-Flanken_1100-1-768x591.png', '400g', '454g'),
+(17, 'nm-churrasco-0', 'Churrasco redondo', 'MarketCircolo', 3.45, 'https://aceleralastatic.nyc3.cdn.digitaloceanspaces.com/files/uploads/1499/1637589934-58-churrasco-redondo-png.png', '130kcal', '454g'),
+(18, 'nm-hueso-0', 'Hueso especial', 'Pronaca', 2.25, 'https://pronacatqma.com/images/stories/virtuemart/product/hueso-carnudo-300.png', '104kcal', '454g'),
+(19, 'nm-costilla-0', 'Costilla de res', 'RumbaMeats', 3.95, 'https://rumbameats.com/wp-content/uploads/2021/08/Short-Ribs-Flanken_1100-1-768x591.png', '400g', '454g'),
 (20, 'nm-carnehambur-0', 'Carne de Hamburguesa Premium', 'RanchoEl17', 9.99, 'https://www.ranchoel17.com/cdn/shop/files/HAMBURGUESAPREMIUM_bb0f7c33-8f78-436f-9c01-4cb4082110b5.png?v=1701121772', '295kcal', '500g'),
 (21, 'nm-jamon-0', 'Jamón de Pavo Premium', 'LaSelva', 2.95, 'https://laselva.es/wp-content/uploads/2021/06/CorteCharcutero_PechugaPavoCocida_780x780.png', '126kcal', '290g'),
 (22, 'nm-jamonvirgi-0', 'Jamón de Pavo Virginia', 'Toledo', 2.25, 'https://toledoalimentos.com/panama/wp-content/uploads/sites/3/2022/05/Jamon-de-pavo-tipo-virginia-450g.png', '108kcal', '230g'),
@@ -158,7 +158,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`) VALUES
-(1, 'axel', 'axelramireezz@gmail.com', 'U2FsdGVkX1/v1tGZjkR9+ZKT1kFr2xLohI7j6up3ho0=');
+(1, 'axel', 'axelramireezz@gmail.com', 'U2FsdGVkX1/v1tGZjkR9+ZKT1kFr2xLohI7j6up3ho0='),
+(2, 'tester', 'tester@gmail.com', 'U2FsdGVkX18iSOX42W3qJXZZ/l4AjpQXQ9J7hVkOYJo=');
 
 --
 -- Índices para tablas volcadas
@@ -226,7 +227,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
