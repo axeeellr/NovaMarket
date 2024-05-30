@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ImageMapper from 'react-image-mapper';
+import ImageMapper from 'react-img-mapper';
 import { isMobile } from 'react-device-detect';
 import { useNavigate } from 'react-router-dom';
 

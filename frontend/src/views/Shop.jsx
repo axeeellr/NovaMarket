@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import ImageMapper from 'react-image-mapper';
+import ImageMapper from 'react-img-mapper';
 import { isMobile } from 'react-device-detect';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,9 +10,6 @@ import Chat from '../components/Chat';
 import Help from '../components/Help'; 
 
 import entrance from '../assets/entrancee.jpg';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSortDown, faPaperPlane, faImages, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 
 import '../css/shop.css';
 
