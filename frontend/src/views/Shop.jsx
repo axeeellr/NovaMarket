@@ -66,7 +66,7 @@ const Shop = () => {
     return (
         <>
             <TitlePage />
-            <div className={`shop__container ${menuVisible ? 'blur' : ''}`} ref={containerRef}>
+            <div className={`shop__container ${menuVisible || helpVisible ? 'blur' : ''}`} ref={containerRef}>
                 <ImageMapper
                     src={entrance}
                     map={MAP}

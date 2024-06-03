@@ -29,14 +29,7 @@
     justify-content: center;
     align-items: center;
     gap: 10px;
-}
-
-.header__info__img img{
-    position: relative;
-    height: 50px;
-    width: 50px;                                                                                                                                                                                                                                                          
-    border-radius: 50%;
-    object-fit: cover;
+    height: 100%;
 }
 
 .header__search{
@@ -103,5 +96,9 @@
     .notis{
         font-size: 30px;
         cursor: pointer;
+        padding-left: 15px;
+        margin-left: 15px;
+        border-left: 4px solid #F2EBCF;
+        color: #F2EBCF;
     }
 }

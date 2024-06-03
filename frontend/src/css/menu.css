@@ -79,17 +79,70 @@ a{
     right: -10px;
 }
 
+.menu-header{
+    display: none;
+}
 
 @media only screen and (min-width: 768px){
 
     .menu__container{
         display: none;
-        position: fixed;
-        height: 100px;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background-color: #f2ebcf;
+    }
+
+    .menu-header{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 25px;
+        background-colosr: blue;
+    }
+
+    .menu__left-header, .menu__right-header{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+        font-size: 30px;
+    }
+
+    .menu__center-header{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .scannerIcon-header{
+        height: 50px;
+    }
+    
+    a{
+        color: #F2EBCF;
+    }
+
+    .cart-icon-container-header{
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+    }
+    
+    .cart-item-count-header{
+        position: absolute;
+        font-size: 16px;
+        text-align: center;
+        background-color: #C5B28A;
+        color: #193e4e;
+        font-weight: bold;
+        border-radius: 50%;
+        padding: 1px 7px;
+        top: -10px;
+        right: -10px;
+    }
+
+    .active{
+        color: #bba982;
     }
 
 }
