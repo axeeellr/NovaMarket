@@ -7,6 +7,8 @@
     justify-content: center;
     gap: 20px;
     background-color: #193e4e;
+    z-index: 5;
+    display: none;
 }
 
 .header__info{
@@ -71,6 +73,7 @@
         gap: 20px;
         background-color: #193e4e;
         box-shadow: 0px 0px 25px 0px rgba(0,0,0,0.50);
+        z-index: 5;
     }
 
     .header__info__text{
