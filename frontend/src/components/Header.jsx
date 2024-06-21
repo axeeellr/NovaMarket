@@ -32,7 +32,7 @@ function Header() {
     }, []);
 
     return (
-        <div className="header">
+        <div className="header headerhome">
             <div className="header__info">
                 <div className="header__info__text">
                     <h2>{user ? `Hey, ${user.name}!` : 'Hey!'}</h2>

@@ -380,3 +380,47 @@
     background-color: #3b3d3f;
 }
 
+.novalogo{
+    display: none;
+}
+
+@media only screen and (min-width: 768px){
+    .profile__container{
+        min-height: 85vh;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: url(../assets/background.png), rgba(85, 85, 85, 0.2);
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+        background-blend-mode: darken;
+        z-index: -1;
+    }
+
+    .profile{
+        display: flex;
+        gap: 30px;
+        flex-direction: column;
+        justify-content: start;
+        align-items: start;
+        padding: 40px;
+        margin-bottom: 0;
+        background-color: #F2EBCF;
+        width: 90%;
+        min-height: 0;
+        height: 70vh;
+        border-radius: 15px;
+        box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.65);
+    }
+
+    .novalogo{
+        z-index: 7;
+        height: 300px;
+        position: fixed;
+        bottom: -20px;
+        right: 300px;
+    }
+    
+}
