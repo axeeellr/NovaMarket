@@ -1,8 +1,10 @@
 const express = require('express')
 const mysql2 = require('mysql2')
 const cors = require('cors')
-
+const nodemailer = require('nodemailer');
+const crypto = require('crypto');
 const app = express()
+
 app.use(cors())
 
 const db = mysql2.createConnection({
@@ -16,7 +18,88 @@ app.get('/', (req, res) => {
     return res.json("From backend side")
 })
 
+// Importa el módulo 'body-parser' para procesar los datos enviados en el cuerpo de las solicitudes POST.
+const bodyParser = require('body-parser');
+
+// Configura body-parser para que pueda manejar solicitudes JSON.
+app.use(bodyParser.json());
+
 const { decryptData } = require('./cryptoutils');
+
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'novamarket.sv@gmail.com',
+        pass: 'zbyu jixi sdnk plid'
+    }
+});
+
+const sendVerificationEmail = (email, verificationLink) => {
+    const mailOptions = {
+        from: 'novamarket.sv@gmail.com',
+        to: email,
+        subject: 'Verificación de Correo Electrónico',
+        html: `<p>Por favor verifica tu correo electrónico haciendo click en el siguiente enlace: <a href="${verificationLink}">Verificar Correo</a></p>`
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.error("Error al enviar correo de verificación:", error);
+        } else {
+            console.log('Correo de verificación enviado:', info.response);
+        }
+    });
+};
+
+
+
+//verificar correo
+app.get('/verify-email', (req, res) => {
+    const { token } = req.query;
+
+    db.query('SELECT * FROM users WHERE verification_token = ?', [token], (err, results) => {
+        if (err) {
+            console.error("Error al verificar el token:", err);
+            return res.status(500).json({ error: 'Error al verificar el token' });
+        }
+
+        if (results.length > 0) {
+            const user = results[0];
+
+            db.query('UPDATE users SET verified = 1, verification_token = NULL WHERE id = ?', [user.id], (err, result) => {
+                if (err) {
+                    console.error("Error al actualizar la verificación del usuario:", err);
+                    return res.status(500).json({ error: 'Error al actualizar la verificación del usuario' });
+                }
+
+                return res.status(200).json({ message: 'Correo electrónico verificado exitosamente' });
+            });
+        } else {
+            return res.status(400).json({ error: 'Token de verificación inválido' });
+        }
+    });
+});
+
+
+app.get('/check-verification-status', (req, res) => {
+    const { userId } = req.query;
+
+    db.query('SELECT verified FROM users WHERE id = ?', [userId], (err, results) => {
+        if (err) {
+            console.error("Error al verificar el estado del usuario:", err);
+            return res.status(500).json({ error: 'Error al verificar el estado del usuario' });
+        }
+
+        if (results.length > 0) {
+            const verified = results[0].verified;
+            return res.status(200).json({ verified });
+        } else {
+            return res.status(400).json({ error: 'Usuario no encontrado' });
+        }
+    });
+});
+
 
 
 app.get('/product', (req, res) => {
@@ -35,44 +118,31 @@ app.get('/product', (req, res) => {
 
 
 
-
-// Importa el módulo 'body-parser' para procesar los datos enviados en el cuerpo de las solicitudes POST.
-const bodyParser = require('body-parser');
-
-// Configura body-parser para que pueda manejar solicitudes JSON.
-app.use(bodyParser.json());
-
-
 // Ruta para el registro de usuarios.
 app.post('/registro', (req, res) => {
     const { name, email, password } = req.body;
+    const verificationToken = crypto.randomBytes(32).toString('hex');
 
-    // Ejecuta la consulta de inserción
-    db.query('INSERT INTO users (name, email, password) VALUES (?, ?, ?)', [name, email, password], (err, result) => {
+    db.query('INSERT INTO users (name, email, password, verification_token) VALUES (?, ?, ?, ?)', [name, email, password, verificationToken], (err, result) => {
         if (err) {
-            // Maneja el error de la base de datos
             console.error("Error al registrar usuario:", err);
             return res.status(500).json({ error: 'Error al registrar usuario' });
         }
 
-        // Verifica si se insertó correctamente
         if (result.affectedRows > 0) {
-            // Obtener el ID del usuario recién registrado
             const userId = result.insertId;
+            const verificationLink = `http://localhost:1001/verify-email?token=${verificationToken}`;
+            sendVerificationEmail(email, verificationLink);
 
-            // Realizar una consulta para obtener los datos del usuario recién registrado
             db.query('SELECT * FROM users WHERE id = ?', [userId], (err, results) => {
                 if (err) {
                     console.error("Error al obtener los datos del usuario:", err);
                     return res.status(500).json({ error: 'Error al obtener los datos del usuario' });
                 }
 
-                // Tomar el primer resultado (el usuario recién registrado)
                 const user = results[0];
-
-                // Devolver los datos del usuario junto con un mensaje de éxito
                 return res.status(200).json({
-                    message: 'Usuario registrado exitosamente',
+                    message: 'Usuario registrado exitosamente, por favor verifica tu correo electrónico',
                     user: user
                 });
             });
@@ -81,6 +151,7 @@ app.post('/registro', (req, res) => {
         }
     });
 });
+
 
 
 // Ruta para el inicio de sesión.

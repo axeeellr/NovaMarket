@@ -19,6 +19,7 @@ function TitlePage() {
             '/cart':  'Carrito',
             '/shop':  'Tienda',
             '/scanner':  'Escáner',
+            '/verification': 'Verificación',
             '/paymentmethod':  'Método de Pago',
             '/shop/meats':  'Carnes',
             '/shop/grains':  'Granos básicos',

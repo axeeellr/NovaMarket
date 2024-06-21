@@ -71,13 +71,13 @@ function Login() {
     };
 
     const handleRegistro = async (e) => {
-        e.preventDefault()
-
+        e.preventDefault();
+    
         if (!registroNombre.trim()) {
             toast('¡El nombre es obligatorio!');
             return;
         }
-
+    
         if (!validateEmail(registroEmail)) {
             toast('¡Correo electrónico no válido!');
             return;
@@ -87,19 +87,21 @@ function Login() {
             toast('¡La contraseña requiere al menos 8 caracteres con números y letras!');
             return;
         }
-
+    
         const encryptedPassword = encryptData(registroPassword);
-
+    
         axios.post('http://localhost:1001/registro', { name: registroNombre, email: registroEmail, password: encryptedPassword })
         .then(response => {
             const user = response.data.user;
             login(user);
-            navigate('/');
+            navigate('/verification'); // Redirige a la página de verificación
         })
         .catch(error => {
             console.error(error);
+            toast('Error al registrar usuario');
         });
     };
+    
 
     return (
         <>

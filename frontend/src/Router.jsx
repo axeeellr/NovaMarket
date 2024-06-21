@@ -17,6 +17,8 @@ import Cleaning from './views/Cleaning';
 import Fruits from './views/Fruits';
 import PaymentMethod from './views/PaymentMethod';
 import Historial from './views/Historial';
+import Verification from './views/Verification';
+import VerificationSuccessfull from './views/VerificationSuccesfull'; 
 
 const AppRouter = () => {
     const { isAuthenticated } = useUser();
@@ -26,6 +28,8 @@ const AppRouter = () => {
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/verification" element={<Verification /> } />
+                <Route path="/verificationsuccessfull" element={<VerificationSuccessfull /> } />
                 <Route path="/notifications" element={isAuthenticated ? <Notifications /> : <Navigate to="/login" />} />
                 <Route path="/profile" element={isAuthenticated ? <Profile /> : <Navigate to="/login" />} />
                 <Route path="/scanner" element={isAuthenticated ? <Scanner /> : <Navigate to="/login" />} />
