@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
 import { Toaster, toast } from 'react-hot-toast';
 
 import { useUser } from '../UserContext';
@@ -9,22 +9,19 @@ import { encryptData } from '../CryptoUtils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle, faFacebook, faTwitter} from '@fortawesome/free-brands-svg-icons';
 import { faArrowCircleLeft, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-
 import '../css/root.css';
 import '../css/login.css';
 
 function Login() {
-
+    const { user } = useUser();
     const navigate = useNavigate();
     const { login } = useUser();
 
     const [loginEmail, setLoginEmail] = useState('');
     const [loginPassword, setLoginPassword] = useState('');
-    
     const [registroNombre, setRegistroNombre] = useState('');
     const [registroEmail, setRegistroEmail] = useState('');
     const [registroPassword, setRegistroPassword] = useState('');
-
     const [showPassword, setShowPassword] = useState(false);
 
     const togglePasswordVisibility = () => {
@@ -32,21 +29,39 @@ function Login() {
     };
 
     const validateEmail = (email) => {
-        // Utilizamos una expresión regular para validar el formato del correo electrónico
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return regex.test(String(email).toLowerCase());
     };
 
     const validatePassword = (password) => {
-        // Validamos que la contraseña tenga al menos 8 caracteres y contenga al menos un número y una letra
         const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
         return regex.test(password);
     };
 
-
+    useEffect(() => {
+        const checkVerificationStatus = async () => {
+            if (user) {
+                const userId = user.id;
+                try {
+                    const response = await axios.get(`http://localhost:1001/check-verification-status?userId=${userId}`);
+                    if (!response.data.verified) {
+                        localStorage.removeItem('firstVisit');
+                        localStorage.removeItem('user');
+                        localStorage.removeItem('isAuthenticated');
+                        window.location.reload();
+                    }
+                } catch (error) {
+                    console.error('Error al verificar el estado de verificación:', error);
+                }
+            }
+        };
+    
+        checkVerificationStatus();
+    }, []);
+    
 
     const handleLogin = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
 
         if (!validateEmail(loginEmail)) {
             toast('¡Correo electrónico no válido!');
@@ -58,50 +73,51 @@ function Login() {
             return;
         }
 
-        axios.post('http://localhost:1001/login', { email: loginEmail, password: loginPassword })
-        .then(response => {
+        try {
+            const response = await axios.post('http://localhost:1001/login', { email: loginEmail, password: loginPassword });
             const user = response.data.user;
             login(user);
             navigate('/');
-        })
-        .catch(error => {
+        } catch (error) {
             console.error(error);
             toast('¡Datos incorrectos!');
-        });
+        }
     };
 
     const handleRegistro = async (e) => {
         e.preventDefault();
-    
+
         if (!registroNombre.trim()) {
             toast('¡El nombre es obligatorio!');
             return;
         }
-    
+
         if (!validateEmail(registroEmail)) {
             toast('¡Correo electrónico no válido!');
             return;
         }
-        
+
         if (!validatePassword(registroPassword)) {
             toast('¡La contraseña requiere al menos 8 caracteres con números y letras!');
             return;
         }
-    
+
         const encryptedPassword = encryptData(registroPassword);
-    
-        axios.post('http://localhost:1001/registro', { name: registroNombre, email: registroEmail, password: encryptedPassword })
-        .then(response => {
+
+        try {
+            const response = await axios.post('http://localhost:1001/registro', { name: registroNombre, email: registroEmail, password: encryptedPassword });
             const user = response.data.user;
             login(user);
             navigate('/verification'); // Redirige a la página de verificación
-        })
-        .catch(error => {
+        } catch (error) {
             console.error(error);
-            toast('Error al registrar usuario');
-        });
+            if (error.response && error.response.data && error.response.data.error === 'El correo electrónico ya está registrado') {
+                toast('¡El correo electrónico ya está registrado!');
+            } else {
+                toast('Error al registrar usuario');
+            }
+        }
     };
-    
 
     return (
         <>

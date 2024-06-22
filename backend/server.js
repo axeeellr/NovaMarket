@@ -5,6 +5,8 @@ const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 const app = express()
 
+const { decryptData } = require('./cryptoutils');
+
 app.use(cors())
 
 const db = mysql2.createConnection({
@@ -24,9 +26,9 @@ const bodyParser = require('body-parser');
 // Configura body-parser para que pueda manejar solicitudes JSON.
 app.use(bodyParser.json());
 
-const { decryptData } = require('./cryptoutils');
 
 
+//Email
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -54,7 +56,7 @@ const sendVerificationEmail = (email, verificationLink) => {
 
 
 
-//verificar correo
+//Ruta para verificar el correo
 app.get('/verify-email', (req, res) => {
     const { token } = req.query;
 
@@ -82,6 +84,8 @@ app.get('/verify-email', (req, res) => {
 });
 
 
+
+//Ruta para saber si el usuario ya verificó su correo
 app.get('/check-verification-status', (req, res) => {
     const { userId } = req.query;
 
@@ -102,53 +106,51 @@ app.get('/check-verification-status', (req, res) => {
 
 
 
-app.get('/product', (req, res) => {
-    const qrCode = req.query.code;
-    db.query('SELECT * FROM products WHERE code = ?', [qrCode], (err, results) => {
-        if (err) {
-            return res.status(500).json({ error: 'Error al consultar la base de datos' });
-        }
-        if (results.length > 0) {
-            res.json(results[0]);
-        } else {
-            res.status(404).json({ error: 'Producto no encontrado' });
-        }
-    });
-});
-
-
-
 // Ruta para el registro de usuarios.
 app.post('/registro', (req, res) => {
     const { name, email, password } = req.body;
     const verificationToken = crypto.randomBytes(32).toString('hex');
 
-    db.query('INSERT INTO users (name, email, password, verification_token) VALUES (?, ?, ?, ?)', [name, email, password, verificationToken], (err, result) => {
+    // Verificar si el correo electrónico ya está registrado
+    db.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
         if (err) {
-            console.error("Error al registrar usuario:", err);
-            return res.status(500).json({ error: 'Error al registrar usuario' });
+            console.error("Error al verificar el correo electrónico:", err);
+            return res.status(500).json({ error: 'Error al verificar el correo electrónico' });
         }
 
-        if (result.affectedRows > 0) {
-            const userId = result.insertId;
-            const verificationLink = `http://localhost:1001/verify-email?token=${verificationToken}`;
-            sendVerificationEmail(email, verificationLink);
+        if (results.length > 0) {
+            // El correo electrónico ya está registrado
+            return res.status(400).json({ error: 'El correo electrónico ya está registrado' });
+        }
 
-            db.query('SELECT * FROM users WHERE id = ?', [userId], (err, results) => {
-                if (err) {
-                    console.error("Error al obtener los datos del usuario:", err);
-                    return res.status(500).json({ error: 'Error al obtener los datos del usuario' });
-                }
+        // Insertar el nuevo usuario en la base de datos
+        db.query('INSERT INTO users (name, email, password, verification_token) VALUES (?, ?, ?, ?)', [name, email, password, verificationToken], (err, result) => {
+            if (err) {
+                console.error("Error al registrar usuario:", err);
+                return res.status(500).json({ error: 'Error al registrar usuario' });
+            }
 
-                const user = results[0];
-                return res.status(200).json({
-                    message: 'Usuario registrado exitosamente, por favor verifica tu correo electrónico',
-                    user: user
+            if (result.affectedRows > 0) {
+                const userId = result.insertId;
+                const verificationLink = `http://localhost:1001/verify-email?token=${verificationToken}`;
+                sendVerificationEmail(email, verificationLink);
+
+                db.query('SELECT * FROM users WHERE id = ?', [userId], (err, results) => {
+                    if (err) {
+                        console.error("Error al obtener los datos del usuario:", err);
+                        return res.status(500).json({ error: 'Error al obtener los datos del usuario' });
+                    }
+
+                    const user = results[0];
+                    return res.status(200).json({
+                        message: 'Usuario registrado exitosamente, por favor verifica tu correo electrónico',
+                        user: user
+                    });
                 });
-            });
-        } else {
-            return res.status(500).json({ error: 'Error al registrar usuario' });
-        }
+            } else {
+                return res.status(500).json({ error: 'Error al registrar usuario' });
+            }
+        });
     });
 });
 
@@ -192,6 +194,7 @@ app.post('/login', (req, res) => {
 });
 
 
+
 //Ruta para obtener los datos del usuario
 app.get('/data/:id', (req, res) => {
     const id = req.params.id;
@@ -210,6 +213,24 @@ app.get('/data/:id', (req, res) => {
         });
     });
 });
+
+
+
+//Ruta para encontrar el producto por QR
+app.get('/product', (req, res) => {
+    const qrCode = req.query.code;
+    db.query('SELECT * FROM products WHERE code = ?', [qrCode], (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: 'Error al consultar la base de datos' });
+        }
+        if (results.length > 0) {
+            res.json(results[0]);
+        } else {
+            res.status(404).json({ error: 'Producto no encontrado' });
+        }
+    });
+});
+
 
 
 // Ruta para actualizar los datos del usuario
@@ -257,6 +278,8 @@ app.put('/data/:id', (req, res) => {
     }
 });
 
+
+
 //Ruta para agregar tarjetas de crédito
 app.post('/cards', (req, res) => {
     const { id_user, number, holder, date, cvv } = req.body;
@@ -278,6 +301,7 @@ app.post('/cards', (req, res) => {
     });
 
 });
+
 
 
 // Ruta para obtener los datos de las tarjetas de crédito de un usuario específico
@@ -303,11 +327,11 @@ app.get('/getCards/:userId', (req, res) => {
 });
 
 
-// Ruta para obtener los datos de las tarjetas de crédito de un usuario específico
+
+// Ruta para obtener los datos de los carritos de un usuario específico
 app.get('/getCarts/:userId', (req, res) => {
     const userId = req.params.userId;
 
-    // Consulta a la base de datos para obtener las tarjetas de crédito asociadas al ID de usuario
     db.query('SELECT * FROM cart WHERE user_id = ?', [userId], (err, results) => {
         if (err) {
             console.error("Error al obtener los carritos:", err);
@@ -326,6 +350,8 @@ app.get('/getCarts/:userId', (req, res) => {
 });
 
 
+
+//Ruta para crear un carrito
 app.post('/addCart', (req, res) => {
     const { user_id, name, date, card_id, total } = req.body;
 
@@ -349,6 +375,7 @@ app.post('/addCart', (req, res) => {
 
 
 
+//Ruta para añadir productos al carrito
 app.post('/addCartItem', (req, res) => {
     const { cart_id, product_id, quantity } = req.body;
 
@@ -371,8 +398,7 @@ app.post('/addCartItem', (req, res) => {
 
 
 
-
-//Añadir al carrito desde shop
+//Añadir al carrito desde la shop
 app.get('/productByName', (req, res) => {
     const productName = req.query.name;
     db.query('SELECT * FROM products WHERE name = ?', [productName], (err, results) => {
