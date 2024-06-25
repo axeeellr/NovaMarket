@@ -1,57 +1,58 @@
-import React, { useState } from 'react';
-import ImageMapper from 'react-img-mapper';
-import { isMobile } from 'react-device-detect';
+import React, { useRef, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+import fruits from '../assets/fruits.jpg';
+import '../css/fruits.css';
 
 import TitlePage from '../components/TitlePage';
 import MenuShop from '../components/MenuShop';
-import PulseEffect from '../components/PulseEffect';
 import Chat from '../components/Chat';
 
-import fruits from '../assets/fruits.jpg';
-import '../css/shop.css';
-
-const Fruits = () => {
+const App = () => {
     const navigate = useNavigate();
     const [menuVisible, setMenuVisible] = useState(false);
     const [hoveredArea, setHoveredArea] = useState(null);
 
+    const points = [
+        { name: 'nada', id: 'nada', x: 0.2, y: 0.3 },
+        { name: 'Mandarinas', id: 'Mandarinas', x: 0.07, y: 0.75 },
+        { name: 'Peras', id: 'Peras', x: 0.2, y: 0.65 },
+        { name: 'Tomates', id: 'Tomates', x: 0.07, y: 0.51 },
+        { name: 'Uvas', id: 'Uvas', x: 0.18, y: 0.48 },
+        { name: 'Manzanas', id: 'Manzana Roja', x: 0.29, y: 0.57 },
+        { name: 'Naranjas', id: 'Naranjas', x: 0.32, y: 0.48 },
+        { name: 'Mangos', id: 'Mangos', x: 0.9, y: 0.63 },
+        { name: 'Rábanos', id: 'Rábanos', x: 0.83, y: 0.56 },
+        { name: 'Cilantro', id: 'Cilantro Orgánico', x: 0.78, y: 0.53 },
+        { name: 'Pepinos', id: 'Pepino', x: 0.84, y: 0.43 },
+        { name: 'Papas', id: 'Papa Americana', x: 0.74, y: 0.51 },
+    ];
+
+    // Referencia a la imagen para calcular sus dimensiones
+    const imgRef = useRef(null);
+
+    // Función para ajustar los puntos según las dimensiones de la imagen
+    useEffect(() => {
+        const img = imgRef.current;
+        if (img) {
+            const imgWidth = img.width;
+            const imgHeight = img.height;
+
+            // Actualizar posición de los puntos basados en las dimensiones de la imagen
+            points.forEach(point => {
+                const left = point.x * imgWidth;
+                const top = point.y * imgHeight;
+                const pointElement = document.getElementById(`point-${point.id}`);
+                if (pointElement) {
+                    pointElement.style.left = `${left}px`;
+                    pointElement.style.top = `${top}px`;
+                }
+            });
+        }
+    }, [points]);
+
     const toggleMenuVisibility = () => {
         setMenuVisible(!menuVisible);
-    };
-
-    const PC_COORDS = [
-        { name: 'Mandarinas', id: 'Mandarinas', shape: 'circle', coords: [130, 540, 10], preFillColor: 'rgba(255, 255, 255, 0.7)', strokeColor: 'black', lineWidth: 5},
-        { name: 'Peras', id: 'Peras', shape: 'circle', coords: [300, 450, 10], preFillColor: 'rgba(255, 255, 255, 0.7)', strokeColor: 'black', lineWidth: 5 },
-        { name: 'Tomates', id: 'Tomates', shape: 'circle', coords: [100, 360, 10], preFillColor: 'rgba(255, 255, 255, 0.7)', strokeColor: 'black', lineWidth: 5 },
-        { name: 'Uvas', id: 'Uvas', shape: 'circle', coords: [290, 345, 10], preFillColor: 'rgba(255, 255, 255, 0.7)', strokeColor: 'black', lineWidth: 5 },
-        { name: 'Manzanas', id: 'Manzana Roja', shape: 'circle', coords: [450, 400, 10], preFillColor: 'rgba(255, 255, 255, 0.7)', strokeColor: 'black', lineWidth: 5 },
-        { name: 'Naranjas', id: 'Naranjas', shape: 'circle', coords: [510, 340, 10], preFillColor: 'rgba(255, 255, 255, 0.7)', strokeColor: 'black', lineWidth: 5 },
-        { name: 'Mangos', id: 'Mangos', shape: 'circle', coords: [1440, 450, 10], preFillColor: 'rgba(255, 255, 255, 0.7)', strokeColor: 'black', lineWidth: 5 },
-        { name: 'Rábanos', id: 'Rábanos', shape: 'circle', coords: [1320, 400, 10], preFillColor: 'rgba(255, 255, 255, 0.7)', strokeColor: 'black', lineWidth: 5 },
-        { name: 'Cilantro', id: 'Cilantro Orgánico', shape: 'circle', coords: [1230, 380, 10], preFillColor: 'rgba(255, 255, 255, 0.7)', strokeColor: 'black', lineWidth: 5 },
-        { name: 'Pepinos', id: 'Pepino', shape: 'circle', coords: [1330, 310, 10], preFillColor: 'rgba(255, 255, 255, 0.7)', strokeColor: 'black', lineWidth: 5 },
-        { name: 'Papas', id: 'Papa Americana', shape: 'circle', coords: [1170, 365, 10], preFillColor: 'rgba(255, 255, 255, 0.7)', strokeColor: 'black', lineWidth: 5 },
-    ];
-
-    const MOBILE_COORDS = [
-        { name: 'Mandarinas', id: 'Mandarinas', shape: 'circle', coords: [130, 600, 10], preFillColor: 'rgba(255, 255, 255, 0.7)', strokeColor: 'black', lineWidth: 5},
-        { name: 'Peras', id: 'Peras', shape: 'circle', coords: [300, 530, 10], preFillColor: 'rgba(255, 255, 255, 0.7)', strokeColor: 'black', lineWidth: 5 },
-        { name: 'Tomates', id: 'Tomates', shape: 'circle', coords: [100, 430, 10], preFillColor: 'rgba(255, 255, 255, 0.7)', strokeColor: 'black', lineWidth: 5 },
-        { name: 'Uvas', id: 'Uvas', shape: 'circle', coords: [290, 415, 10], preFillColor: 'rgba(255, 255, 255, 0.7)', strokeColor: 'black', lineWidth: 5 },
-        { name: 'Manzanas', id: 'Manzana Roja', shape: 'circle', coords: [450, 480, 10], preFillColor: 'rgba(255, 255, 255, 0.7)', strokeColor: 'black', lineWidth: 5 },
-        { name: 'Naranjas', id: 'Naranjas', shape: 'circle', coords: [510, 400, 10], preFillColor: 'rgba(255, 255, 255, 0.7)', strokeColor: 'black', lineWidth: 5 },
-        { name: 'Mangos', id: 'Mangos', shape: 'circle', coords: [1450, 510, 10], preFillColor: 'rgba(255, 255, 255, 0.7)', strokeColor: 'black', lineWidth: 5 },
-        { name: 'Rábanos', id: 'Rábanos', shape: 'circle', coords: [1350, 455, 10], preFillColor: 'rgba(255, 255, 255, 0.7)', strokeColor: 'black', lineWidth: 5 },
-        { name: 'Cilantro', id: 'Cilantro Orgánico', shape: 'circle', coords: [1250, 440, 10], preFillColor: 'rgba(255, 255, 255, 0.7)', strokeColor: 'black', lineWidth: 5 },
-        { name: 'Pepinos', id: 'Pepino', shape: 'circle', coords: [1340, 380, 10], preFillColor: 'rgba(255, 255, 255, 0.7)', strokeColor: 'black', lineWidth: 5 },
-        { name: 'Papas', id: 'Papa Americana', shape: 'circle', coords: [1240, 380, 10], preFillColor: 'rgba(255, 255, 255, 0.7)', strokeColor: 'black', lineWidth: 5 },
-    ];
-
-    // Utiliza las coordenadas adecuadas según el tipo de dispositivo
-    const MAP = {
-        name: 'my-map',
-        areas: isMobile ? MOBILE_COORDS : PC_COORDS,
     };
 
     const handleClick = area => {
@@ -66,57 +67,41 @@ const Fruits = () => {
         setHoveredArea(null);
     };
 
-    return(
+    return (
         <>
-            <TitlePage />
-            <div className={`shop__container ${menuVisible ? 'blur' : ''}`}>
-                <ImageMapper 
-                    src={fruits} 
-                    map={MAP} 
-                    onClick={handleClick} 
-                    onMouseEnter={handleMouseEnter} 
-                    onMouseLeave={handleMouseLeave}  
-                    className="container__img"
+        <TitlePage />
+        <div className="shop__container">
+            <img
+                ref={imgRef}
+                src={fruits}
+                alt="Supermercado"
+                className="responsive-image"
+            />
+            {points.map(point => (
+                <div
+                    key={point.id}
+                    id={`point-${point.id}`}
+                    className="point"
+                    style={{
+                        left: `${point.x * 100}%`,
+                        top: `${point.y * 100}%`,
+                    }}
+                    onClick={() => handleClick(point)}
+                    onMouseEnter={() => handleMouseEnter(point)}
+                    onMouseLeave={handleMouseLeave}
                 />
-                {MAP.areas.map((area, index) => (
-                    <PulseEffect 
-                        key={index}
-                        x={area.coords[0] - area.coords[2]} // Adjust for the radius
-                        y={area.coords[1] - area.coords[2]} // Adjust for the radius
-                        size={area.coords[2] * 2} // Diameter of the circle
-                    />
-                ))}
+            ))}
 
-                <MenuShop menuVisible={menuVisible} toggleMenuVisibility={toggleMenuVisibility} />
+            <MenuShop menuVisible={menuVisible} toggleMenuVisibility={toggleMenuVisibility} />
                 
-                <div className="shop__sections__button">
-                    <button onClick={toggleMenuVisibility}>Pasillos</button>
-                </div>
-
-                <Chat />
-
-                {hoveredArea && (
-                    <div 
-                        className="hover__label" 
-                        style={{
-                            position: 'absolute',
-                            left: `${hoveredArea.coords[0]}px`,
-                            top: `${hoveredArea.coords[1] + 20}px`, // Ajusta la posición para estar justo debajo
-                            transform: 'translate(-50%, 0)', // Centrar horizontalmente
-                            background: 'rgba(0, 0, 0, 0.7)',
-                            color: 'white',
-                            padding: '5px',
-                            borderRadius: '5px',
-                            pointerEvents: 'none',
-                            zIndex: 1000,
-                        }}
-                    >
-                        {hoveredArea.name}
-                    </div>
-                )}
+            <div className="shop__sections__button">
+                <button onClick={toggleMenuVisibility}>Pasillos</button>
             </div>
-        </>
-    )
-}
 
-export default Fruits
+            <Chat />
+        </div>
+        </>
+    );
+};
+
+export default App;
