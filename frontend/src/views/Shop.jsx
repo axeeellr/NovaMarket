@@ -1,88 +1,101 @@
-import React, { useState, useRef, useEffect } from 'react';
-import ImageMapper from 'react-img-mapper';
-import { isMobile } from 'react-device-detect';
+import React, { useRef, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+import fruits from '../assets/entrance.png';
+import '../css/fruits.css';
 
 import TitlePage from '../components/TitlePage';
 import MenuShop from '../components/MenuShop';
-import PulseEffect from '../components/PulseEffect';
 import Chat from '../components/Chat';
-import Help from '../components/Help'; 
 
-import entrance from '../assets/entrancee.jpg';
-
-import '../css/shop.css';
-
-const Shop = () => {
+const App = () => {
     const navigate = useNavigate();
     const [menuVisible, setMenuVisible] = useState(false);
-    const [hoveredArea, setHoveredArea] = useState(null);
-    const [helpVisible, setHelpVisible] = useState(false);  // Estado para la visibilidad de shop__help
-    const containerRef = useRef(null); // Create a ref for the container
+    const [tooltip, setTooltip] = useState({ visible: false, name: '', x: 0, y: 0 });
+
+    const points = [
+        { name: 'nada', id: 'nada', x: 0.2, y: 0.3 },
+        { name: 'Entrar a NovaMarket', id: 'Mandarinas', x: 0.5, y: 0.65 },
+    ];
+
+    const imgRef = useRef(null);
 
     useEffect(() => {
-        const container = containerRef.current;
-        if (container) {
-            const centerX = (container.scrollWidth - container.clientWidth) / 2;
-            container.scrollLeft = centerX;
-        }
+        const img = imgRef.current;
+        if (img) {
+            const imgWidth = img.width;
+            const imgHeight = img.height;
 
-        const isFirstVisit = localStorage.getItem('firstVisit');
-        if (!isFirstVisit) {
-            setHelpVisible(true);
-            localStorage.setItem('firstVisit', 'true');
+            points.forEach(point => {
+                const left = point.x * imgWidth;
+                const top = point.y * imgHeight;
+                const pointElement = document.getElementById(`point-${point.id}`);
+                if (pointElement) {
+                    pointElement.style.left = `${left}px`;
+                    pointElement.style.top = `${top}px`;
+                }
+            });
         }
-    }, []);
+    }, [points]);
 
     const toggleMenuVisibility = () => {
         setMenuVisible(!menuVisible);
     };
 
-    const PC_COORDS = [
-        { name: 'Entrar a NovaMarket', id: 'nm-x-0', shape: 'circle', coords: [820, 470, 10], preFillColor: 'rgba(255, 255, 255, 0.7)', strokeColor: 'black', lineWidth: 5 },
-    ];
-
-    const MOBILE_COORDS = [
-        { name: 'Entrar a NovaMarket', id: 'nm-x-0', shape: 'circle', coords: [820, 550, 10], preFillColor: 'rgba(255, 255, 255, 0.7)', strokeColor: 'black', lineWidth: 5 },
-    ];
-
-    const MAP = {
-        name: 'my-map',
-        areas: isMobile ? MOBILE_COORDS : PC_COORDS,
+    const handleClick = () => {
+        navigate('/shop/fruits');
     };
 
-    const handleClick = area => {
-        navigate(`/shop/fruits`);
-    };
+    const handleMouseEnter = (e, point) => {
+        const imgRect = imgRef.current.getBoundingClientRect();
+        const x = e.clientX - imgRect.left;
+        const y = e.clientY - imgRect.top;
 
-    const handleMouseEnter = area => {
-        setHoveredArea(area);
+        setTooltip({
+            visible: true,
+            name: point.name,
+            x: x + 10,  // Offset for better positioning
+            y: y + 10   // Offset for better positioning
+        });
     };
 
     const handleMouseLeave = () => {
-        setHoveredArea(null);
+        setTooltip({ visible: false, name: '', x: 0, y: 0 });
     };
 
     return (
         <>
             <TitlePage />
-            <div className={`shop__container ${menuVisible || helpVisible ? 'blur' : ''}`} ref={containerRef}>
-                <ImageMapper
-                    src={entrance}
-                    map={MAP}
-                    onClick={handleClick}
-                    onMouseEnter={handleMouseEnter}
-                    onMouseLeave={handleMouseLeave}
-                    className="container__img"
+            <div className="shop__container">
+                <img
+                    ref={imgRef}
+                    src={fruits}
+                    alt="Supermercado"
+                    className="responsive-image"
                 />
-                {MAP.areas.map((area, index) => (
-                    <PulseEffect
-                        key={index}
-                        x={area.coords[0] - area.coords[2]} // Adjust for the radius
-                        y={area.coords[1] - area.coords[2]} // Adjust for the radius
-                        size={area.coords[2] * 2} // Diameter of the circle
+                {points
+                .filter(point => point.id !== 'nada')
+                .map(point => (
+                    <div
+                        key={point.id}
+                        id={`point-${point.id}`}
+                        className="point"
+                        style={{
+                            left: `${point.x * 100}%`,
+                            top: `${point.y * 100}%`,
+                        }}
+                        onClick={() => handleClick()}
+                        onMouseEnter={(e) => handleMouseEnter(e, point)}
+                        onMouseLeave={handleMouseLeave}
                     />
                 ))}
+
+                <div
+                    className={`tooltip ${tooltip.visible ? 'visible' : ''}`}
+                    style={{ left: `${tooltip.x}px`, top: `${tooltip.y}px` }}
+                >
+                    {tooltip.name}
+                </div>
 
                 <MenuShop menuVisible={menuVisible} toggleMenuVisibility={toggleMenuVisibility} />
                 
@@ -90,33 +103,10 @@ const Shop = () => {
                     <button onClick={toggleMenuVisibility}>Pasillos</button>
                 </div>
 
-                <Help helpVisible={helpVisible} setHelpVisible={setHelpVisible} />
-                
                 <Chat />
-
-                {hoveredArea && (
-                    <div
-                        className="hover__label"
-                        style={{
-                            position: 'absolute',
-                            left: `${hoveredArea.coords[0]}px`,
-                            top: `${hoveredArea.coords[1] + 20}px`, // Ajusta la posición para estar justo debajo
-                            transform: 'translate(-50%, 0)', // Centrar horizontalmente
-                            background: 'rgba(0, 0, 0, 0.7)',
-                            color: 'white',
-                            padding: '5px',
-                            borderRadius: '5px',
-                            pointerEvents: 'none',
-                            zIndex: 1000,
-                            textAlign: 'center'
-                        }}
-                    >
-                        {hoveredArea.name}
-                    </div>
-                )}
             </div>
         </>
     );
-}
+};
 
-export default Shop;
+export default App;

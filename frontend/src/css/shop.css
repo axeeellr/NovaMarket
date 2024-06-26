@@ -1,4 +1,4 @@
-.shop__container{
+/*.shop__container{
     position: relative;
     height: 100vh;
     overflow-x: scroll;
@@ -116,7 +116,7 @@ a{
 }
 
 .shop__help.hidden {
-    bottom: -65vh; /* Esconder hacia abajo */
+    bottom: -65vh; 
     opacity: 0;
     visibility: hidden;
 }
@@ -207,17 +207,17 @@ a{
 .chat__container {
     position: fixed;
     z-index: 5;
-    bottom: -90vh; /* Ocultar inicialmente */
+    bottom: -90vh; 
     left: 0;
     right: 0;
     height: 90vh;
     display: flex;
     flex-direction: column;
-    transition: bottom 0.4s ease; /* Transición */
+    transition: bottom 0.4s ease; 
 }
 
 .chat__container.visible {
-    bottom: 0; /* Mostrar el chat cuando es visible */
+    bottom: 0; 
 }
 
 .chat__header{
@@ -368,7 +368,7 @@ a{
     }
 }
 
-
+/*
 
 @media only screen and (min-width: 768px){
     .shop__container{
@@ -462,4 +462,4 @@ a{
         background-color: #F2EBCF;
         border-radius: 50%;
     }
-}
+}*/

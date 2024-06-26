@@ -1,6 +1,9 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+
 import fruits from '../assets/fruits.jpg';
 import '../css/fruits.css';
 
@@ -11,7 +14,7 @@ import Chat from '../components/Chat';
 const App = () => {
     const navigate = useNavigate();
     const [menuVisible, setMenuVisible] = useState(false);
-    const [hoveredArea, setHoveredArea] = useState(null);
+    const [tooltip, setTooltip] = useState({ visible: false, name: '', x: 0, y: 0 });
 
     const points = [
         { name: 'nada', id: 'nada', x: 0.2, y: 0.3 },
@@ -28,17 +31,20 @@ const App = () => {
         { name: 'Papas', id: 'Papa Americana', x: 0.74, y: 0.51 },
     ];
 
-    // Referencia a la imagen para calcular sus dimensiones
+    const arrows = [
+        { name: 'nada', id: 'nada', x: 0.2, y: 0.3 },
+        { name: 'Ir al inicio', id: 'Atrás', x: 0.55, y: 0.4 },
+        { name: 'Ir a carnes', id: 'Adelante', x: 0.58, y: 0.4 },
+    ];
+
     const imgRef = useRef(null);
 
-    // Función para ajustar los puntos según las dimensiones de la imagen
     useEffect(() => {
         const img = imgRef.current;
         if (img) {
             const imgWidth = img.width;
             const imgHeight = img.height;
 
-            // Actualizar posición de los puntos basados en las dimensiones de la imagen
             points.forEach(point => {
                 const left = point.x * imgWidth;
                 const top = point.y * imgHeight;
@@ -48,8 +54,18 @@ const App = () => {
                     pointElement.style.top = `${top}px`;
                 }
             });
+
+            arrows.forEach(arrow => {
+                const left = arrow.x * imgWidth;
+                const top = arrow.y * imgHeight;
+                const arrowElement = document.getElementById(`arrow-${arrow.id}`);
+                if (arrowElement) {
+                    arrowElement.style.left = `${left}px`;
+                    arrowElement.style.top = `${top}px`;
+                }
+            });
         }
-    }, [points]);
+    }, [points, arrows]);
 
     const toggleMenuVisibility = () => {
         setMenuVisible(!menuVisible);
@@ -59,47 +75,92 @@ const App = () => {
         navigate(`/product/${area.id}`);
     };
 
-    const handleMouseEnter = area => {
-        setHoveredArea(area);
+    const handleArrowClick = area => {
+        if (area.id === 'Atrás') {
+            navigate('/shop'); // Reemplazar con la ruta deseada
+        } else if (area.id === 'Adelante') {
+            navigate('/shop/meats'); // Reemplazar con la ruta deseada
+        }
+    };
+
+    const handleMouseEnter = (e, point) => {
+        const imgRect = imgRef.current.getBoundingClientRect();
+        const x = e.clientX - imgRect.left;
+        const y = e.clientY - imgRect.top;
+
+        setTooltip({
+            visible: true,
+            name: point.name,
+            x: x + 10,  // Offset for better positioning
+            y: y + 10   // Offset for better positioning
+        });
     };
 
     const handleMouseLeave = () => {
-        setHoveredArea(null);
+        setTooltip({ visible: false, name: '', x: 0, y: 0 });
     };
 
     return (
         <>
-        <TitlePage />
-        <div className="shop__container">
-            <img
-                ref={imgRef}
-                src={fruits}
-                alt="Supermercado"
-                className="responsive-image"
-            />
-            {points.map(point => (
-                <div
-                    key={point.id}
-                    id={`point-${point.id}`}
-                    className="point"
-                    style={{
-                        left: `${point.x * 100}%`,
-                        top: `${point.y * 100}%`,
-                    }}
-                    onClick={() => handleClick(point)}
-                    onMouseEnter={() => handleMouseEnter(point)}
-                    onMouseLeave={handleMouseLeave}
+            <TitlePage />
+            <div className="shop__container">
+                <img
+                    ref={imgRef}
+                    src={fruits}
+                    alt="Supermercado"
+                    className="responsive-image"
                 />
-            ))}
+                {points
+                    .filter(point => point.id !== 'nada') // Filtrar el primer punto
+                    .map(point => (
+                        <div
+                            key={point.id}
+                            id={`point-${point.id}`}
+                            className="point"
+                            style={{
+                                left: `${point.x * 100}%`,
+                                top: `${point.y * 100}%`,
+                            }}
+                            onClick={() => handleClick(point)}
+                            onMouseEnter={(e) => handleMouseEnter(e, point)}
+                            onMouseLeave={handleMouseLeave}
+                        />
+                    ))}
 
-            <MenuShop menuVisible={menuVisible} toggleMenuVisibility={toggleMenuVisibility} />
+                {arrows
+                    .filter(arrow => arrow.id !== 'nada') // Filtrar el primer arrow
+                    .map(arrow => (
+                        <div
+                            key={arrow.id}
+                            id={`arrow-${arrow.id}`}
+                            className="arrow"
+                            style={{
+                                left: `${arrow.x * 100}%`,
+                                top: `${arrow.y * 100}%`,
+                            }}
+                            onClick={() => handleArrowClick(arrow)}
+                            onMouseEnter={(e) => handleMouseEnter(e, arrow)}
+                            onMouseLeave={handleMouseLeave}
+                        >
+                            <FontAwesomeIcon icon={arrow.id === 'Atrás' ? faArrowLeft : faArrowRight} />
+                        </div>
+                    ))}
+
+                <div
+                    className={`tooltip ${tooltip.visible ? 'visible' : ''}`}
+                    style={{ left: `${tooltip.x}px`, top: `${tooltip.y}px` }}
+                >
+                    {tooltip.name}
+                </div>
+
+                <MenuShop menuVisible={menuVisible} toggleMenuVisibility={toggleMenuVisibility} />
                 
-            <div className="shop__sections__button">
-                <button onClick={toggleMenuVisibility}>Pasillos</button>
-            </div>
+                <div className="shop__sections__button">
+                    <button onClick={toggleMenuVisibility}>Pasillos</button>
+                </div>
 
-            <Chat />
-        </div>
+                <Chat />
+            </div>
         </>
     );
 };
