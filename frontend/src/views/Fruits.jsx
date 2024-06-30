@@ -139,10 +139,9 @@ const App = () => {
                                 top: `${arrow.y * 100}%`,
                             }}
                             onClick={() => handleArrowClick(arrow)}
-                            onMouseEnter={(e) => handleMouseEnter(e, arrow)}
-                            onMouseLeave={handleMouseLeave}
                         >
-                            <FontAwesomeIcon icon={arrow.id === 'Atrás' ? faArrowLeft : faArrowRight} />
+                            <FontAwesomeIcon icon={arrow.id === 'Atrás' ? faArrowLeft : faArrowRight} className='arrowIcon'/>
+                            <p className='arrowText'>{arrow.name}</p>
                         </div>
                     ))}
 
