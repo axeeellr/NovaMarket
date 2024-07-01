@@ -18,7 +18,7 @@ const Delivery = () => {
         <TitlePage/>
         <div className="delivery__local">
             <div className="local__input">
-                <input type="radio" name="" id="" />
+                <input type='radio' name="" id="" />
             </div>
             <div className="local__info">
                 <h2>Recoger en tienda</h2>
@@ -34,7 +34,10 @@ const Delivery = () => {
                 <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consectetur nulla numquam totam, dolorum maiores perspiciatis!</p>
             </div>
         </div>
-        <button>Continuar</button>
+        <button>
+            <span>Continuar</span>
+            <span>${localStorage.getItem('cartPrice')}</span>
+        </button>
     </div>
     </>
     )

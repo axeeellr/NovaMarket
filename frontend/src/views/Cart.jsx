@@ -67,7 +67,11 @@ const Cart = () => {
             toast('¡La compra aún no tiene nombre!');
         } else {
             localStorage.setItem('cartPrice', calculateTotal());
-            navigate('/paymentmethod');
+            if (localStorage.getItem('cartType') == 'shop') {
+                navigate('/delivery');
+            }else{
+                navigate('/paymentmethod');
+            }
         }
     };
 

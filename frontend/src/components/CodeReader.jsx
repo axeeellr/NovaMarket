@@ -8,16 +8,17 @@ const CodeReader = (props) => {
 
   useEffect(() => {
     if (data !== 'No result') {
-        fetch(`http://localhost:1001/product?code=${encodeURIComponent(data)}`)
-            .then(response => response.json())
-            .then(data => {
-              if (data.error) {
-                  console.error(data.error);
-              } else {
-                  navigate(`/product/${encodeURIComponent(data.name)}`, { state: { productData: data } });
-              }
-            })
-            .catch(error => console.error('Error al consultar el servidor:', error));
+      fetch(`http://localhost:1001/product?code=${encodeURIComponent(data)}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.error) {
+            console.error(data.error);
+          } else {
+            localStorage.setItem('cartType', 'qr')
+            navigate(`/product/${encodeURIComponent(data.name)}`, { state: { productData: data } });
+          }
+        })
+        .catch(error => console.error('Error al consultar el servidor:', error));
     }
   }, [data, navigate]);
 

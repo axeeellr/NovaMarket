@@ -72,6 +72,7 @@ const App = () => {
     };
 
     const handleClick = area => {
+        localStorage.setItem('cartType', 'shop')
         navigate(`/product/${area.id}`);
     };
 
