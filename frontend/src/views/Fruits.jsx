@@ -133,7 +133,7 @@ const App = () => {
                         <div
                             key={arrow.id}
                             id={`arrow-${arrow.id}`}
-                            className="arrow"
+                            className={arrow.id === 'Atrás' ? 'arrow arrowAtras' : 'arrow arrowAdelante'}
                             style={{
                                 left: `${arrow.x * 100}%`,
                                 top: `${arrow.y * 100}%`,

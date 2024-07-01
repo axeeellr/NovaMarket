@@ -45,7 +45,7 @@
 .arrow {
     position: absolute;
     border-radius: 2em;
-    padding: 8px 0;
+    padding: 12px 0 12px 0;
     display: flex;
     justify-content: start;
     align-items: center;
@@ -53,32 +53,38 @@
     overflow: hidden; /* Ocultar el contenido que se desborda */
     transition: transform 0.6s ease;
     cursor: pointer;
-    background-color: rgb(234, 231, 228);
+    background-color: rgb(234, 231, 228, 0.3);
     box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.95);
     transition: width 0.3s, transform 0.3s;
     text-align: center;
-    width: 25px;
-    height: 25px;
+    width: 30px;
+    height: 30px;
     font-size: 16px;
+    border: 3px solid rgb(255, 255, 255);
+    color: white;
 }
 
 .arrow:hover{
     width: 125px;
 }
 
-.arrow:nth-child(odd){
+.arrowup:hover{
+    width: 160px;
+}
+
+.arrowAtras{
     position: absolute;
     right: 0;
 }
 
-.arrow:nth-child(odd):hover{
+.arrowAtras:hover{
     width: 115px;
     transform: translateX(-90px);
 }
 
 .arrowText{
     font-size: 15px;
-    color: rgb(10, 10, 10);
+    color: white;
     font-weight: 500;
     max-width: 0; /* Inicialmente establecer el ancho máximo en 0 */
     white-space: nowrap; /* Evitar que el texto se envuelva */
@@ -86,24 +92,42 @@
 }
 
 .arrowIcon{
+    margin: 0 6px 0 5px;
+}
+
+.arrowup .arrowIcon{
     margin: 0 6px 0 6px;
+}
+
+.arrowLimpieza:hover{
+    width: 140px;
+}
+
+.arrowCarnesAtras:hover{
+    width: 125px;
+    transform: translateX(-105px);
+}
+
+.arrowEmbutidosAtras:hover{
+    width: 150px;
 }
 
 
 /* Tooltip container */
 .tooltip {
     position: absolute;
-    background-color: white;
-    color: #193E4E;
+    background-color: rgb(234, 231, 228, 0.4);
+    color: white;
     padding: 5px 10px;
     border-radius: 5px;
     font-size: 14px;
-    font-weight: 400;
+    font-weight: 600;
     visibility: hidden;
     opacity: 0;
     transition: opacity 0.2s;
     white-space: nowrap;
     z-index: 10;
+    border: 3px solid white;
 }
 
 /* Tooltip visible */
@@ -111,7 +135,6 @@
     visibility: visible;
     opacity: 1;
 }
-
 
 .shop__container.blur img:nth-child(1) {
     filter: blur(1.5px); 
