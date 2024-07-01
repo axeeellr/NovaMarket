@@ -21,6 +21,7 @@ function TitlePage() {
             '/scanner':  'Escáner',
             '/verification': 'Verificación',
             '/paymentmethod':  'Método de Pago',
+            '/delivery': 'Método de Entrega',
             '/shop/meats':  'Carnes',
             '/shop/grains':  'Granos básicos',
             '/shop/cleaning':  'Limpieza',

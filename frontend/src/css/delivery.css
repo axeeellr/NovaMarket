@@ -1,0 +1,60 @@
+.delivery__container{
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 25px;
+}
+
+.delivery__local, .delivery__address{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+    border: 5px solid white;
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 15px 15px;
+    border-radius: 10px;
+}
+
+.delivery__info, .local__info{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    gap: 5px;
+}
+
+.delivery__info h2, .local__info h2{
+    color: #193E4E;
+}
+
+.delivery__info, .local__info p{
+    color: #193E4E;
+}
+
+.delivery__container button{
+    background-color: #193E4E;
+    color: #F2EBCF;
+	font-size: 17px;
+	font-weight: bold;
+    width: 100%;
+    padding: 13px 20px;
+	outline: none;
+	border: none;
+	border-radius: 10px;
+	transition: .2s ease-in;
+	cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.delivery__container button:hover {
+    background-color: #091f29;
+    color: #F2EBCF;
+}
