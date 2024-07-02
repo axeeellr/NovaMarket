@@ -22,6 +22,7 @@ function TitlePage() {
             '/verification': 'Verificación',
             '/paymentmethod':  'Método de Pago',
             '/delivery': 'Método de Entrega',
+            '/address': 'Seleccionar Dirección',
             '/shop/meats':  'Carnes',
             '/shop/grains':  'Granos básicos',
             '/shop/cleaning':  'Limpieza',
