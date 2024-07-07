@@ -7,8 +7,53 @@
     gap: 25px;
 }
 
+.address__name{
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    width: 100%;
+}
+
+.address__name input{
+    position: relative;
+    width: 70%;
+    border: none;
+    border: 1px solid #193E4E;
+    border-radius: 5px;
+    background-color: transparent;
+    outline: none;
+    font-size: 16px;
+    color: #193E4E;
+    padding: 5px 5px 5px 35px;
+}
+
+.editName{
+    position: absolute;
+    left: 30px;
+    color: #193E4E;
+}
+
 .address{
     background-color: plum;
     width: 100%;
-    height: 85vh;
+    height: 70vh;
+}
+
+.address__button{
+    background-color: #193E4E;
+    color: #F2EBCF;
+	font-size: 17px;
+	font-weight: bold;
+    width: 100%;
+    padding: 13px 20px;
+	outline: none;
+	border: none;
+	border-radius: 10px;
+	transition: .2s ease-in;
+	cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }

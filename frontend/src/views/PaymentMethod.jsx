@@ -20,6 +20,7 @@ const PaymentMethod = () => {
     const { user } = useUser();
     const [selectedCard, setSelectedCard] = useState(null);
     const [isPaymentProcessing, setIsPaymentProcessing] = useState(false);
+    const [cartProducts, setCartProducts] = useState([]);
     const price = localStorage.getItem('cartPrice');
 
     // Función para obtener las tarjetas de crédito del usuario
@@ -40,6 +41,8 @@ const PaymentMethod = () => {
     // Llamar a la función para obtener las tarjetas de crédito cuando el componente se monta
     useEffect(() => {
         fetchUserCards();
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        setCartProducts(cart);
     }, []);
 
     const handleCardSelect = (card) => {
@@ -152,9 +155,9 @@ const PaymentMethod = () => {
                                             <img src="https://i.ibb.co/WHZ3nRJ/visa.png" alt="Visa" width="60px" />
                                         </div>
                                         <div className="row card-no">
-                                            <p>{card.number.slice(0, 4)}</p>
-                                            <p>{card.number.slice(4, 8)}</p>
-                                            <p>{card.number.slice(8, 12)}</p>
+                                            <p>****</p>
+                                            <p>****</p>
+                                            <p>****</p>
                                             <p>{card.number.slice(12, 16)}</p>
                                         </div>
                                         <div className="row card-holder">
@@ -198,24 +201,33 @@ const PaymentMethod = () => {
                 <FontAwesomeIcon icon={faInfoCircle} className='method__icon'/>
                 <p>Elige con qué método prefieres pagar</p>
             </div>
-            {cards.length > 0 && selectedCard && ( // Muestra el resumen solo si hay al menos una tarjeta y una tarjeta seleccionada
-                <div className="method__summary">
-                    <div className="summary__card">
-                        <h3>Tarjeta de crédito</h3>
-                        <p>{selectedCard.number.slice(0, 4)}&nbsp;{selectedCard.number.slice(4, 8)}&nbsp;{selectedCard.number.slice(8, 12)}&nbsp;{selectedCard.number.slice(12, 16)}&nbsp;</p>
-                        <p>{selectedCard.holder}</p>
-                        <p>{selectedCard.cvv}</p>
-                    </div>
-                    <hr />
-                </div>
-            )}
-            <div className="summary__total">
-                <h3>Total:</h3>
-                <p>{price}</p>
+            
+            <div className="summary__products">
+                <h2>Resumen:</h2>
+                {cartProducts.length > 0 && (
+                    cartProducts.map((product, index) => (
+                        <div key={index} className="summary__product">
+                            <div className="summary__product__image">
+                                <img src={product.img} alt={product.name} />
+                            </div>
+                            <div className="summary__product__information">
+                                <h3>{product.name}</h3>
+                                <p>{product.weight}</p>
+                                <p>${product.price}</p>
+                            </div>
+                        </div>
+                    ))
+                )}
+            </div>
+            <div className="summary__delivery">
+                <h2>Método de entrega:</h2>
+                <p>Recoger en el local</p>
             </div>
             <div className="method__button">
+                {}
                 <button onClick={continuePayment} disabled={isPaymentProcessing}>
-                    {isPaymentProcessing ? 'PROCESANDO PAGO...' : 'CONTINUAR'}
+                    <span>CONTINUAR</span>
+                    <span>${price}</span>
                 </button>
             </div>
         </div>

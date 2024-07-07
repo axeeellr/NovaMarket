@@ -436,6 +436,51 @@ app.get('/getCartDetails/:cartId', (req, res) => {
 
 
 
+// Ruta para guardar la dirección
+app.post('/guardar-direccion', (req, res) => {
+    const { userId, addressName, lat, lng } = req.body;
+
+    // Inserta la nueva dirección en la base de datos
+    db.query('INSERT INTO address (id_user, name, latitude, longitude) VALUES (?, ?, ?, ?)', [userId, addressName, lat, lng], (err, result) => {
+        if (err) {
+            console.error("Error al guardar la dirección:", err);
+            return res.status(500).json({ error: 'Error al guardar la dirección' });
+        }
+
+        if (result.affectedRows > 0) {
+            return res.status(200).json({ message: 'Dirección guardada exitosamente' });
+        } else {
+            return res.status(500).json({ error: 'Error al guardar la dirección' });
+        }
+    });
+});
+
+
+
+// Ruta para obtener los datos de las direcciones de un usuario específico
+app.get('/getAddresses/:userId', (req, res) => {
+    const userId = req.params.userId;
+
+    // Consulta a la base de datos para obtener las direcciones asociadas al ID de usuario
+    db.query('SELECT * FROM address WHERE id_user = ?', [userId], (err, results) => {
+        if (err) {
+            console.error("Error al obtener los datos de las direcciones:", err);
+            return res.status(500).json({ error: 'Error al obtener los datos de las direcciones' });
+        }
+
+        // Agregar un console.log para verificar los resultados obtenidos
+        console.log('Direcciones obtenidas:', results);
+
+        // Si la consulta fue exitosa, devuelve los resultados
+        return res.status(200).json({
+            message: 'Direcciones obtenidas exitosamente',
+            addresses: results
+        });
+    });
+});
+
+
+
 const port = 1001;
 
 app.listen(port, ()=>{

@@ -34,7 +34,6 @@ function Profile() {
 
     return (
         <>
-            <Header/>
             <div className="title__product">
                 <TitlePage />
             </div>
