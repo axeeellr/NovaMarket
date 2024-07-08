@@ -71,7 +71,7 @@ function Product() {
                     <button onClick={() => addToCart(product, quantity)}>AÑADIR AL CARRITO &nbsp;<FontAwesomeIcon icon={faCartShopping} /></button>
                     <div className="product__info__details">
                         <div className="details__name">
-                            <h2>{product.name}</h2>
+                            <h1>{product.name}</h1>
                             <p>{product.brand}</p>
                         </div>
                         <div className="details__data">

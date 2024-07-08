@@ -21,7 +21,10 @@ const PaymentMethod = () => {
     const [selectedCard, setSelectedCard] = useState(null);
     const [isPaymentProcessing, setIsPaymentProcessing] = useState(false);
     const [cartProducts, setCartProducts] = useState([]);
-    const price = localStorage.getItem('cartPrice');
+
+    // Recuperar del localStorage
+    const cartDetailsFromStorage = localStorage.getItem('cartDetails');
+    const parsedCartDetails = JSON.parse(cartDetailsFromStorage);
 
     // Función para obtener las tarjetas de crédito del usuario
     const fetchUserCards = async () => {
@@ -227,7 +230,7 @@ const PaymentMethod = () => {
                 {}
                 <button onClick={continuePayment} disabled={isPaymentProcessing}>
                     <span>CONTINUAR</span>
-                    <span>${price}</span>
+                    <span>${parsedCartDetails.price}</span>
                 </button>
             </div>
         </div>

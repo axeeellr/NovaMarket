@@ -16,6 +16,10 @@ const Delivery = () => {
     const [selectedOption, setSelectedOption] = useState(null);
     const [selectedAddress, setSelectedAddress] = useState(null);
 
+    // Recuperar del localStorage
+    const cartDetailsFromStorage = localStorage.getItem('cartDetails');
+    const parsedCartDetails = JSON.parse(cartDetailsFromStorage);
+
     const fetchUserAddresses = async () => {
         try {
             const response = await fetch(`http://localhost:1001/getAddresses/${user.id}`);
@@ -40,9 +44,12 @@ const Delivery = () => {
             setSelectedAddress(null);
         } else {
             setSelectedOption(option);
+            parsedCartDetails.deliveryOption = option;
+            localStorage.setItem('cartDetails', JSON.stringify(parsedCartDetails));
             if (option !== 'selectAddress') {
                 setSelectedAddress(null);
             }
+            console.log(option)
         }
     };
 
@@ -52,6 +59,8 @@ const Delivery = () => {
         } else {
             setSelectedAddress(address);
             setSelectedOption('selectAddress');
+            parsedCartDetails.address = address;
+            localStorage.setItem('cartDetails', JSON.stringify(parsedCartDetails));
         }
     };
 
@@ -114,7 +123,7 @@ const Delivery = () => {
                 </div>
                 <button onClick={goPage}>
                     <span>Continuar</span>
-                    <span>${localStorage.getItem('cartPrice')}</span>
+                    <span>${parsedCartDetails.price}</span>
                 </button>
             </div>
 

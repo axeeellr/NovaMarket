@@ -65,7 +65,7 @@ const Address = () => {
             <div className="address">
                 <Map onSelectLocation={handleSelectLocation} />
             </div>
-            <button className='address__button' onClick={handleSaveAddress}>Continuar</button>
+            <button className='address__button' onClick={handleSaveAddress}>Guardar y Continuar</button>
         </div>
 
 

@@ -18,9 +18,11 @@ const Cart = () => {
     useEffect(() => {
         const cart = JSON.parse(localStorage.getItem('cart')) || [];
         setCartProducts(cart);
-        const savedCartName = localStorage.getItem('cartName') || '';
-        setCartName(savedCartName);
     }, []);
+    
+    // Recuperar del localStorage
+    const cartDetailsFromStorage = localStorage.getItem('cartDetails');
+    const parsedCartDetails = JSON.parse(cartDetailsFromStorage);
 
     // Función para modificar la cantidad de un producto
     const modifyQuantity = (index, change) => {
@@ -57,17 +59,20 @@ const Cart = () => {
     // Función para manejar el cambio de nombre del carrito
     const handleNameChange = (event) => {
         const newCartName = event.target.value;
+        parsedCartDetails.name = newCartName;
+        localStorage.setItem('cartDetails', JSON.stringify(parsedCartDetails));
         setCartName(newCartName);
-        localStorage.setItem('cartName', newCartName);
     };
 
     // Función para manejar el evento de continuar
     const handleContinue = () => {
-        if (!cartName) {
+        if (parsedCartDetails.name == '' || parsedCartDetails.name == null) {
             toast('¡La compra aún no tiene nombre!');
         } else {
-            localStorage.setItem('cartPrice', calculateTotal());
-            if (localStorage.getItem('cartType') == 'shop') {
+            parsedCartDetails.price = calculateTotal();
+            localStorage.setItem('cartDetails', JSON.stringify(parsedCartDetails));
+
+            if (parsedCartDetails.type == 'shop') {
                 navigate('/delivery');
             }else{
                 navigate('/paymentmethod');
@@ -81,7 +86,7 @@ const Cart = () => {
                 <TitlePage />
                 <div className="cart__products">
                     <div className="cart__name">
-                        <input type="text" value={cartName} onChange={handleNameChange} required placeholder="Nombre del carrito..." />
+                        <input type="text" value={parsedCartDetails ? parsedCartDetails.name : ''} onChange={handleNameChange} required placeholder="Nombre del carrito..." />
                         <FontAwesomeIcon icon={faEdit} className="editName" />
                     </div>
 
@@ -146,3 +151,6 @@ const Cart = () => {
 };
 
 export default Cart;
+
+//local storage
+//name, price, type(shop, scann), deliveryoption
