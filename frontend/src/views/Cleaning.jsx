@@ -70,6 +70,29 @@ const App = () => {
     };
 
     const handleClick = area => {
+
+        if (localStorage.getItem('cartDetails')) {
+            // Recuperar del localStorage
+            const cartDetailsFromStorage = localStorage.getItem('cartDetails');
+            const parsedCartDetails = JSON.parse(cartDetailsFromStorage);
+    
+            parsedCartDetails.type = 'shop';
+            localStorage.setItem('cartDetails', JSON.stringify(parsedCartDetails));
+        }else{
+            const cartDetails = {
+                name: null,
+                price: null,
+                type: 'shop',
+                deliveryOption: null,
+                address: null
+            };
+    
+            // Convertir a JSON
+            const cartDetailsJSON = JSON.stringify(cartDetails);
+    
+            // Guardar en localStorage
+            localStorage.setItem('cartDetails', cartDetailsJSON);
+        }
         navigate(`/product/${area.id}`);
     };
 

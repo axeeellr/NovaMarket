@@ -18,8 +18,13 @@ const Address = () => {
     const { user } = useUser();
     const userId = user.id;
 
+    // Recuperar del localStorage
+    const cartDetailsFromStorage = localStorage.getItem('cartDetails');
+    const parsedCartDetails = JSON.parse(cartDetailsFromStorage);
+
     const [location, setLocation] = useState(null);
     const [addressName, setAddressName] = useState('');
+    const [address, setAddress] = useState([]);
 
     const handleSelectLocation = (location) => {
         setLocation(location);
@@ -36,6 +41,12 @@ const Address = () => {
                 });
 
                 if (response.status === 200) {
+                    const data = await response.json();
+                    setAddress(data.address)
+
+                    parsedCartDetails.address = address.id;
+                    localStorage.setItem('cartDetails', JSON.stringify(parsedCartDetails));
+                    
                     navigate('/paymentmethod');
                 } else {
                     console.error('Error al guardar la dirección:', response.data.error);

@@ -59,7 +59,7 @@ const Delivery = () => {
         } else {
             setSelectedAddress(address);
             setSelectedOption('selectAddress');
-            parsedCartDetails.address = address;
+            parsedCartDetails.address = address.id;
             localStorage.setItem('cartDetails', JSON.stringify(parsedCartDetails));
         }
     };

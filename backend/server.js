@@ -447,11 +447,10 @@ app.post('/guardar-direccion', (req, res) => {
             return res.status(500).json({ error: 'Error al guardar la dirección' });
         }
 
-        if (result.affectedRows > 0) {
-            return res.status(200).json({ message: 'Dirección guardada exitosamente' });
-        } else {
-            return res.status(500).json({ error: 'Error al guardar la dirección' });
-        }
+        return res.status(200).json({
+            message: 'Dirección guardada exitosamente',
+            address: result
+        });
     });
 });
 

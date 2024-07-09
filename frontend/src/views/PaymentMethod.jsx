@@ -117,8 +117,7 @@ const PaymentMethod = () => {
                 }
                 // Borrar `cart`, `cartName`, y `cartPrice` del local storage
                 localStorage.removeItem('cart');
-                localStorage.removeItem('cartName');
-                localStorage.removeItem('cartPrice');
+                localStorage.removeItem('cartDetails');
             })(),
             {
                 loading: 'Guardando...',
@@ -200,10 +199,6 @@ const PaymentMethod = () => {
                     </>
                 )}
             </div>
-            <div className="method__info">
-                <FontAwesomeIcon icon={faInfoCircle} className='method__icon'/>
-                <p>Elige con qué método prefieres pagar</p>
-            </div>
             
             <div className="summary__products">
                 <h2>Resumen:</h2>
@@ -222,10 +217,21 @@ const PaymentMethod = () => {
                     ))
                 )}
             </div>
-            <div className="summary__delivery">
-                <h2>Método de entrega:</h2>
-                <p>Recoger en el local</p>
-            </div>
+            {parsedCartDetails.deliveryOption === "store" ? (
+                <div className="summary__delivery">
+                    <h2>Método de entrega:</h2>
+                    <p>Recoger en la tienda</p>
+                </div>
+            ) : (
+                <div className="summary__delivery">
+                    <h2>Método de entrega:</h2>
+                    <p>Nombre</p>
+                    <div className="delivery__map">
+                        
+                    </div>
+                </div>
+            )}
+
             <div className="method__button">
                 {}
                 <button onClick={continuePayment} disabled={isPaymentProcessing}>
