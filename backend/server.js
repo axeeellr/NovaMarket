@@ -480,6 +480,28 @@ app.get('/getAddresses/:userId', (req, res) => {
 
 
 
+// Ruta para obtener una dirección específica de un usuario
+app.get('/getAddress/:addressId', (req, res) => {
+    const addressId = req.params.addressId;
+
+    // Consulta a la base de datos para obtener la dirección específica por ID
+    db.query('SELECT * FROM address WHERE id = ?', [addressId], (err, results) => {
+        if (err) {
+            console.error("Error al obtener los datos de la dirección:", err);
+            return res.status(500).json({ error: 'Error al obtener los datos de la dirección' });
+        }
+
+        // Si la consulta fue exitosa, devuelve los resultados
+        return res.status(200).json({
+            message: 'Dirección obtenida exitosamente',
+            address: results[0] // Asumimos que el ID es único y solo devuelve un resultado
+        });
+    });
+});
+
+
+
+
 const port = 1001;
 
 app.listen(port, ()=>{

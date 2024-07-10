@@ -6,7 +6,7 @@
     align-items: start;
     padding: 0 20px 20px 20px;
     margin-bottom: 100px;
-    min-heisght: 100vh;
+    min-height: 100vh;
 }
 
 .profile__data, .profile__history, .profile__favorites, .profile__payment, .profile__logout{

@@ -22,6 +22,7 @@ const App = () => {
     ];
 
     const imgRef = useRef(null);
+    const containerRef = useRef(null);
 
     useEffect(() => {
         const img = imgRef.current;
@@ -37,6 +38,14 @@ const App = () => {
                     arrowElement.style.left = `${left}px`;
                     arrowElement.style.top = `${top}px`;
                 }
+            });
+        }
+
+        // Centrando la imagen horizontalmente
+        const container = containerRef.current;
+        if (container) {
+            container.scrollTo({
+                left: (container.scrollWidth - container.clientWidth) / 2
             });
         }
     }, [arrows]);
@@ -71,7 +80,7 @@ const App = () => {
     return (
         <>
             <TitlePage />
-            <div className="shop__container">
+            <div className="shop__container" ref={containerRef}>
                 <img
                     ref={imgRef}
                     src={fruits}

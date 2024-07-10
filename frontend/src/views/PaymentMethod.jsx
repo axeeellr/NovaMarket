@@ -1,18 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 
 import TitlePage from '../components/TitlePage';
-
 import { useUser } from '../UserContext';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 import '../css/paymentmethod.css';
 
 const PaymentMethod = () => {
-
     const navigate = useNavigate();
 
     // Estados
@@ -21,6 +17,7 @@ const PaymentMethod = () => {
     const [selectedCard, setSelectedCard] = useState(null);
     const [isPaymentProcessing, setIsPaymentProcessing] = useState(false);
     const [cartProducts, setCartProducts] = useState([]);
+    const [deliveryAddress, setDeliveryAddress] = useState(null);
 
     // Recuperar del localStorage
     const cartDetailsFromStorage = localStorage.getItem('cartDetails');
@@ -41,11 +38,32 @@ const PaymentMethod = () => {
         }
     };
 
+    const fetchDeliveryAddress = async (addressId) => {
+        try {
+            const response = await fetch(`http://localhost:1001/getAddress/${addressId}`);
+            if (response.ok) {
+                const data = await response.json();
+                setDeliveryAddress(data.address);
+            } else {
+                console.error('Error al obtener la dirección de entrega');
+            }
+        } catch (error) {
+            console.error('Error al realizar la solicitud:', error);
+        }
+    };
+
     // Llamar a la función para obtener las tarjetas de crédito cuando el componente se monta
     useEffect(() => {
         fetchUserCards();
         const cart = JSON.parse(localStorage.getItem('cart')) || [];
         setCartProducts(cart);
+
+        if (parsedCartDetails) {
+            const addressId = parsedCartDetails.address; // Suponiendo que tienes el ID de la dirección en el local storage
+            if (addressId) {
+                fetchDeliveryAddress(addressId);
+            }
+        }
     }, []);
 
     const handleCardSelect = (card) => {
@@ -58,7 +76,7 @@ const PaymentMethod = () => {
 
     const continuePayment = async () => {
         if (!selectedCard) {
-            toast.error('¡Debes seleccionar una tarjeta de crédito primero!');
+            toast.error('¡Debes seleccionar una tarjeta de crédito!');
             return;
         }
 
@@ -68,8 +86,8 @@ const PaymentMethod = () => {
             await toast.promise((async () => {
                 // Extraer el carrito y los datos asociados desde el local storage.
                 const cart = JSON.parse(localStorage.getItem('cart'));
-                const cartName = localStorage.getItem('cartName');
-                const cartPrice = parseFloat(localStorage.getItem('cartPrice')); // Convertir a número.
+                const cartName = parsedCartDetails.name;
+                const cartPrice = parseFloat(parsedCartDetails.price); // Convertir a número.
                 const userId = user.id; // Obtener el ID del usuario desde el contexto.
                 const cardId = selectedCard.id;
 
@@ -115,7 +133,7 @@ const PaymentMethod = () => {
                         throw new Error('Error al guardar en la tabla cart_items');
                     }
                 }
-                // Borrar `cart`, `cartName`, y `cartPrice` del local storage
+                // Borrar `cart` y `cartDetails` del local storage
                 localStorage.removeItem('cart');
                 localStorage.removeItem('cartDetails');
             })(),
@@ -217,26 +235,44 @@ const PaymentMethod = () => {
                     ))
                 )}
             </div>
-            {parsedCartDetails.deliveryOption === "store" ? (
-                <div className="summary__delivery">
-                    <h2>Método de entrega:</h2>
-                    <p>Recoger en la tienda</p>
-                </div>
+            {parsedCartDetails ? (
+                parsedCartDetails.deliveryOption === "store" ? (
+                    <div className="summary__delivery">
+                        <h2>Método de entrega:</h2>
+                        <p>Recoger en la tienda</p>
+                    </div>
+                ) : (
+                    <div className="summary__delivery">
+                        <h2>Método de entrega:</h2>
+                        <p>{deliveryAddress ? deliveryAddress.name : 'Cargando...'}</p>
+                        <div className="delivery__map">
+                            {deliveryAddress && (
+                                <LoadScript googleMapsApiKey="AIzaSyAcRKRW5P05BiU1nBQrjs22jqBaTEAz5L0">
+                                    <GoogleMap
+                                        mapContainerStyle={{ height: "100%", width: "100%" }}
+                                        center={{ lat: parseFloat(deliveryAddress.latitude), lng: parseFloat(deliveryAddress.longitude) }}
+                                        zoom={15}
+                                    >
+                                        <Marker position={{ lat: parseFloat(deliveryAddress.latitude), lng: parseFloat(deliveryAddress.longitude) }} />
+                                    </GoogleMap>
+                                </LoadScript>
+                            )}
+                        </div>
+                    </div>
+                )
             ) : (
                 <div className="summary__delivery">
                     <h2>Método de entrega:</h2>
-                    <p>Nombre</p>
-                    <div className="delivery__map">
-                        
-                    </div>
+                    <p>Información no disponible</p>
                 </div>
             )}
+
 
             <div className="method__button">
                 {}
                 <button onClick={continuePayment} disabled={isPaymentProcessing}>
                     <span>CONTINUAR</span>
-                    <span>${parsedCartDetails.price}</span>
+                    <span>${parsedCartDetails ? parsedCartDetails.price : ''}</span>
                 </button>
             </div>
         </div>
