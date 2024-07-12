@@ -68,7 +68,9 @@ const Cart = () => {
     const handleContinue = () => {
         if (parsedCartDetails.name == '' || parsedCartDetails.name == null) {
             toast('¡La compra aún no tiene nombre!');
-        } else {
+        } else if(localStorage.getItem('cart') == '[]'){
+            toast('¡No hay productos en el carrito!');
+        }else {
             parsedCartDetails.price = calculateTotal();
             localStorage.setItem('cartDetails', JSON.stringify(parsedCartDetails));
 

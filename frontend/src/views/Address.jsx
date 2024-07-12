@@ -39,12 +39,12 @@ const Address = () => {
                     lat: location.lat,
                     lng: location.lng,
                 });
-
+    
                 if (response.status === 200) {
-                    const data = await response.json();
-                    setAddress(data.address)
-
-                    parsedCartDetails.address = address.id;
+                    const data = response.data; // Aquí obtenemos los datos directamente de response.data
+                    setAddress(data.address);
+    
+                    parsedCartDetails.address = data.address.id; // Asumiendo que el ID de la dirección está en data.address
                     localStorage.setItem('cartDetails', JSON.stringify(parsedCartDetails));
                     
                     navigate('/paymentmethod');
@@ -54,10 +54,11 @@ const Address = () => {
             } catch (error) {
                 console.error('Error al guardar la dirección:', error);
             }
-        }else{
+        } else {
             toast('¡La dirección aún no tiene nombre!');
         }
     };
+    
 
     return (
         <>
