@@ -501,6 +501,22 @@ app.get('/getAddress/:addressId', (req, res) => {
 
 
 
+// Ruta para eliminar una dirección
+app.delete('/deleteAddress/:id', (req, res) => {
+    const addressId = req.params.id;
+
+    // Eliminar la dirección de la base de datos
+    db.query('DELETE FROM address WHERE id = ?', [addressId], (err, result) => {
+        if (err) {
+            console.error("Error al eliminar la dirección:", err);
+            return res.status(500).json({ error: 'Error al eliminar la dirección' });
+        }
+
+        return res.status(200).json({ message: 'Dirección eliminada exitosamente' });
+    });
+});
+
+
 
 const port = 1001;
 

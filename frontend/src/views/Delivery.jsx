@@ -6,6 +6,9 @@ import TitlePage from '../components/TitlePage';
 
 import { useUser } from '../UserContext';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+
 import '../css/delivery.css';
 
 const Delivery = () => {
@@ -15,6 +18,8 @@ const Delivery = () => {
     const [addresses, setAddresses] = useState([]);
     const [selectedOption, setSelectedOption] = useState(null);
     const [selectedAddress, setSelectedAddress] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [addressToDelete, setAddressToDelete] = useState(null);
 
     // Recuperar del localStorage
     const cartDetailsFromStorage = localStorage.getItem('cartDetails');
@@ -80,6 +85,28 @@ const Delivery = () => {
         }
     };
 
+    const handleDeleteClick = (address) => {
+        setAddressToDelete(address);
+        setIsModalOpen(true);
+    };
+
+    const confirmDeleteAddress = async () => {
+        try {
+            const response = await fetch(`http://localhost:1001/deleteAddress/${addressToDelete.id}`, { method: 'DELETE' });
+            if (response.ok) {
+                toast.success('Dirección eliminada exitosamente');
+                setAddresses(addresses.filter((address) => address.id !== addressToDelete.id));
+                setIsModalOpen(false);
+                setAddressToDelete(null);
+            } else {
+                toast.error('Error al eliminar la dirección');
+            }
+        } catch (error) {
+            console.error('Error al eliminar la dirección:', error);
+            toast.error('Error al eliminar la dirección');
+        }
+    };
+
     return (
         <>
             <div className="delivery__container">
@@ -106,6 +133,7 @@ const Delivery = () => {
                                 <div key={address.id} className={`delivery__showAddress ${selectedAddress && selectedAddress.id === address.id ? 'selectedAddress' : ''}`} onClick={() => handleAddressSelection(address)}>
                                     <div className="showAddress__info">
                                         <p>{address.name}</p>
+                                        <FontAwesomeIcon icon={faTrash} onClick={(e) => { e.stopPropagation(); handleDeleteClick(address); }} />
                                     </div>
                                 </div>
                             ))
@@ -126,6 +154,17 @@ const Delivery = () => {
                     <span>${parsedCartDetails.price}</span>
                 </button>
             </div>
+
+            {isModalOpen && (
+                <div className="modal">
+                    <div className="modal-content">
+                        <h2>Confirmar eliminación</h2>
+                        <p>¿Estás seguro que deseas eliminar esta dirección?</p>
+                        <button className='buttonDelete' onClick={confirmDeleteAddress}>Sí, eliminar</button>
+                        <button className='buttonCancel' onClick={() => setIsModalOpen(false)}>Cancelar</button>
+                    </div>
+                </div>
+            )}
 
             <Toaster
                 toastOptions={{

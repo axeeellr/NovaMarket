@@ -47,6 +47,7 @@
 
 .profile__history p{
     color: #193E4E;
+    font-size: 17px;
 }
 
 .history__item{
@@ -56,10 +57,12 @@
     align-items: center;
     cursor: default;
     color: #193E4E;
+    transition: .2s ease-in-out;
+    cursor: pointer;
 }
 
 .history__item:hover{
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .history__more{

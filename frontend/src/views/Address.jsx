@@ -22,43 +22,42 @@ const Address = () => {
     const cartDetailsFromStorage = localStorage.getItem('cartDetails');
     const parsedCartDetails = JSON.parse(cartDetailsFromStorage);
 
-    const [location, setLocation] = useState(null);
     const [addressName, setAddressName] = useState('');
-    const [address, setAddress] = useState([]);
+    const [location, setLocation] = useState(null); // Añadir estado para la ubicación seleccionada
 
     const handleSelectLocation = (location) => {
         setLocation(location);
     };
 
     const handleSaveAddress = async () => {
-        if (location && addressName) {
-            try {
-                const response = await axios.post('http://localhost:1001/guardar-direccion', {
-                    userId,
-                    addressName,
-                    lat: location.lat,
-                    lng: location.lng,
-                });
-    
-                if (response.status === 200) {
-                    const data = response.data; // Aquí obtenemos los datos directamente de response.data
-                    setAddress(data.address);
-    
-                    parsedCartDetails.address = data.address.id; // Asumiendo que el ID de la dirección está en data.address
-                    localStorage.setItem('cartDetails', JSON.stringify(parsedCartDetails));
-                    
-                    navigate('/paymentmethod');
-                } else {
-                    console.error('Error al guardar la dirección:', response.data.error);
-                }
-            } catch (error) {
-                console.error('Error al guardar la dirección:', error);
+        if (!addressName || !location) {
+            toast.error('Por favor, complete todos los campos y seleccione una ubicación.');
+            return;
+        }
+
+        try {
+            const response = await axios.post('http://localhost:1001/guardar-direccion', {
+                userId,
+                addressName,
+                lat: location.lat,
+                lng: location.lng,
+            });
+
+            if (response.status === 200) {
+                const addressId = response.data.address.insertId; // Asegúrate de que el campo sea el correcto
+                parsedCartDetails.address = addressId;
+
+                localStorage.setItem('cartDetails', JSON.stringify(parsedCartDetails));
+                navigate('/paymentmethod');
+
+            } else {
+                toast.error('Error al guardar la dirección');
             }
-        } else {
-            toast('¡La dirección aún no tiene nombre!');
+        } catch (error) {
+            console.error("Error al guardar la dirección:", error);
+            toast.error('Error al guardar la dirección');
         }
     };
-    
 
     return (
         <>

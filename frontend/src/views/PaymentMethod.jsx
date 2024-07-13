@@ -145,7 +145,7 @@ const PaymentMethod = () => {
             );
             setTimeout(() => {
                 navigate('/');
-            }, 4000);
+            }, 3000);
         } catch (error) {
             // Si hay un error, muestra un mensaje de error.
             console.error('Error:', error);
@@ -278,7 +278,7 @@ const PaymentMethod = () => {
         </div>
         <Toaster
             toastOptions={{
-                duration: 4000,
+                duration: 3000,
                 style: {
                     textAlign: 'center',
                     background: '#193E4E',

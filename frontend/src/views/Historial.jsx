@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Toaster, toast } from 'react-hot-toast';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSquarePlus } from '@fortawesome/free-solid-svg-icons';
+import { faCartArrowDown } from '@fortawesome/free-solid-svg-icons';
 import '../css/cart.css';
 import TitlePage from '../components/TitlePage';
 import Menu from '../components/Menu';
@@ -47,7 +47,7 @@ const Historial = () => {
                             </div>
                             <div className="product__quantity">
                                 <div className="quantity">
-                                    <FontAwesomeIcon icon={faSquarePlus} />
+                                    <FontAwesomeIcon icon={faCartArrowDown} />
                                     <p>{product.quantity}</p>
                                 </div>
                             </div>
