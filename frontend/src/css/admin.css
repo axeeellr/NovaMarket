@@ -1,0 +1,74 @@
+.admin__container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 50px;
+}
+
+.admin__header{
+    background-color: #193E4E;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 25px 50px;
+    color: #F2EBCF;
+}
+
+.admin__header button{
+    background-color: #C5B28A;
+    color: #193E4E;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 12px 25px;
+    outline: none;
+    border: none;
+    border-radius: 10px;
+    transition: .2s ease-in;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.admin__header button:hover {
+    background-color: #a39169;
+    color: #193E4E;
+}
+
+.admin__content{
+    display: flex;
+    width: 85%;
+    gap: 45px;
+    flex-wrap: wrap;
+}
+
+.adminContent{
+    background-color: red;
+    width: 30%;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.content__text{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-colsor: blue;
+    text-align: center;
+}
+
+.content__icon{
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-coslor: yellow;
+}

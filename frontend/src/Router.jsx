@@ -20,6 +20,7 @@ import Historial from './views/Historial';
 import Verification from './views/Verification';
 import Delivery from './views/Delivery';
 import Address from './views/Address';
+import Admin from './views/Admin';
 import VerificationSuccessfull from './views/VerificationSuccesfull'; 
 
 const AppRouter = () => {
@@ -46,6 +47,7 @@ const AppRouter = () => {
                 <Route path="/product/:data" element={isAuthenticated ? <Product /> : <Navigate to="/login" />} />
                 <Route path="/paymentmethod" element={isAuthenticated ? <PaymentMethod /> : <Navigate to="/login" />} />
                 <Route path="/historial/:cartId" element={isAuthenticated ? <Historial /> : <Navigate to="/login" />} />
+                <Route path="/admin" element={<Admin />} />
             </Routes>
         </Router>
     );
