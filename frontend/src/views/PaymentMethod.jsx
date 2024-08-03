@@ -90,6 +90,18 @@ const PaymentMethod = () => {
                 const cartPrice = parseFloat(parsedCartDetails.price); // Convertir a número.
                 const userId = user.id; // Obtener el ID del usuario desde el contexto.
                 const cardId = selectedCard.id;
+                const addressId = parsedCartDetails.address;
+
+                // Recuperar y establecer el valor de type
+                let cartType;
+                if (parsedCartDetails.deliveryOption === 'store') {
+                    cartType = 'Recoger en tienda';
+                } else if (parsedCartDetails.deliveryOption === 'address' || parsedCartDetails.deliveryOption === 'selectAddress') {
+                    cartType = 'Domicilio';
+                }
+
+                //Establecer el valor de status
+                const statusValue = (parsedCartDetails.type === 'qr' ? 1 : 0)
 
                 // 1. Guardar en la tabla `cart`.
                 const cartResponse = await fetch('http://localhost:1001/addCart', {
@@ -100,9 +112,12 @@ const PaymentMethod = () => {
                     body: JSON.stringify({
                         user_id: userId,
                         name: cartName,
-                        date: new Date().toISOString(), // Fecha actual.
+                        date: new Date(new Date().getTime() - 6 * 60 * 60000).toISOString(), // Fecha actual.
                         card_id: cardId,
-                        total: cartPrice
+                        total: cartPrice,
+                        type : cartType,
+                        address_id : addressId,
+                        status : statusValue
                     })
                 });
         

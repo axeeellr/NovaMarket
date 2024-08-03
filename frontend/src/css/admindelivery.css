@@ -1,0 +1,104 @@
+.admin-delivery {
+    width: 80%;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+}
+
+.orders-list,
+.order-details {
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.orders-list table,
+.order-details table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    color: #193E4E;
+}
+
+.orders-list th,
+.orders-list td,
+.order-details th,
+.order-details td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.orders-list th,
+.order-details th {
+    background-color: #f4f4f4;
+    font-size: 20px;
+}
+
+.orders-list tr:nth-child(even),
+.order-details tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.orders-list tr,
+.order-details tr{
+    font-size: 17px;
+}
+
+.orders-list button,
+.order-details button {
+    padding: 5px 10px;
+    margin: 5px 0;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+    background-color: #C5B28A;
+    color: #193E4E;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.orders-list button:hover,
+.order-details button:hover {
+    background-color: #8b7d60;
+}
+
+.orders-list h1,
+.order-details h2 {
+    text-align: center;
+    color: #193E4E;
+}
+
+.order-details p{
+    color: #193E4E;
+}
+
+.order-details-title{
+    margin-bottom: 15px;
+    font-size: 28px;
+}
+
+.order-details-user{
+    font-weight: 500;
+}
+
+button:focus {
+    outline: none;
+}
+
+.map-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 30px;
+}
+
+.buttons-map{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+}
+
+.map {
+    margin: 20px 0;
+}

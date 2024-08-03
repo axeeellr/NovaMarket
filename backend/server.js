@@ -353,10 +353,10 @@ app.get('/getCarts/:userId', (req, res) => {
 
 //Ruta para crear un carrito
 app.post('/addCart', (req, res) => {
-    const { user_id, name, date, card_id, total } = req.body;
+    const { user_id, name, date, card_id, total, type, address_id, status } = req.body;
 
     // Consulta SQL para insertar datos en la tabla `cart`
-    db.query('INSERT INTO cart (user_id, name, date, card_id, total) VALUES (?, ?, ?, ?, ?)', [user_id, name, date, card_id, total], (err, result) => {
+    db.query('INSERT INTO cart (user_id, name, date, card_id, total, type, address_id, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [user_id, name, date, card_id, total, type, address_id, status], (err, result) => {
         if (err) {
             console.error("Error al registrar el carrito:", err);
             return res.status(500).json({ error: 'Error al registrar el carrito' });
@@ -523,3 +523,215 @@ const port = 1001;
 app.listen(port, ()=>{
     console.log("listening on", port)
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//ADMIN USERS
+// Ruta para obtener todos los usuarios
+app.get('/users', (req, res) => {
+    db.query('SELECT * FROM users WHERE banned = 0', (err, results) => {
+        if (err) return res.status(500).json({ error: 'Error al obtener usuarios' });
+        res.json(results);
+    });
+});
+
+// Ruta para obtener todos los usuarios baneados
+app.get('/banned-users', (req, res) => {
+    db.query('SELECT * FROM users WHERE banned = 1', (err, results) => {
+        if (err) return res.status(500).json({ error: 'Error al obtener usuarios baneados' });
+        res.json(results);
+    });
+});
+
+// Ruta para banear un usuario
+app.post('/ban-user', (req, res) => {
+    const { userId } = req.body;
+    db.query('UPDATE users SET banned = 1 WHERE id = ?', [userId], (err, result) => {
+        if (err) {
+            return res.status(500).json({ error: 'Error al banear usuario' });
+        }
+        return res.status(200).json({ message: 'Usuario baneado exitosamente' });
+    });
+});
+
+// Ruta para desbanear un usuario
+app.post('/unban-user', (req, res) => {
+    const { userId } = req.body;
+    db.query('UPDATE users SET banned = 0 WHERE id = ?', [userId], (err, result) => {
+        if (err) {
+            return res.status(500).json({ error: 'Error al desbanear usuario' });
+        }
+        return res.status(200).json({ message: 'Usuario desbaneado exitosamente' });
+    });
+});
+
+// Ruta para eliminar un usuario
+app.delete('/users/:id', (req, res) => {
+    const id = req.params.id;
+    db.query('DELETE FROM users WHERE id = ?', [id], (err) => {
+        if (err) return res.status(500).json({ error: 'Error al eliminar usuario' });
+        res.status(200).json({ message: 'Usuario eliminado exitosamente' });
+    });
+});
+
+
+
+
+//ADMIN PRODUCTS
+// Ruta para obtener todos los productos
+app.get('/products', (req, res) => {
+    db.query('SELECT * FROM products', (err, results) => {
+        if (err) return res.status(500).json({ error: 'Error al obtener productos' });
+        res.json(results);
+    });
+});
+
+// Ruta para añadir un nuevo producto
+app.post('/products', (req, res) => {
+    const { category, name, price, weight, img, code, brand, calories } = req.body;
+    const query = 'INSERT INTO products (category, name, price, weight, img, code, brand, calories) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+    db.query(query, [category, name, price, weight, img, code, brand, calories], (err, result) => {
+        if (err) return res.status(500).json({ error: 'Error al añadir producto' });
+        res.status(201).json({ id: result.insertId });
+    });
+});
+
+// Ruta para eliminar un producto
+app.delete('/products/:id', (req, res) => {
+    const id = req.params.id;
+    db.query('DELETE FROM products WHERE id = ?', [id], (err) => {
+        if (err) return res.status(500).json({ error: 'Error al eliminar producto' });
+        res.status(200).json({ message: 'Producto eliminado exitosamente' });
+    });
+});
+
+// Endpoint para actualizar un producto
+app.put('/products/:id', (req, res) => {
+    const productId = req.params.id;
+    const { name, code, brand, calories, price, img, weight, category } = req.body;
+
+    const query = `UPDATE products SET name = ?, code = ?, brand = ?, calories = ?, price = ?, img = ?, weight = ?, category = ? WHERE id = ?`;
+
+    db.query(query, [name, code, brand, calories, price, img, weight, category, productId], (err, results) => {
+        if (err) {
+            console.error('Error updating product:', err);
+            return res.status(500).json({ error: 'Error updating product' });
+        }
+
+        if (results.affectedRows === 0) {
+            return res.status(404).json({ error: 'Product not found' });
+        }
+
+        res.status(200).json({ message: 'Product updated successfully' });
+    });
+});
+
+
+
+
+
+//ADMIN SALES
+// Ruta para obtener todas las ventas
+app.get('/sales', (req, res) => {
+    db.query(`
+        SELECT c.id AS cartId, c.name AS cartName, c.user_id AS userId, u.name AS userName, c.total AS cartTotal, c.type AS cartType, c.status AS status, c.date AS date, c.address_id AS addressId
+        FROM cart c
+        JOIN users u ON c.user_id = u.id
+    `, (err, carts) => {
+        if (err) {
+            console.error("Error al obtener las ventas:", err);
+            return res.status(500).json({ error: 'Error al obtener las ventas' });
+        }
+
+        const cartIds = carts.map(cart => cart.cartId);
+
+        if (cartIds.length === 0) {
+            return res.json(carts);
+        }
+
+        db.query(`
+            SELECT ci.cart_id AS cartId, p.name AS productName, ci.quantity, p.price
+            FROM cart_items ci
+            JOIN products p ON ci.product_id = p.id
+            WHERE ci.cart_id IN (?)
+        `, [cartIds], (err, items) => {
+            if (err) {
+                console.error("Error al obtener los detalles de los carritos:", err);
+                return res.status(500).json({ error: 'Error al obtener los detalles de los carritos' });
+            }
+
+            db.query(`
+                SELECT cc.id AS cartId, a.id AS addressId, a.name AS addressName, a.latitude, a.longitude
+                FROM cart cc
+                JOIN address a ON cc.address_id = a.id
+                WHERE cc.id IN (?)
+            `, [cartIds], (err, addresses) => {
+                if (err) {
+                    console.error("Error al obtener las direcciones:", err);
+                    return res.status(500).json({ error: 'Error al obtener las direcciones' });
+                }
+
+                const sales = carts.map(cart => {
+                    return {
+                        ...cart,
+                        items: items.filter(item => item.cartId === cart.cartId),
+                        address: addresses.find(address => address.cartId === cart.cartId)
+                    };
+                });
+
+                return res.status(200).json(sales);
+            });
+        });
+    });
+});
+
+
+//Ruta para actualizar el estado de las compras
+app.put('/status/:id', (req, res) => {
+    const saleId = req.params.id;
+    const status = req.body.status;
+
+    const query = 'UPDATE cart SET status = ? WHERE id = ?';
+
+    db.query(query, [status, saleId], (err, result) => {
+        if (err) {
+            console.error('Error updating sale status:', err);
+            res.status(500).send('Error updating sale status');
+            return;
+        }
+        res.send('Sale status updated successfully');
+    });
+});
+
+

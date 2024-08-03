@@ -1,0 +1,95 @@
+.admin-notifications {
+    width: 80%;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+    padding: 25px 0;
+}
+
+.admin-notifications h1,
+.admin-notifications h2 {
+    text-align: center;
+    color: #193E4E;
+}
+
+.notifications-list,
+.notification-form,
+.publishsed-notifications {
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 50px;
+}
+
+.notifications-list ul,
+.published-notifications ul {
+    list-style: none;
+    padding: 0;
+}
+
+.notifications-list li,
+.published-notifications li {
+    border-bottom: 1px solid #ddd;
+    padding: 20px 0;
+}
+
+.notifications-list h3,
+.published-notifications h3 {
+    margin: 0 0 5px;
+    color: #193E4E;
+}
+
+.notifications-list p,
+.published-notifications p {
+    margin: 0;
+    color: #193E4E;
+}
+
+.notification-form .form-group {
+    margin-bottom: 15px;
+}
+
+.notification-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 18px;
+}
+
+.notification-form input[type="text"],
+.notification-form textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #193E4E;
+    border-radius: 3px;
+    background-color: white;
+    resize: none;
+}
+
+.notification-form button,
+.notifications-list button {
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+    background-color: #C5B28A;
+    color: #193E4E;
+    margin-right: 5px;
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.notification-form button:nth-child(odd),
+.notifications-list button:nth-child(odd){
+    background-color: #4CAF50;
+    color: white;
+}
+
+.notification-form button:nth-child(even),
+.notifications-list button:nth-child(even){
+    background-color: #f44336;
+    color: white;
+}
+
+.notification-form button:hover,
+.notifications-list button:hover {
+    opacity: 0.8;
+}

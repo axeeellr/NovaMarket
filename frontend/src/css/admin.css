@@ -4,7 +4,6 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    gap: 50px;
 }
 
 .admin__header{
@@ -40,35 +39,47 @@
 
 .admin__content{
     display: flex;
-    width: 85%;
-    gap: 45px;
+    justify-content: center;
+    align-items: center;
     flex-wrap: wrap;
+    width: 100%;
+    gap: 60px 80px;
+    padding: 50px 0;
 }
 
-.adminContent{
-    background-color: red;
+.content__item{
     width: 30%;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 10px;
+    cursor: pointer;
 }
 
-.content__text{
+.item__text{
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-colsor: blue;
+    background-color: #C5B28A;
     text-align: center;
+    padding: 10px 0;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    color: #193E4E;
+    font-size: 15px;
 }
 
-.content__icon{
-    height: 150px;
+.item__icon{
+    height: 200px;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-coslor: yellow;
+    background-image: radial-gradient( circle farthest-corner at 48.4% 47.5%,  #3a707e 0%, #193E4E 90% );
+    color: #F2EBCF;
+    font-size: 80px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }

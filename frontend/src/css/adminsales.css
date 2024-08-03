@@ -1,0 +1,94 @@
+.admin-sales {
+    width: 80%;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+}
+
+.sales-list,
+.sale-details {
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.sales-list table,
+.sale-details table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    color: #193E4E;
+}
+
+.sales-list th,
+.sales-list td,
+.sale-details th,
+.sale-details td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.sales-list th,
+.sale-details th {
+    background-color: #f4f4f4;
+    font-size: 20px;
+}
+
+.sales-list tr:nth-child(even),
+.sale-details tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.sales-list tr[style*="background-color: lightgreen"] {
+    background-color: lightgreen;
+}
+
+.completed{
+    margin-left: 10px !important;
+    background-color: #4CAF50 !important;
+}  
+
+.sales-list tr,
+.sale-details tr{
+    font-size: 17px;
+}
+
+.sales-list button,
+.sale-details button {
+    padding: 5px 10px;
+    margin: 5px 0;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+    background-color: #C5B28A;
+    color: #193E4E;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.sales-list button:hover,
+.sale-details button:hover {
+    background-color: #8b7d60;
+}
+
+.sales-list h1,
+.sale-details h2 {
+    text-align: center;
+    color: #193E4E;
+}
+
+.sale-details p{
+    color: #193E4E;
+}
+
+.sale-details-title{
+    margin-bottom: 15px;
+    font-size: 28px;
+}
+
+.sale-details-user{
+    font-weight: 500;
+}
+
+button:focus {
+    outline: none;
+}

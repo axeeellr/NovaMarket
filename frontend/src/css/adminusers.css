@@ -1,0 +1,74 @@
+/* AdminUsers.css */
+
+.admin-panel {
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
+    padding: 50px 0;
+}
+
+.admin-panel h2 {
+    color: #193E4E;
+    margin: 20px 0;
+}
+
+.search-bar {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+.users-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: #193E4E;
+}
+
+.users-table th,
+.users-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.users-table th {
+    background-color: #f4f4f4;
+}
+
+.users-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.users-table button {
+    margin: 0 5px;
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.users-table button:hover {
+    opacity: 0.8;
+}
+
+.users-table button:focus {
+    outline: none;
+}
+
+.users-table button .fa {
+    margin-right: 5px;
+}
+
+
+.users-table button:nth-child(1) {
+    background-color: orange;
+    /* Banear */
+    color: white;
+}
+
+.users-table button:nth-child(2) {
+    background-color: #f44336;
+    /* Eliminar */
+    color: white;
+}

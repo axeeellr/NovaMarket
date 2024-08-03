@@ -1,0 +1,132 @@
+/* AdminProducts.css */
+
+.admin-panel {
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+.add-product {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    background-coslor: red;
+}
+
+.add-product-form{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.add-product-form select{
+    display: block;
+    margin: 10px auto;
+    padding: 10px;
+    width: 45%;
+    font-size: 16px;
+}
+
+.add-product h2{
+    color: #193E4E;
+}
+
+.add-product input {
+    display: block;
+    margin: 10px auto;
+    padding: 10px;
+    width: 45%;
+    font-size: 16px;
+}
+
+
+
+.add-product button {
+    padding: 10px 20px;
+    margin-top: 10px;
+    border: none;
+    cursor: pointer;
+    background-color: #193E4E;
+    color: white;
+    border-radius: 5px;
+}
+
+.add-product button:hover {
+    background-color: #0f2e3c;
+}
+
+.category-filter{
+    width: 100%;
+    display: flex;
+    justify-content: start;
+    margin-bottom: 20px;
+    color: #193E4E;
+    font-weight: bold;
+    gap: 10px;
+    font-size: 20px;
+}
+
+.products-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: #193E4E;
+}
+
+.products-table th,
+.products-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.products-table th {
+    background-color: #f4f4f4;
+}
+
+.products-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.product-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+}
+
+.products-table button {
+    margin: 0 5px;
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.products-table button:hover {
+    opacity: 0.8;
+}
+
+.products-table button:focus {
+    outline: none;
+}
+
+.products-table button .fa {
+    margin-right: 5px;
+}
+
+.products-table button:nth-child(1) {
+    background-color: #4CAF50;
+    /* Editar */
+    color: white;
+}
+
+.products-table button:nth-child(2) {
+    background-color: #f44336;
+    /* Eliminar */
+    color: white;
+}

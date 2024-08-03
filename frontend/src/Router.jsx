@@ -20,8 +20,14 @@ import Historial from './views/Historial';
 import Verification from './views/Verification';
 import Delivery from './views/Delivery';
 import Address from './views/Address';
-import Admin from './views/Admin';
 import VerificationSuccessfull from './views/VerificationSuccesfull'; 
+import Admin from './admin/Admin';
+import AdminUsers from './admin/AdminUsers';
+import AdminProducts from './admin/AdminProducts';
+import AdminSales from './admin/AdminSales';
+import AdminChat from './admin/AdminChat';
+import AdminNotifications from './admin/AdminNotifications';
+import AdminDelivery from './admin/AdminDelivery';
 
 const AppRouter = () => {
     const { isAuthenticated } = useUser();
@@ -48,6 +54,12 @@ const AppRouter = () => {
                 <Route path="/paymentmethod" element={isAuthenticated ? <PaymentMethod /> : <Navigate to="/login" />} />
                 <Route path="/historial/:cartId" element={isAuthenticated ? <Historial /> : <Navigate to="/login" />} />
                 <Route path="/admin" element={<Admin />} />
+                <Route path="/adminusers" element={<AdminUsers />} />
+                <Route path="/adminproducts" element={<AdminProducts />} />
+                <Route path="/adminsales" element={<AdminSales />} />
+                <Route path="/adminchat" element={<AdminChat />} />
+                <Route path="/adminnotifications" element={<AdminNotifications />} />
+                <Route path="/admindelivery" element={<AdminDelivery />} />
             </Routes>
         </Router>
     );

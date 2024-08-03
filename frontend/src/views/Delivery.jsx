@@ -54,6 +54,10 @@ const Delivery = () => {
             if (option !== 'selectAddress') {
                 setSelectedAddress(null);
             }
+            if (option === 'store') {
+                parsedCartDetails.address = 0;
+                localStorage.setItem('cartDetails', JSON.stringify(parsedCartDetails));
+            }
             console.log(option)
         }
     };
