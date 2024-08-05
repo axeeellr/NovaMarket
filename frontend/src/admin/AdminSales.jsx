@@ -4,6 +4,8 @@ import { faSignOut, faCheck } from '@fortawesome/free-solid-svg-icons';
 import '../css/adminsales.css';
 import axios from 'axios';
 
+import AdminHeader from '../components/HeaderAdmin';
+
 const AdminSales = () => {
     const [sales, setSales] = useState([]);
     const [selectedSale, setSelectedSale] = useState(null);
@@ -25,7 +27,7 @@ const AdminSales = () => {
             });
     }, []);
 
-    const handleSaleClick = (sale) => {
+    const handleSaleClick = sale => {
         setSelectedSale(sale);
     };
 
@@ -33,7 +35,7 @@ const AdminSales = () => {
         setSelectedSale(null);
     };
 
-    const handleCompleteClick = (sale) => {
+    const handleCompleteClick = sale => {
         axios.put(`http://localhost:1001/status/${sale.cartId}`, { status: 1 })
             .then(response => {
                 setSales(prevSales =>
@@ -45,12 +47,12 @@ const AdminSales = () => {
             });
     };
 
-    const formatTime = (dateString) => {
+    const formatTime = dateString => {
         const date = new Date(dateString);
         return date.toTimeString().substr(0, 5); // 'HH:mm'
     };
 
-    const addHour = (dateString) => {
+    const addHour = dateString => {
         const date = new Date(dateString);
         date.setHours(date.getHours() + 1);
         return date;
@@ -58,10 +60,7 @@ const AdminSales = () => {
 
     return (
         <>
-            <div className="admin__header">
-                <h1>Gestión de compras de NovaMarket</h1>
-                <button>Cerrar Sesión<FontAwesomeIcon icon={faSignOut} /></button>
-            </div>
+            <AdminHeader/>
             <div className="admin-sales">
                 {selectedSale ? (
                     <div className="sale-details">
@@ -69,8 +68,10 @@ const AdminSales = () => {
                         <h2 className="sale-details-title">Detalles de {selectedSale.cartName}</h2>
                         <h2 className='sale-details-user'><strong>Usuario:</strong> {selectedSale.userName} ID: {selectedSale.userId}</h2>
                         <h2 className='sale-details-user'>
-                            <strong>Hora de pedido:</strong> {formatTime(selectedSale.date)} &nbsp;&nbsp;&nbsp;&nbsp; 
-                            <strong>Hora de entrega:</strong> {formatTime(addHour(selectedSale.date))}
+                            <strong>Hora de pedido:</strong> {formatTime(selectedSale.date)}
+                            {selectedSale.cartType !== 'QR' && (
+                                <>&nbsp;&nbsp;&nbsp;&nbsp;<strong>Hora de entrega:</strong> {formatTime(addHour(selectedSale.date))}</>
+                            )}
                         </h2>
                         <table>
                             <thead>

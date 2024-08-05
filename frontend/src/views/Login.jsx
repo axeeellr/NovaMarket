@@ -77,7 +77,11 @@ function Login() {
             const response = await axios.post('http://localhost:1001/login', { email: loginEmail, password: loginPassword });
             const user = response.data.user;
             login(user);
-            navigate('/');
+            if (user.role === 'admin') {
+                navigate('/admin');
+            } else {
+                navigate('/');
+            }
         } catch (error) {
             console.error(error);
             toast('¡Datos incorrectos!');

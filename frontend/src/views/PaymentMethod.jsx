@@ -90,7 +90,7 @@ const PaymentMethod = () => {
                 const cartPrice = parseFloat(parsedCartDetails.price); // Convertir a número.
                 const userId = user.id; // Obtener el ID del usuario desde el contexto.
                 const cardId = selectedCard.id;
-                const addressId = parsedCartDetails.address;
+                const addressId = parsedCartDetails.address === null ? '' : parsedCartDetails.address;
 
                 // Recuperar y establecer el valor de type
                 let cartType;
@@ -98,6 +98,8 @@ const PaymentMethod = () => {
                     cartType = 'Recoger en tienda';
                 } else if (parsedCartDetails.deliveryOption === 'address' || parsedCartDetails.deliveryOption === 'selectAddress') {
                     cartType = 'Domicilio';
+                } else {
+                    cartType = 'QR';
                 }
 
                 //Establecer el valor de status
@@ -251,7 +253,9 @@ const PaymentMethod = () => {
                 )}
             </div>
             {parsedCartDetails ? (
-                parsedCartDetails.deliveryOption === "store" ? (
+                parsedCartDetails.type === "qr" ? (
+                    ''
+                ) : parsedCartDetails.deliveryOption === "store" ? (
                     <div className="summary__delivery">
                         <h2>Método de entrega:</h2>
                         <p>Recoger en la tienda</p>
@@ -281,6 +285,7 @@ const PaymentMethod = () => {
                     <p>Información no disponible</p>
                 </div>
             )}
+
 
 
             <div className="method__button">

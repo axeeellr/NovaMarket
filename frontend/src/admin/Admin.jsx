@@ -4,13 +4,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignOut, faUsers, faBowlRice, faComments, faCartArrowDown, faTruckFast, faBell } from '@fortawesome/free-solid-svg-icons';
 import '../css/admin.css';
 
+import AdminHeader from '../components/HeaderAdmin';
+
 const Admin = () => {
     return (
         <div className="admin__container">
-            <div className="admin__header">
-                <h1>Panel de Administración</h1>
-                <button>Cerrar Sesión<FontAwesomeIcon icon={faSignOut} /></button>
-            </div>
+            <AdminHeader/>
             <div className="admin__content">
                 <Link to="/adminusers" className="content__item contentUser">
                     <div className="item__icon">

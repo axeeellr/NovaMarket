@@ -4,6 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash, faPlus, faSignOut } from '@fortawesome/free-solid-svg-icons';
 import '../css/adminproducts.css';
 
+import AdminHeader from '../components/HeaderAdmin';
+
 const AdminProducts = () => {
     const [products, setProducts] = useState([]);
     const [newProduct, setNewProduct] = useState({ category: '', name: '', price: '', weight: '', img: '', code: '', brand: '', calories: '' });
@@ -85,10 +87,7 @@ const AdminProducts = () => {
 
     return (
         <>
-            <div className="admin__header">
-                <h1>Gestión de productos de NovaMarket</h1>
-                <button>Cerrar Sesión<FontAwesomeIcon icon={faSignOut} /></button>
-            </div>
+            <AdminHeader/>
             <div className="admin-panel">
                 <div className="add-product">
                     <h2>{editProduct ? 'Editar producto' : 'Añadir producto'}</h2>

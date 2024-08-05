@@ -4,6 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBan, faTrash, faSignOut, faUndo } from '@fortawesome/free-solid-svg-icons';
 import '../css/adminusers.css';
 
+import AdminHeader from '../components/HeaderAdmin';
+
 const AdminUsers = () => {
     const [users, setUsers] = useState([]);
     const [bannedUsers, setBannedUsers] = useState([]);
@@ -65,10 +67,7 @@ const AdminUsers = () => {
 
     return (
         <>
-            <div className="admin__header">
-                <h1>Gestión de usuarios de NovaMarket</h1>
-                <button>Cerrar Sesión<FontAwesomeIcon icon={faSignOut} /></button>
-            </div>
+            <AdminHeader/>
             <div className="admin-panel">
                 <input
                     type="text"

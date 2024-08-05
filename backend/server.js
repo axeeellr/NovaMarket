@@ -110,6 +110,7 @@ app.get('/check-verification-status', (req, res) => {
 app.post('/registro', (req, res) => {
     const { name, email, password } = req.body;
     const verificationToken = crypto.randomBytes(32).toString('hex');
+    const role = 'user';
 
     // Verificar si el correo electrónico ya está registrado
     db.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
@@ -124,7 +125,7 @@ app.post('/registro', (req, res) => {
         }
 
         // Insertar el nuevo usuario en la base de datos
-        db.query('INSERT INTO users (name, email, password, verification_token) VALUES (?, ?, ?, ?)', [name, email, password, verificationToken], (err, result) => {
+        db.query('INSERT INTO users (name, email, password, verification_token, role) VALUES (?, ?, ?, ?, ?)', [name, email, password, verificationToken, role], (err, result) => {
             if (err) {
                 console.error("Error al registrar usuario:", err);
                 return res.status(500).json({ error: 'Error al registrar usuario' });
@@ -184,7 +185,7 @@ app.post('/login', (req, res) => {
                 });
             } else {
                 // Si las contraseñas no coinciden, devolvemos un error de credenciales inválidas
-                return res.status(401).json({ error: 'Credenciales inválidas la contra' });
+                return res.status(401).json({ error: 'Credenciales inválidas' });
             }
         } else {
             // Si no se encuentra un usuario con el correo electrónico proporcionado, devolvemos un error

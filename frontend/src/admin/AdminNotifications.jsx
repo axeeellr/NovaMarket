@@ -3,6 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash, faPlus, faSignOut } from '@fortawesome/free-solid-svg-icons';
 import '../css/adminnotifications.css';
 
+import AdminHeader from '../components/HeaderAdmin';
+
 const initialNotifications = [
     { id: 1, title: 'Mantenimiento programado', message: 'El sistema estará en mantenimiento el próximo sábado.' },
     { id: 2, title: 'Nueva funcionalidad', message: 'Se ha añadido una nueva funcionalidad a la aplicación.' }
@@ -44,10 +46,7 @@ const AdminNotifications = () => {
 
     return (
         <>
-        <div className="admin__header">
-            <h1>Gestión de notificaciones de NovaMarket</h1>
-            <button>Cerrar Sesión<FontAwesomeIcon icon={faSignOut}/></button>
-        </div>
+        <AdminHeader/>
         <div className="admin-notifications">
             <div className="notifications-list">
                 <h2>Notificaciones Predeterminadas</h2>

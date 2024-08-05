@@ -4,7 +4,10 @@ import { faSignOut, faCheck } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import '../css/admindelivery.css';
 
+import AdminHeader from '../components/HeaderAdmin';
+
 const AdminDelivery = () => {
+
     const [orders, setOrders] = useState([]);
     const [selectedOrder, setSelectedOrder] = useState(null);
 
@@ -20,6 +23,11 @@ const AdminDelivery = () => {
                 console.error('Error al obtener pedidos:', error);
             });
     }, []);
+
+    const handleLogout = () => {
+        logout();
+        navigate('/login'); // Redirige al usuario a la página de inicio de sesión
+    };
 
     const handleOrderClick = (order) => {
         setSelectedOrder(order);
@@ -57,10 +65,7 @@ const AdminDelivery = () => {
 
     return (
         <>
-            <div className="admin__header">
-                <h1>Gestión de entregas de NovaMarket</h1>
-                <button>Cerrar Sesión<FontAwesomeIcon icon={faSignOut}/></button>
-            </div>
+            <AdminHeader/>
             <div className="admin-delivery">
                 {selectedOrder ? (
                     <div className="order-details">

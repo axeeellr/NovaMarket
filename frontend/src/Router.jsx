@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 
 import { useUser } from './UserContext';
+import ProtectedRoute from './ProtectedRoute';
 
 import Home from './views/Home';
 import Notifications from './views/Notifications';
@@ -37,29 +38,29 @@ const AppRouter = () => {
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
-                <Route path="/verification" element={<Verification /> } />
-                <Route path="/verificationsuccessfull" element={<VerificationSuccessfull /> } />
-                <Route path="/notifications" element={isAuthenticated ? <Notifications /> : <Navigate to="/login" />} />
-                <Route path="/profile" element={isAuthenticated ? <Profile /> : <Navigate to="/login" />} />
-                <Route path="/scanner" element={isAuthenticated ? <Scanner /> : <Navigate to="/login" />} />
-                <Route path="/shop" element={isAuthenticated ? <Shop /> : <Navigate to="/login" />} />
-                <Route path="/shop/meats" element={isAuthenticated ? <Meats /> : <Navigate to="/login" />} />
-                <Route path="/shop/grains" element={isAuthenticated ? <Grains /> : <Navigate to="/login" />} />
-                <Route path="/shop/cleaning" element={isAuthenticated ? <Cleaning /> : <Navigate to="/login" />} />
-                <Route path="/shop/fruits" element={isAuthenticated ? <Fruits /> : <Navigate to="/login" />} />
-                <Route path="/cart" element={isAuthenticated ? <Cart /> : <Navigate to="/login" />} />
-                <Route path="/delivery" element={isAuthenticated ? <Delivery /> : <Navigate to="/login" />} />
-                <Route path="/address" element={isAuthenticated ? <Address /> : <Navigate to="/login" />} />
-                <Route path="/product/:data" element={isAuthenticated ? <Product /> : <Navigate to="/login" />} />
-                <Route path="/paymentmethod" element={isAuthenticated ? <PaymentMethod /> : <Navigate to="/login" />} />
-                <Route path="/historial/:cartId" element={isAuthenticated ? <Historial /> : <Navigate to="/login" />} />
-                <Route path="/admin" element={<Admin />} />
-                <Route path="/adminusers" element={<AdminUsers />} />
-                <Route path="/adminproducts" element={<AdminProducts />} />
-                <Route path="/adminsales" element={<AdminSales />} />
-                <Route path="/adminchat" element={<AdminChat />} />
-                <Route path="/adminnotifications" element={<AdminNotifications />} />
-                <Route path="/admindelivery" element={<AdminDelivery />} />
+                <Route path="/verification" element={<Verification />} />
+                <Route path="/verificationsuccessfull" element={<VerificationSuccessfull />} />
+                <Route path="/notifications" element={<ProtectedRoute element={Notifications} />} />
+                <Route path="/profile" element={<ProtectedRoute element={Profile} />} />
+                <Route path="/scanner" element={<ProtectedRoute element={Scanner} />} />
+                <Route path="/shop" element={<ProtectedRoute element={Shop} />} />
+                <Route path="/shop/meats" element={<ProtectedRoute element={Meats} />} />
+                <Route path="/shop/grains" element={<ProtectedRoute element={Grains} />} />
+                <Route path="/shop/cleaning" element={<ProtectedRoute element={Cleaning} />} />
+                <Route path="/shop/fruits" element={<ProtectedRoute element={Fruits} />} />
+                <Route path="/cart" element={<ProtectedRoute element={Cart} />} />
+                <Route path="/delivery" element={<ProtectedRoute element={Delivery} />} />
+                <Route path="/address" element={<ProtectedRoute element={Address} />} />
+                <Route path="/product/:data" element={<ProtectedRoute element={Product} />} />
+                <Route path="/paymentmethod" element={<ProtectedRoute element={PaymentMethod} />} />
+                <Route path="/historial/:cartId" element={<ProtectedRoute element={Historial} />} />
+                <Route path="/admin" element={<ProtectedRoute element={Admin} adminOnly />} />
+                <Route path="/adminusers" element={<ProtectedRoute element={AdminUsers} adminOnly />} />
+                <Route path="/adminproducts" element={<ProtectedRoute element={AdminProducts} adminOnly />} />
+                <Route path="/adminsales" element={<ProtectedRoute element={AdminSales} adminOnly />} />
+                <Route path="/adminchat" element={<ProtectedRoute element={AdminChat} adminOnly />} />
+                <Route path="/adminnotifications" element={<ProtectedRoute element={AdminNotifications} adminOnly />} />
+                <Route path="/admindelivery" element={<ProtectedRoute element={AdminDelivery} adminOnly />} />
             </Routes>
         </Router>
     );
