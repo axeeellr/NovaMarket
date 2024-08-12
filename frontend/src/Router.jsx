@@ -13,6 +13,9 @@ import Login from './views/Login';
 import Product from './views/Product';
 import Cart from './views/Cart';
 import Meats from './views/Meats';
+import Hygiene from './views/Hygiene';
+import Dairy from './views/Dairy';
+import Cereal from './views/Cereal';
 import Grains from './views/Grains';
 import Cleaning from './views/Cleaning';
 import Fruits from './views/Fruits';
@@ -46,8 +49,11 @@ const AppRouter = () => {
                 <Route path="/shop" element={<ProtectedRoute element={Shop} />} />
                 <Route path="/shop/meats" element={<ProtectedRoute element={Meats} />} />
                 <Route path="/shop/grains" element={<ProtectedRoute element={Grains} />} />
+                <Route path="/shop/hygiene" element={<ProtectedRoute element={Hygiene} />} />
+                <Route path="/shop/dairy" element={<ProtectedRoute element={Dairy} />} />
                 <Route path="/shop/cleaning" element={<ProtectedRoute element={Cleaning} />} />
                 <Route path="/shop/fruits" element={<ProtectedRoute element={Fruits} />} />
+                <Route path="/shop/cereal" element={<ProtectedRoute element={Cereal} />} />
                 <Route path="/cart" element={<ProtectedRoute element={Cart} />} />
                 <Route path="/delivery" element={<ProtectedRoute element={Delivery} />} />
                 <Route path="/address" element={<ProtectedRoute element={Address} />} />

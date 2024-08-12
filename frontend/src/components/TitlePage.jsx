@@ -26,7 +26,10 @@ function TitlePage() {
             '/shop/meats':  'Carnes',
             '/shop/grains':  'Granos básicos',
             '/shop/cleaning':  'Limpieza',
-            '/shop/fruits':  'Frutas y verduras'
+            '/shop/fruits':  'Frutas y verduras',
+            '/shop/dairy':  'Lácteos',
+            '/shop/hygiene':  'Higiene',
+            '/shop/cereal':  'Cereal'
         };
         currentPage = pageTitles[location.pathname];
     }
