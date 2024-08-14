@@ -620,9 +620,9 @@ app.get('/products', (req, res) => {
 
 // Ruta para añadir un nuevo producto
 app.post('/products', (req, res) => {
-    const { category, name, price, weight, img, code, brand, calories } = req.body;
-    const query = 'INSERT INTO products (category, name, price, weight, img, code, brand, calories) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
-    db.query(query, [category, name, price, weight, img, code, brand, calories], (err, result) => {
+    const { category, name, price, weight, img, code, brand, calories, type } = req.body;
+    const query = 'INSERT INTO products (category, name, price, weight, img, code, brand, calories, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    db.query(query, [category, name, price, weight, img, code, brand, calories, type], (err, result) => {
         if (err) return res.status(500).json({ error: 'Error al añadir producto' });
         res.status(201).json({ id: result.insertId });
     });
@@ -640,11 +640,11 @@ app.delete('/products/:id', (req, res) => {
 // Endpoint para actualizar un producto
 app.put('/products/:id', (req, res) => {
     const productId = req.params.id;
-    const { name, code, brand, calories, price, img, weight, category } = req.body;
+    const { name, code, brand, calories, price, img, weight, category, type } = req.body;
 
-    const query = `UPDATE products SET name = ?, code = ?, brand = ?, calories = ?, price = ?, img = ?, weight = ?, category = ? WHERE id = ?`;
+    const query = `UPDATE products SET name = ?, code = ?, brand = ?, calories = ?, price = ?, img = ?, weight = ?, category = ?, type = ? WHERE id = ?`;
 
-    db.query(query, [name, code, brand, calories, price, img, weight, category, productId], (err, results) => {
+    db.query(query, [name, code, brand, calories, price, img, weight, category, type, productId], (err, results) => {
         if (err) {
             console.error('Error updating product:', err);
             return res.status(500).json({ error: 'Error updating product' });

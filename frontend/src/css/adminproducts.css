@@ -119,6 +119,10 @@
     margin-right: 5px;
 }
 
+.imgurl{
+    width: 95% !important;
+}
+
 .products-table button:nth-child(1) {
     background-color: #4CAF50;
     /* Editar */

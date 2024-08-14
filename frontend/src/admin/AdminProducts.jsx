@@ -8,11 +8,13 @@ import AdminHeader from '../components/HeaderAdmin';
 
 const AdminProducts = () => {
     const [products, setProducts] = useState([]);
-    const [newProduct, setNewProduct] = useState({ category: '', name: '', price: '', weight: '', img: '', code: '', brand: '', calories: '' });
+    const [newProduct, setNewProduct] = useState({ category: '', name: '', price: '', weight: '', img: '', code: '', brand: '', calories: '', type: '' });
     const [selectedCategory, setSelectedCategory] = useState('All');
+    const [selectedType, setSelectedType] = useState('All');
     const [editProduct, setEditProduct] = useState(null);
 
-    const categories = ['Frutas y verduras', 'Carnes', 'Embutidos', 'Limpieza'];
+    const categories = ['Frutas y verduras', 'Carnes', 'Granos', 'Limpieza', 'Lácteos', 'Higiene'];
+    const types = ['Frutas y verduras', 'Carnes', "Arroz", 'Arroz Precocido', "Maíz", "Frijoles", "Lentejas", "Azúcar", "Sal", "Pan de caja", "Macarrones", "Aceite", "Sardina", "Jugos de caja", "Galletas", "Desinfectante", "Detergente en polvo", "Lavaplatos", "Lejía", "Suavizante", "Jabón de limpieza", "Bolsas plásticas para basura", "Leche", "Yogurt", "Flan", "Cofileche", "Huevos", "Queso", "Crema", "Shampoo", "Jabón de higiene personal", "Crema corporal", "Pasta dental", "Papel higiénico", "Protector solar"];
 
     useEffect(() => {
         // Fetch products from the backend
@@ -55,7 +57,7 @@ const AdminProducts = () => {
         try {
             const response = await axios.post('http://localhost:1001/products', newProduct);
             setProducts([...products, { ...newProduct, id: response.data.id }]);
-            setNewProduct({ category: '', name: '', price: '', weight: '', img: '', code: '', brand: '', calories: '' });
+            setNewProduct({ category: '', name: '', price: '', weight: '', img: '', code: '', brand: '', calories: '', type: ''});
         } catch (error) {
             console.error('Error adding product:', error);
         }
@@ -74,12 +76,25 @@ const AdminProducts = () => {
         setSelectedCategory(e.target.value);
     };
 
+    const handleTypeChange = (e) => {
+        setSelectedType(e.target.value);
+    };
+
     const handleCategorySelectChange = (e) => {
         const { value } = e.target;
         if (editProduct) {
             setEditProduct({ ...editProduct, category: value });
         } else {
             setNewProduct({ ...newProduct, category: value });
+        }
+    };
+
+    const handleTypeSelectChange = (e) => {
+        const { value } = e.target;
+        if (editProduct) {
+            setEditProduct({ ...editProduct, type: value });
+        } else {
+            setNewProduct({ ...newProduct, type: value });
         }
     };
 
@@ -94,17 +109,23 @@ const AdminProducts = () => {
                     <div className="add-product-form">
                         <input type="text" placeholder="Nombre" name="name" value={editProduct ? editProduct.name : newProduct.name} onChange={handleChange} />
                         <input type="text" placeholder="Código (nm-producto-0)" name="code" value={editProduct ? editProduct.code : newProduct.code} onChange={handleChange} />
+                        <input type="text" placeholder="Marca" name="brand" value={editProduct ? editProduct.brand : newProduct.brand} onChange={handleChange} />
+                        <input type="number" placeholder="Precio" name="price" value={editProduct ? editProduct.price : newProduct.price} onChange={handleChange} />
+                        <input type="text" placeholder="Peso (g, kg, lb, l)" name="weight" value={editProduct ? editProduct.weight : newProduct.weight} onChange={handleChange} />
+                        <input type="text" placeholder="Calorías (kcal)" name="calories" value={editProduct ? editProduct.calories : newProduct.calories} onChange={handleChange} />
                         <select name="category" value={editProduct ? editProduct.category : newProduct.category} onChange={handleCategorySelectChange}>
                             <option value="">Seleccionar categoría</option>
                             {categories.map(cat => (
                                 <option key={cat} value={cat}>{cat}</option>
                             ))}
                         </select>
-                        <input type="text" placeholder="Marca" name="brand" value={editProduct ? editProduct.brand : newProduct.brand} onChange={handleChange} />
-                        <input type="number" placeholder="Precio" name="price" value={editProduct ? editProduct.price : newProduct.price} onChange={handleChange} />
-                        <input type="text" placeholder="Peso (g, kg, lb, l)" name="weight" value={editProduct ? editProduct.weight : newProduct.weight} onChange={handleChange} />
-                        <input type="text" placeholder="Calorías (kcal)" name="calories" value={editProduct ? editProduct.calories : newProduct.calories} onChange={handleChange} />
-                        <input type="text" placeholder="Imagen URL" name="img" value={editProduct ? editProduct.img : newProduct.img} onChange={handleChange} />
+                        <select name="type" value={editProduct ? editProduct.type : newProduct.type} onChange={handleTypeSelectChange}>
+                            <option value="">Seleccionar tipo</option>
+                            {types.map(typ => (
+                                <option key={typ} value={typ}>{typ}</option>
+                            ))}
+                        </select>
+                        <input type="text" className='imgurl' placeholder="Imagen URL" name="img" value={editProduct ? editProduct.img : newProduct.img} onChange={handleChange} />
                     </div>
                     <button onClick={editProduct ? handleSaveEdit : handleAddProduct}>
                         <FontAwesomeIcon icon={faPlus} /> {editProduct ? 'Guardar Cambios' : 'Añadir Producto'}
@@ -123,6 +144,7 @@ const AdminProducts = () => {
                     <thead>
                         <tr>
                             <th>Categoría</th>
+                            <th>Tipo</th>
                             <th>Imagen</th>
                             <th>Nombre</th>
                             <th>Precio</th>
@@ -134,6 +156,7 @@ const AdminProducts = () => {
                         {filteredProducts.map(product => (
                             <tr key={product.id}>
                                 <td>{product.category}</td>
+                                <td>{product.type}</td>
                                 <td><img src={product.img} alt={product.name} className="product-image" /></td>
                                 <td>{product.name}</td>
                                 <td>${product.price}</td>

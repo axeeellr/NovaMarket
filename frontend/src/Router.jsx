@@ -14,6 +14,7 @@ import Product from './views/Product';
 import Cart from './views/Cart';
 import Meats from './views/Meats';
 import Hygiene from './views/Hygiene';
+import Snacks from './views/Snacks';
 import Dairy from './views/Dairy';
 import Cereal from './views/Cereal';
 import Grains from './views/Grains';
@@ -50,6 +51,7 @@ const AppRouter = () => {
                 <Route path="/shop/meats" element={<ProtectedRoute element={Meats} />} />
                 <Route path="/shop/grains" element={<ProtectedRoute element={Grains} />} />
                 <Route path="/shop/hygiene" element={<ProtectedRoute element={Hygiene} />} />
+                <Route path="/shop/snacks" element={<ProtectedRoute element={Snacks} />} />
                 <Route path="/shop/dairy" element={<ProtectedRoute element={Dairy} />} />
                 <Route path="/shop/cleaning" element={<ProtectedRoute element={Cleaning} />} />
                 <Route path="/shop/fruits" element={<ProtectedRoute element={Fruits} />} />
