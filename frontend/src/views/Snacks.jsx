@@ -19,20 +19,18 @@ const Meats = () => {
 
     const points = [
         { name: 'nada', id: 'nada', x: 0.2, y: 0.3 },
-        { name: 'Filete de res', id: 'Filete de res', x: 0.1, y: 0.3 },
-        { name: 'Carne Molida de res', id: 'Carne Molida de res', x: 0.25, y: 0.59 },
-        { name: 'Tomahawk', id: 'Tomahawk', x: 0.12, y: 0.51 },
-        { name: 'Costilla de res', id: 'Costilla de res', x: 0.23, y: 0.48 },
-        { name: 'Hueso especial', id: 'Hueso especial', x: 0.93, y: 0.68 },
-        { name: 'Churrasco redondo', id: 'Churrasco redondo', x: 0.92, y: 0.28 },
-        { name: 'Mollejas de res', id: 'Mollejas de res', x: 0.9, y: 0.43 },
-        { name: 'Lomo de res', id: 'Lomo de res', x: 0.9, y: 0.81 },
+        { name: 'Cereales', id: 'Cereal', x: 0.13, y: 0.65 },
+        { name: 'Galletas', id: 'Galletas', x: 0.31, y: 0.63 },
+        { name: 'Churros', id: 'Churros', x: 0.88, y: 0.69 },
+        { name: 'Pan Dulce', id: 'Pan dulce', x: 0.7, y: 0.59 },
+        { name: 'Chocolates', id: 'Chocolates', x: 0.8, y: 0.65 },
+        { name: 'Dulces', id: 'Churrasco redondo', x: 0.32, y: 0.5 },
     ];
 
     const arrows = [
         { name: 'nada', id: 'nada', x: 0.2, y: 0.3 },
-        { name: 'Ir a frutas', id: 'Atrás', x: 0.45, y: 0.45 },
-        { name: 'Ir a limpieza', id: 'Adelante', x: 0.63, y: 0.45 },
+        { name: 'Ir a Higiene', id: 'Atrás', x: 0.40, y: 0.30 },
+        { name: 'Ir a Lácteos', id: 'Adelante', x: 0.60, y: 0.30 },
     ];
 
     const imgRef = useRef(null);
@@ -98,9 +96,9 @@ const Meats = () => {
 
     const handleArrowClick = area => {
         if (area.id === 'Atrás') {
-            navigate('/shop/fruits'); // Reemplazar con la ruta deseada
+            navigate('/shop/hygiene'); // Reemplazar con la ruta deseada
         } else if (area.id === 'Adelante') {
-            navigate('/shop/cleaning'); // Reemplazar con la ruta deseada
+            navigate('/shop/dairy'); // Reemplazar con la ruta deseada
         }
     };
 
@@ -154,7 +152,7 @@ const Meats = () => {
                         <div
                             key={arrow.id}
                             id={`arrow-${arrow.id}`}
-                            className={arrow.id === 'Atrás' ? 'arrow arrowAtras' : 'arrow arrowAdelante arrowLimpieza'}
+                            className={arrow.id === 'Atrás' ? 'arrow arrowAtras arrowHigiene' : 'arrow arrowAdelante arrowLacteos'}
                             style={{
                                 left: `${arrow.x * 100}%`,
                                 top: `${arrow.y * 100}%`,

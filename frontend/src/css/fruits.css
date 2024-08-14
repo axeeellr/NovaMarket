@@ -16,7 +16,7 @@
 @keyframes pulse {
     0% {
         transform: scale(0.95);
-        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.8);
+        box-shadow: 0 0 0 0 rgba(255, 255, 255);
     }
     70% {
         transform: scale(1);
@@ -30,8 +30,8 @@
 
 .point {
     position: absolute;
-    width: 13px;
-    height: 13px;
+    width: 17px;
+    height: 17px;
     background-color: white;
     border-radius: 50%;
     transform: translate(-50%, -50%);
@@ -40,6 +40,7 @@
     justify-content: center;
     cursor: pointer;
     animation: pulse 1.5s infinite;
+    border: 1px solid rgb(153, 153, 153);
 }
 
 .arrow {
@@ -59,7 +60,7 @@
     text-align: center;
     width: 30px;
     height: 30px;
-    font-size: 16px;
+    font-size: 17px;
     border: 3px solid rgb(255, 255, 255);
     color: white;
 }
@@ -109,7 +110,19 @@
 }
 
 .arrowEmbutidosAtras:hover{
-    width: 150px;
+    width: 140px;
+}
+
+.arrowLacteos:hover{
+    width: 130px;
+}
+
+.arrowHigiene:hover{
+    width: 130px;
+}
+
+.arrowSnacks:hover{
+    width: 130px;
 }
 
 
@@ -118,9 +131,9 @@
     position: absolute;
     background-color: rgb(234, 231, 228, 0.4);
     color: white;
-    padding: 5px 10px;
+    padding: 6px 11px;
     border-radius: 5px;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
     visibility: hidden;
     opacity: 0;
@@ -469,6 +482,31 @@ a {
     font-size: 18px;
     margin: 0;
 }
+
+.dropdown-menu {
+    position: absolute;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    z-index: 1000;
+}
+
+.dropdown-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dropdown-menu li {
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.dropdown-menu li:hover {
+    background-color: #f0f0f0;
+}
+
 
 @media only screen and (min-width: 768px) {
     .shop__container {

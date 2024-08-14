@@ -18,23 +18,17 @@ const App = () => {
 
     const points = [
         { name: 'nada', id: 'nada', x: 0.2, y: 0.3 },
-        { name: 'Mandarinas', id: 'Mandarinas', x: 0.07, y: 0.75 },
-        { name: 'Peras', id: 'Peras', x: 0.2, y: 0.65 },
-        { name: 'Tomates', id: 'Tomates', x: 0.07, y: 0.51 },
-        { name: 'Uvas', id: 'Uvas', x: 0.18, y: 0.48 },
-        { name: 'Manzanas', id: 'Manzana Roja', x: 0.29, y: 0.57 },
-        { name: 'Naranjas', id: 'Naranjas', x: 0.32, y: 0.48 },
-        { name: 'Mangos', id: 'Mangos', x: 0.9, y: 0.63 },
-        { name: 'Rábanos', id: 'Rábanos', x: 0.83, y: 0.56 },
-        { name: 'Cilantro', id: 'Cilantro Orgánico', x: 0.78, y: 0.53 },
-        { name: 'Pepinos', id: 'Pepino', x: 0.84, y: 0.43 },
-        { name: 'Papas', id: 'Papa Americana', x: 0.74, y: 0.51 },
+        { name: 'Shampoo', id: 'Shampoo', x: 0.19, y: 0.7 },
+        { name: 'Jabón', id: 'Jabon', x: 0.1, y: 0.55 },
+        { name: 'Crema', id: 'Crema', x: 0.15, y: 0.34 },
+        { name: 'Pasta dental', id: 'Pasta dental', x: 0.18, y: 0.14 },
+        { name: 'Papel higiénico', id: 'Papel higiénico', x: 0.43, y: 0.09 },
+        { name: 'Protector solar', id: 'Naranjas', x: 0.35, y: 0.47 },
     ];
 
     const arrows = [
         { name: 'nada', id: 'nada', x: 0.2, y: 0.3 },
-        { name: 'Ir al inicio', id: 'Atrás', x: 0.55, y: 0.4 },
-        { name: 'Ir a carnes', id: 'Adelante', x: 0.58, y: 0.4 },
+        { name: 'Ir a Snacks', id: 'Adelante', x: 0.9, y: 0.3 },
     ];
 
     const imgRef = useRef(null);
@@ -102,7 +96,7 @@ const App = () => {
         if (area.id === 'Atrás') {
             navigate('/shop'); // Reemplazar con la ruta deseada
         } else if (area.id === 'Adelante') {
-            navigate('/shop/meats'); // Reemplazar con la ruta deseada
+            navigate('/shop/snacks'); // Reemplazar con la ruta deseada
         }
     };
 
@@ -156,7 +150,7 @@ const App = () => {
                         <div
                             key={arrow.id}
                             id={`arrow-${arrow.id}`}
-                            className={arrow.id === 'Atrás' ? 'arrow arrowAtras' : 'arrow arrowAdelante'}
+                            className={arrow.id === 'Atrás' ? 'arrow arrowAtras' : 'arrow arrowAtras arrowSnacks'}
                             style={{
                                 left: `${arrow.x * 100}%`,
                                 top: `${arrow.y * 100}%`,

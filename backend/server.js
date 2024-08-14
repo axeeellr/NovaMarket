@@ -519,6 +519,16 @@ app.delete('/deleteAddress/:id', (req, res) => {
 
 
 
+app.get('/products/:type', (req, res) => {
+    const { type } = req.params;
+    db.query('SELECT * FROM products WHERE type = ?', [type], (err, results) => {
+        if (err) return res.status(500).json({ error: 'Error al obtener productos' });
+        res.json(results);
+    });
+});
+
+
+
 const port = 1001;
 
 app.listen(port, ()=>{

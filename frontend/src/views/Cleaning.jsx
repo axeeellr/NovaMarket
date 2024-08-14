@@ -32,7 +32,7 @@ const App = () => {
 
     const arrows = [
         { name: 'nada', id: 'nada', x: 0.2, y: 0.3 },
-        { name: 'Ir a granos', id: 'Adelante', x: 0.65, y: 0.47 },
+        { name: 'Ir a Snacks', id: 'Adelante', x: 0.65, y: 0.47 },
     ];
 
     const imgRef = useRef(null);
@@ -98,7 +98,7 @@ const App = () => {
 
     const handleArrowClick = area => {
         if (area.id === 'Adelante') {
-            navigate('/shop/grains'); // Reemplazar con la ruta deseada
+            navigate('/shop/snacks'); // Reemplazar con la ruta deseada
         }
     };
 

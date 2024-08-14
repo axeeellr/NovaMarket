@@ -29,7 +29,7 @@ function TitlePage() {
             '/shop/fruits':  'Frutas y verduras',
             '/shop/dairy':  'Lácteos',
             '/shop/hygiene':  'Higiene',
-            '/shop/cereal':  'Cereal'
+            '/shop/snacks':  'Snacks'
         };
         currentPage = pageTitles[location.pathname];
     }

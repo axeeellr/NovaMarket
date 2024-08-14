@@ -36,7 +36,7 @@ const App = () => {
     const arrows = [
         { name: 'nada', id: 'nada', x: 0.2, y: 0.3 },
         { name: 'Ir a carnes', id: 'Atrás', x: 0.41, y: 0.15 },
-        { name: 'Ir a embutidos', id: 'Adelante', x: 0.68, y: 0.15 },
+        { name: 'Ir a limpieza', id: 'Adelante', x: 0.68, y: 0.15 },
     ];
 
     const imgRef = useRef(null);
@@ -113,7 +113,7 @@ const App = () => {
         if (area.id === 'Atrás') {
             navigate('/shop/meats'); // Reemplazar con la ruta deseada
         } else if (area.id === 'Adelante') {
-            navigate('/shop'); // Reemplazar con la ruta deseada
+            navigate('/shop/cleaning'); // Reemplazar con la ruta deseada
         }
     };
 

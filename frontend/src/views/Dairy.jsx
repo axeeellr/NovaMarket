@@ -18,23 +18,22 @@ const App = () => {
 
     const points = [
         { name: 'nada', id: 'nada', x: 0.2, y: 0.3 },
-        { name: 'Mandarinas', id: 'Mandarinas', x: 0.07, y: 0.75 },
-        { name: 'Peras', id: 'Peras', x: 0.2, y: 0.65 },
-        { name: 'Tomates', id: 'Tomates', x: 0.07, y: 0.51 },
-        { name: 'Uvas', id: 'Uvas', x: 0.18, y: 0.48 },
-        { name: 'Manzanas', id: 'Manzana Roja', x: 0.29, y: 0.57 },
-        { name: 'Naranjas', id: 'Naranjas', x: 0.32, y: 0.48 },
-        { name: 'Mangos', id: 'Mangos', x: 0.9, y: 0.63 },
-        { name: 'Rábanos', id: 'Rábanos', x: 0.83, y: 0.56 },
+        { name: 'Leche', id: 'Leche', x: 0.07, y: 0.75 },
+        { name: 'Yogurt', id: 'Yogurt', x: 0.2, y: 0.5 },
+        { name: 'Flan', id: 'Flan', x: 0.2, y: 0.71 },
+        { name: 'Cofileche', id: 'Cofileche', x: 0.35, y: 0.4 },
+        { name: 'Huevos', id: 'Huevos', x: 0.94, y: 0.73 },
+        { name: 'Queso', id: 'Queso', x: 0.92, y: 0.57 },
+        { name: 'Crema', id: 'Crema', x: 0.36, y: 0.63 },
+        /*{ name: 'Rábanos', id: 'Rábanos', x: 0.83, y: 0.56 },
         { name: 'Cilantro', id: 'Cilantro Orgánico', x: 0.78, y: 0.53 },
         { name: 'Pepinos', id: 'Pepino', x: 0.84, y: 0.43 },
-        { name: 'Papas', id: 'Papa Americana', x: 0.74, y: 0.51 },
+        { name: 'Papas', id: 'Papa Americana', x: 0.74, y: 0.51 },*/
     ];
 
     const arrows = [
         { name: 'nada', id: 'nada', x: 0.2, y: 0.3 },
-        { name: 'Ir al inicio', id: 'Atrás', x: 0.55, y: 0.4 },
-        { name: 'Ir a carnes', id: 'Adelante', x: 0.58, y: 0.4 },
+        { name: 'Ir a Carnes', id: 'Atrás', x: 0.75, y: 0.25 }
     ];
 
     const imgRef = useRef(null);
@@ -100,8 +99,6 @@ const App = () => {
 
     const handleArrowClick = area => {
         if (area.id === 'Atrás') {
-            navigate('/shop'); // Reemplazar con la ruta deseada
-        } else if (area.id === 'Adelante') {
             navigate('/shop/meats'); // Reemplazar con la ruta deseada
         }
     };
@@ -156,7 +153,7 @@ const App = () => {
                         <div
                             key={arrow.id}
                             id={`arrow-${arrow.id}`}
-                            className={arrow.id === 'Atrás' ? 'arrow arrowAtras' : 'arrow arrowAdelante'}
+                            className='arrow arrowAdelante'
                             style={{
                                 left: `${arrow.x * 100}%`,
                                 top: `${arrow.y * 100}%`,

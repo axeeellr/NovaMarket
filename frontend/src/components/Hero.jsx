@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import { useUser } from '../UserContext';
-import logo from '../assets/novalogowhite.png';
+import logo from '../assets/novamarketv3.png';
 import videobackground from '../assets/supermarketvideo.mp4';
 //import { decryptData } from '../CryptoUtils'; 
 
