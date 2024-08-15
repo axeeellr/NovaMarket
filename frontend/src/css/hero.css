@@ -100,11 +100,12 @@
         flex-direction: column;
         justify-content: center;
         align-items: start;
-        gap: 20px;
+        gap: 15px;
         width: 30%;
         margin-left: 50px;
-        padding-left: 20px;
+        padding-left: 25px;
         border-left: 12px solid #F2EBCF;
+        position: relative;
     }
 
     .hero::after{
@@ -145,22 +146,29 @@
         margin-top: -5px;
         font-weight: 500;
         width: 200%;
+        display: none;
     }
 
     .hero button{
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 15px 35px;
+        padding: 15px 0;
         border-radius: 10px;
         border: none;
         background-color: #F2EBCF;
         color: #193E4E;
         font-weight: bold;
-        font-size: 18px;
+        font-size: 25px;
         box-shadow: 0px 0px 25px 0px rgba(0,0,0,0.65);
         cursor: pointer;
         letter-spacing: 1px;
+        width: 300%;
+    }
+
+    .hero button:hover{
+        background-color: #d6c6a2;
+        color: #193E4E;
     }
 
     .logo{
