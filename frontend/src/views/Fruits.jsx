@@ -1,8 +1,9 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faArrowRight, faCircle } from '@fortawesome/free-solid-svg-icons';
 
 import fruits from '../assets/fruits.jpg';
 import '../css/fruits.css';
@@ -14,6 +15,10 @@ import Chat from '../components/Chat';
 const App = () => {
     const navigate = useNavigate();
     const [menuVisible, setMenuVisible] = useState(false);
+    const [menuProductsVisible, setMenuProductsVisible] = useState(false);
+    const [products, setProducts] = useState([]);
+    const [menuPosition, setMenuPosition] = useState({ left: 0, top: 0 });
+    const [selectedPoint, setSelectedPoint] = useState(null);
     const [tooltip, setTooltip] = useState({ visible: false, name: '', x: 0, y: 0 });
 
     const points = [
@@ -38,6 +43,7 @@ const App = () => {
     ];
 
     const imgRef = useRef(null);
+    const menuRef = useRef(null);
 
     useEffect(() => {
         const img = imgRef.current;
@@ -67,11 +73,42 @@ const App = () => {
         }
     }, [points, arrows]);
 
-    const toggleMenuVisibility = () => {
-        setMenuVisible(!menuVisible);
+    const toggleMenuProductsVisibility = (point, e) => {
+        const imgRect = imgRef.current.getBoundingClientRect();
+        const x = e.clientX - imgRect.left;
+        const y = e.clientY - imgRect.top;
+
+        if (point.id === selectedPoint?.id) {
+            setMenuProductsVisible(false);
+            setSelectedPoint(null);
+            setProducts([]);
+        } else {
+            setSelectedPoint(point);
+            if (point) {
+                axios.get(`http://localhost:1001/api/products/${point.id}`)
+                    .then(response => {
+                        const fetchedProducts = response.data;
+                        setProducts(fetchedProducts);
+
+                        if (fetchedProducts.length > 0) {
+                            setMenuPosition({
+                                left: `${x}px`,
+                                top: `${y}px`
+                            });
+                            setMenuProductsVisible(true);
+                        } else {
+                            setMenuProductsVisible(false);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching products:', error);
+                        setMenuProductsVisible(false);
+                    });
+            }
+        }
     };
 
-    const handleClick = area => {
+    const handleProductClick = (productId) => {
 
         if (localStorage.getItem('cartDetails')) {
             // Recuperar del localStorage
@@ -95,7 +132,7 @@ const App = () => {
             // Guardar en localStorage
             localStorage.setItem('cartDetails', cartDetailsJSON);
         }
-        navigate(`/product/${area.id}`);
+        navigate(`/product/${productId}`);
     };
 
     const handleArrowClick = area => {
@@ -123,10 +160,30 @@ const App = () => {
         setTooltip({ visible: false, name: '', x: 0, y: 0 });
     };
 
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            if (menuRef.current && !menuRef.current.contains(e.target) && e.target.closest('.point') === null) {
+                setMenuProductsVisible(false);
+                setSelectedPoint(null);
+                setProducts([]);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
+    const toggleMenuVisibility = () => {
+        setMenuVisible(!menuVisible);
+    };
+
     return (
         <>
             <TitlePage />
-            <div className="shop__container">
+            <div className="shop__container aisle">
                 <img
                     ref={imgRef}
                     src={fruits}
@@ -144,11 +201,12 @@ const App = () => {
                                 left: `${point.x * 100}%`,
                                 top: `${point.y * 100}%`,
                             }}
-                            onClick={() => handleClick(point)}
+                            onClick={(e) => toggleMenuProductsVisibility(point, e)}
                             onMouseEnter={(e) => handleMouseEnter(e, point)}
                             onMouseLeave={handleMouseLeave}
                         />
-                    ))}
+                    ))
+                }
 
                 {arrows
                     .filter(arrow => arrow.id !== 'nada') // Filtrar el primer arrow
@@ -166,7 +224,21 @@ const App = () => {
                             <FontAwesomeIcon icon={arrow.id === 'Atrás' ? faArrowLeft : faArrowRight} className='arrowIcon'/>
                             <p className='arrowText'>{arrow.name}</p>
                         </div>
-                    ))}
+                    ))
+                }
+
+                {menuProductsVisible && selectedPoint && (
+                    <div className="menu-products" style={{ left: menuPosition.left, top: menuPosition.top }} ref={menuRef}>
+                        
+                        <ul>
+                            {products.map(product => (
+                                <li key={product.id} onClick={() => handleProductClick(product.id)}>
+                                    <FontAwesomeIcon icon={faCircle} className='dotProduct'/> {product.name}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
 
                 <div
                     className={`tooltip ${tooltip.visible ? 'visible' : ''}`}

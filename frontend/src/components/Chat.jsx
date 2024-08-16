@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSortDown, faPaperPlane, faImages, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 
 import vendedor from '../assets/vendedor.png';
-import '../css/shop.css';
+import '../css/fruits.css';
 
 const Chat = () => {
     const [chatVisible, setChatVisible] = useState(false);

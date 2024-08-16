@@ -9,11 +9,13 @@ import fruits from '../assets/snacks.jpg';
 import '../css/fruits.css';
 
 import TitlePage from '../components/TitlePage';
+import MenuShop from '../components/MenuShop';
 import Chat from '../components/Chat';
 
 const Snacks = () => {
     const navigate = useNavigate();
     const [menuVisible, setMenuVisible] = useState(false);
+    const [menuProductsVisible, setMenuProductsVisible] = useState(false);
     const [products, setProducts] = useState([]);
     const [menuPosition, setMenuPosition] = useState({ left: 0, top: 0 });
     const [selectedPoint, setSelectedPoint] = useState(null);
@@ -24,9 +26,10 @@ const Snacks = () => {
         { name: 'Cereales', id: 'Cereal', x: 0.13, y: 0.65 },
         { name: 'Galletas', id: 'Galletas', x: 0.31, y: 0.63 },
         { name: 'Churros', id: 'Churros', x: 0.88, y: 0.69 },
-        { name: 'Pan Dulce', id: 'Pan dulce', x: 0.7, y: 0.59 },
+        { name: 'Pan Dulce', id: 'Pan dulce', x: 0.85, y: 0.33 },
         { name: 'Chocolates', id: 'Chocolates', x: 0.8, y: 0.65 },
-        { name: 'Dulces', id: 'Churrasco redondo', x: 0.32, y: 0.5 },
+        { name: 'Dulces', id: 'Dulces', x: 0.73, y: 0.58 },
+        { name: 'Jugos de caja', id: 'Jugos de caja', x: 0.33, y: 0.78 },
     ];
 
     const arrows = [
@@ -66,13 +69,13 @@ const Snacks = () => {
         }
     }, [points, arrows]);
 
-    const toggleMenuVisibility = (point, e) => {
+    const toggleMenuProductsVisibility = (point, e) => {
         const imgRect = imgRef.current.getBoundingClientRect();
         const x = e.clientX - imgRect.left;
         const y = e.clientY - imgRect.top;
 
         if (point.id === selectedPoint?.id) {
-            setMenuVisible(false);
+            setMenuProductsVisible(false);
             setSelectedPoint(null);
             setProducts([]);
         } else {
@@ -88,22 +91,72 @@ const Snacks = () => {
                                 left: `${x}px`,
                                 top: `${y}px`
                             });
-                            setMenuVisible(true);
+                            setMenuProductsVisible(true);
                         } else {
-                            setMenuVisible(false);
+                            setMenuProductsVisible(false);
                         }
                     })
                     .catch(error => {
                         console.error('Error fetching products:', error);
-                        setMenuVisible(false);
+                        setMenuProductsVisible(false);
                     });
             }
         }
     };
 
     const handleProductClick = (productId) => {
+
+        if (localStorage.getItem('cartDetails')) {
+            // Recuperar del localStorage
+            const cartDetailsFromStorage = localStorage.getItem('cartDetails');
+            const parsedCartDetails = JSON.parse(cartDetailsFromStorage);
+    
+            parsedCartDetails.type = 'shop';
+            localStorage.setItem('cartDetails', JSON.stringify(parsedCartDetails));
+        }else{
+            const cartDetails = {
+                name: null,
+                price: null,
+                type: 'shop',
+                deliveryOption: null,
+                address: null
+            };
+    
+            // Convertir a JSON
+            const cartDetailsJSON = JSON.stringify(cartDetails);
+    
+            // Guardar en localStorage
+            localStorage.setItem('cartDetails', cartDetailsJSON);
+        }
         navigate(`/product/${productId}`);
     };
+
+    /*const handleClick = area => {
+
+        if (localStorage.getItem('cartDetails')) {
+            // Recuperar del localStorage
+            const cartDetailsFromStorage = localStorage.getItem('cartDetails');
+            const parsedCartDetails = JSON.parse(cartDetailsFromStorage);
+    
+            parsedCartDetails.type = 'shop';
+            localStorage.setItem('cartDetails', JSON.stringify(parsedCartDetails));
+        }else{
+            const cartDetails = {
+                name: null,
+                price: null,
+                type: 'shop',
+                deliveryOption: null,
+                address: null
+            };
+    
+            // Convertir a JSON
+            const cartDetailsJSON = JSON.stringify(cartDetails);
+    
+            // Guardar en localStorage
+            localStorage.setItem('cartDetails', cartDetailsJSON);
+        }
+        navigate(`/product/${area.id}`);
+    };*/
 
     const handleArrowClick = (arrow) => {
         if (arrow.id === 'Atrás') {
@@ -133,7 +186,7 @@ const Snacks = () => {
     useEffect(() => {
         const handleClickOutside = (e) => {
             if (menuRef.current && !menuRef.current.contains(e.target) && e.target.closest('.point') === null) {
-                setMenuVisible(false);
+                setMenuProductsVisible(false);
                 setSelectedPoint(null);
                 setProducts([]);
             }
@@ -146,10 +199,14 @@ const Snacks = () => {
         };
     }, []);
 
+    const toggleMenuVisibility = () => {
+        setMenuVisible(!menuVisible);
+    };
+
     return (
         <>
             <TitlePage />
-            <div className="shop__container">
+            <div className="shop__container aisle">
                 <img
                     ref={imgRef}
                     src={fruits}
@@ -167,7 +224,7 @@ const Snacks = () => {
                                 left: `${point.x * 100}%`,
                                 top: `${point.y * 100}%`,
                             }}
-                            onClick={(e) => toggleMenuVisibility(point, e)}
+                            onClick={(e) => toggleMenuProductsVisibility(point, e)}
                             onMouseEnter={(e) => handleMouseEnter(e, point)}
                             onMouseLeave={handleMouseLeave}
                         />
@@ -189,10 +246,11 @@ const Snacks = () => {
                             <FontAwesomeIcon icon={arrow.id === 'Atrás' ? faArrowLeft : faArrowRight} className='arrowIcon'/>
                             <p className='arrowText'>{arrow.name}</p>
                         </div>
-                    ))}
+                    ))
+                }
 
-                {menuVisible && selectedPoint && (
-                    <div className="menu-shop" style={{ left: menuPosition.left, top: menuPosition.top }} ref={menuRef}>
+                {menuProductsVisible && selectedPoint && (
+                    <div className="menu-products" style={{ left: menuPosition.left, top: menuPosition.top }} ref={menuRef}>
                         
                         <ul>
                             {products.map(product => (
@@ -209,6 +267,12 @@ const Snacks = () => {
                     style={{ left: `${tooltip.x}px`, top: `${tooltip.y}px` }}
                 >
                     {tooltip.name}
+                </div>
+
+                <MenuShop menuVisible={menuVisible} toggleMenuVisibility={toggleMenuVisibility} />
+                
+                <div className="shop__sections__button">
+                    <button onClick={toggleMenuVisibility}>Pasillos</button>
                 </div>
 
                 <Chat />

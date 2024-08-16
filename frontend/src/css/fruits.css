@@ -6,6 +6,18 @@
     overflow-y: hidden;
 }
 
+.aisle:before{
+    position: absolute;
+    content: '';
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 150px;
+    borsder: 1px solid black;
+    background: linear-gradient(180deg, rgba(33,33,33,0.8324579831932774) 30%, rgba(255,255,255,0) 100%);
+
+}
+
 .shop__container img {
     width: 1600px;
     height: 100vh;
@@ -129,11 +141,11 @@
 /* Tooltip container */
 .tooltip {
     position: absolute;
-    background-color: rgb(234, 231, 228, 0.4);
-    color: white;
+    background-color: rgb(234, 231, 228, 0.9);
+    color: #193E4E;
     padding: 6px 11px;
     border-radius: 5px;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 600;
     visibility: hidden;
     opacity: 0;
@@ -141,6 +153,7 @@
     white-space: nowrap;
     z-index: 10;
     border: 3px solid white;
+    box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.75);
 }
 
 /* Tooltip visible */
@@ -172,7 +185,9 @@
     border-radius: 5px;
     transition: .2s ease-in;
     cursor: pointer;
-    box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.45);
+    box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.55);
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .shop__sections__button button:hover {
@@ -190,7 +205,7 @@
 }
 
 .shop__menu {
-    background-color: rgba(0, 0, 0, 0.65);
+    background-color: rgba(0, 0, 0, 0.75);
     position: fixed;
     top: 0;
     right: 0;
@@ -218,7 +233,7 @@
 }
 
 .shop__menu p {
-    font-size: 21px;
+    font-size: 23px;
     color: #F2EBCF;
     font-weight: 600;
     cursor: pointer;
@@ -485,7 +500,7 @@ a {
 
 /* fruits.css */
 
-.menu-shop {
+.menu-products {
     position: absolute;
     padsding: 25px 0 0 0;
     z-index: 1000;
@@ -503,13 +518,13 @@ a {
     align-items: center;
 }
 
-.menu-shop ul {
+.menu-products ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
 }
 
-.menu-shop li {
+.menu-products li {
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -517,11 +532,11 @@ a {
     padding: 11px 13px 11px 10px;
 }
 
-.menu-shop li:hover{
+.menu-products li:hover{
     background-color: rgb(234, 231, 228, 0.9);
 }
 
-.menu-shop button{
+.menu-products button{
     position: absolute;
     top: 0;
     right: 0;

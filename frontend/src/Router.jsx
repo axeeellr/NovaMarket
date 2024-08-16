@@ -16,7 +16,6 @@ import Meats from './views/Meats';
 import Hygiene from './views/Hygiene';
 import Snacks from './views/Snacks';
 import Dairy from './views/Dairy';
-import Cereal from './views/Cereal';
 import Grains from './views/Grains';
 import Cleaning from './views/Cleaning';
 import Fruits from './views/Fruits';
@@ -55,7 +54,6 @@ const AppRouter = () => {
                 <Route path="/shop/dairy" element={<ProtectedRoute element={Dairy} />} />
                 <Route path="/shop/cleaning" element={<ProtectedRoute element={Cleaning} />} />
                 <Route path="/shop/fruits" element={<ProtectedRoute element={Fruits} />} />
-                <Route path="/shop/cereal" element={<ProtectedRoute element={Cereal} />} />
                 <Route path="/cart" element={<ProtectedRoute element={Cart} />} />
                 <Route path="/delivery" element={<ProtectedRoute element={Delivery} />} />
                 <Route path="/address" element={<ProtectedRoute element={Address} />} />
