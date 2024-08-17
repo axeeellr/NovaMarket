@@ -58,6 +58,14 @@ function Product() {
         return <p>Producto no encontrado</p>;
     }
 
+    const detailsMap = {
+        calories: product.calories && `${product.calories}`,
+        price: product.price && `$${product.price}`,
+        weight: product.weight && `${product.weight}`,
+    };
+
+    const detailsToShow = Object.values(detailsMap).filter(Boolean);
+
     return (
         <>
             <div className="title__product">
@@ -75,9 +83,9 @@ function Product() {
                             <p>{product.brand}</p>
                         </div>
                         <div className="details__data">
-                            <p>{product.calories}</p>
-                            <p>{product.price}</p>
-                            <p>{product.weight}</p>
+                            {detailsToShow.map((detail, index) => (
+                                <p key={index}>{detail}</p>
+                            ))}
                         </div>
                         <div className="details__count">
                             <FontAwesomeIcon icon={faSquareMinus} onClick={decrementQuantity} />

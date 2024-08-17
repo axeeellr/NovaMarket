@@ -150,6 +150,23 @@ const PaymentMethod = () => {
                         throw new Error('Error al guardar en la tabla cart_items');
                     }
                 }
+
+                // 3. Enviar la factura al correo del usuario
+                const invoiceResponse = await fetch('http://localhost:1001/completePurchase', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        cart_id: cartId,
+                        user_id: userId
+                    })
+                });
+
+                if (!invoiceResponse.ok) {
+                    throw new Error('Error al enviar la factura');
+                }
+
                 // Borrar `cart` y `cartDetails` del local storage
                 localStorage.removeItem('cart');
                 localStorage.removeItem('cartDetails');

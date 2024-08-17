@@ -1,0 +1,82 @@
+<div class="row expanded">
+    <main class="columns">
+        <div class="inner-container">
+            <section class="row">
+                <div class="callout large invoice-container">
+                    <table class="invoice">
+                        <tr class="header">
+                            <td class="">
+                                <img src="../assets/novamarketv2.png"
+                                    alt="Company Name" />
+                            </td>
+                            <td class="align-right">
+                                <h2>Factura NovaMarket</h2>
+                            </td>
+                        </tr>
+                        <tr class="intro">
+                            <td class="">
+                                Hola, {{userName}}.<br>
+                                Gracias por tu compra.
+                            </td>
+                            <td class="text-right">
+                                <span class="num">Compra #{{orderNumber}}</span><br>
+                                {{orderDate}}
+                            </td>
+                        </tr>
+                        <tr class="details">
+                            <td colspan="2">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th class="desc">Producto</th>
+                                            <th class="qty">Cantidad</th>
+                                            <th class="amt">Subtotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{items}}
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr class="totals">
+                            <td></td>
+                            <td>
+                                <table>
+                                    <tr class="subtotal">
+                                        <td class="num">Subtotal</td>
+                                        <td class="num">${{subtotal}}</td>
+                                    </tr>
+                                    <tr class="fees">
+                                        <td class="num">Envío y entrega</td>
+                                        <td class="num">${{deliveryFee}}</td>
+                                    </tr>
+                                    <tr class="total">
+                                        <td>Total</td>
+                                        <td>${{total}}</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <section class="additional-info">
+                        <div class="row">
+                            <div class="columns">
+                                <h5>Información de Facturación</h5>
+                                <p>{{billingAddress}}</p>
+                            </div>
+                            <div class="columns">
+                                <h5>Método de Pago</h5>
+                                <p>Tarjeta de crédito<br>
+                                    Tipo de tarjeta: {{cardType}}<br>
+                                    &bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull; {{last4Digits}}
+                                </p>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </section>
+        </div>
+    </main>
+</div>

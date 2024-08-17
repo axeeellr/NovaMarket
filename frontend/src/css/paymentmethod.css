@@ -251,8 +251,9 @@
     gap: 20px;
     border: 5px solid white;
     background-color: rgba(255, 255, 255, 0.5);
-    padding: 0 5px;
+    padding: 5px 5px;
     border-radius: 10px;
+    min-height: 100px;
 }
 
 .summary__product__image{

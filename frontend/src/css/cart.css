@@ -18,7 +18,7 @@
 
 .cart__name input{
     position: relative;
-    width: 70%;
+    width: 100%;
     border: none;
     border: 1px solid #193E4E;
     border-radius: 5px;
@@ -83,6 +83,10 @@
 
 .product__information h3{
     font-size: 20px;
+}
+
+.product__information p{
+    font-size: 17px;
 }
 
 .product__quantity{

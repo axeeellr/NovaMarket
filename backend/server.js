@@ -3,6 +3,7 @@ const mysql2 = require('mysql2')
 const cors = require('cors')
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
+const fs = require('fs');
 const app = express()
 
 const { decryptData } = require('./cryptoutils');
@@ -394,6 +395,95 @@ app.post('/addCartItem', (req, res) => {
         } else {
             return res.status(500).json({ error: 'Error al registrar el elemento del carrito' });
         }
+    });
+});
+
+
+
+// Ruta para completar la compra y enviar la factura por correo
+app.post('/completePurchase', (req, res) => {
+    const { cart_id, user_id } = req.body;
+
+    // Obtener los detalles del carrito
+    db.query('SELECT * FROM cart WHERE id = ?', [cart_id], (err, cartResults) => {
+        if (err) {
+            console.error("Error al obtener los detalles del carrito", err);
+            return res.status(500).json({ error: 'Error al obtener los detalles del carrito' });
+        }
+
+        const cart = cartResults[0];
+
+        db.query('SELECT ci.quantity, p.name, p.price FROM cart_items ci JOIN products p ON ci.product_id = p.id WHERE ci.cart_id = ?', [cart_id], (err, cartItemsResults) => {
+            if (err) {
+                console.error("Error al obtener los detalles del carritoo", err);
+                return res.status(500).json({ error: 'Error al obtener los artículos del carrito' });
+            }
+
+            const cartItems = cartItemsResults;
+
+            // Obtener los detalles del usuario y la dirección de facturación
+            db.query('SELECT * FROM users WHERE id = ?', [user_id], (err, userResults) => {
+                if (err) {
+                    console.error("Error al obtener los detalles del carritooo", err);
+                    return res.status(500).json({ error: 'Error al obtener los detalles del usuario' });
+                }
+
+                const user = userResults[0];
+
+                db.query('SELECT * FROM cards WHERE id_user = ?', [user.id], (err, cardResults) => {
+                    if (err) {
+                        console.error("Error al obtener los detalles del carritoooo", err);
+                        return res.status(500).json({ error: 'Error al obtener la dirección de facturación' });
+                    }
+
+                    const card = cardResults[0];
+
+                    // Preparar los detalles de la factura
+                    const itemsHtml = cartItems.map(item => `
+                        <tr class="item">
+                            <td class="desc">${item.name}</td>
+                            <td class="qty">${item.quantity}</td>
+                            <td class="amt">$${(item.price * item.quantity).toFixed(2)}</td>
+                        </tr>
+                    `).join('');
+
+                    const subtotal = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0).toFixed(2);
+                    const deliveryFee = 0.00; // Puedes calcular esto si aplica
+                    const total = (parseFloat(subtotal) + deliveryFee).toFixed(2);
+
+                    // Reemplazar placeholders en la plantilla HTML
+                    let invoiceHtml = fs.readFileSync('../frontend/src/components/Invoice.html', 'utf-8');
+                    invoiceHtml = invoiceHtml
+                        .replace('{{userName}}', user.name)
+                        .replace('{{orderNumber}}', cart_id)
+                        .replace('{{orderDate}}', new Date(cart.date).toLocaleDateString())
+                        .replace('{{items}}', itemsHtml)
+                        .replace('{{subtotal}}', subtotal)
+                        .replace('{{deliveryFee}}', deliveryFee.toFixed(2))
+                        .replace('{{total}}', total)
+                        .replace('{{billingAddress}}', `Calle Padre Salazar Simpson, Soyapango, 1019`)
+                        .replace('{{cardType}}', 'Visa')
+                        .replace('{{last4Digits}}', card.number.slice(12, 16));
+
+                    // Enviar el correo con la factura adjunta
+                    const mailOptions = {
+                        from: 'novamarket.sv@gmail.com',
+                        to: user.email,
+                        subject: `Factura de compra #${cart_id}`,
+                        html: invoiceHtml
+                    };
+
+                    transporter.sendMail(mailOptions, (err, info) => {
+                        if (err) {
+                            console.error("Error al obtener los detalles del carritooooo", err);
+                            return res.status(500).json({ error: 'Error al enviar el correo' });
+                        }
+
+                        res.status(200).json({ message: 'Factura enviada correctamente' });
+                    });
+                });
+            });
+        });
     });
 });
 
