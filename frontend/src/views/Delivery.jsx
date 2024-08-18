@@ -3,6 +3,7 @@ import { Toaster, toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
 import TitlePage from '../components/TitlePage';
+import Menu from '../components/Menu';
 
 import { useUser } from '../UserContext';
 
@@ -158,6 +159,8 @@ const Delivery = () => {
                     <span>${parsedCartDetails.price}</span>
                 </button>
             </div>
+
+            <Menu />
 
             {isModalOpen && (
                 <div className="modal">

@@ -64,10 +64,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    background-coslor: red;
 }
 
 .product__image img{
-    height: 105px;
+    height: 100%;
 }
 
 .product__information{

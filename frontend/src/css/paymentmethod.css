@@ -1,5 +1,5 @@
 .method__container{
-    padding: 20px;
+    padding: 20px 20px 120px 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -257,7 +257,9 @@
 }
 
 .summary__product__image{
-    width: 30%;
+    width: 25%;
+    min-height: 80px;
+    backgrousnd-color: red;
 }
 
 .summary__product__image img{

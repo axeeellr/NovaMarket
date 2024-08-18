@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 
 import TitlePage from '../components/TitlePage';
+import Menu from '../components/Menu';
+
 import { useUser } from '../UserContext';
 
 import '../css/paymentmethod.css';
@@ -279,7 +281,7 @@ const PaymentMethod = () => {
                     </div>
                 ) : (
                     <div className="summary__delivery">
-                        <h2>Método de entrega:</h2>
+                        <h2>Información de entrega:</h2>
                         <p>{deliveryAddress ? deliveryAddress.name : 'Cargando...'}</p>
                         <div className="delivery__map">
                             {deliveryAddress && (
@@ -313,6 +315,9 @@ const PaymentMethod = () => {
                 </button>
             </div>
         </div>
+
+        <Menu />
+
         <Toaster
             toastOptions={{
                 duration: 3000,

@@ -34,11 +34,11 @@ const EditProfile = ({ isModalOpen, toggleModal }) => {
             updatedData.oldPassword = oldPassword;
             updatedData.newPassword = newPassword;
         }
-
+    
         try {
             const response = await axios.put(`http://localhost:1001/data/${user.id}`, updatedData);
             if (response.status === 200) {
-                toast('¡Datos actualizados!');
+                toast.success('¡Datos actualizados!');
                 axios.get(`http://localhost:1001/data/${user.id}`)
                     .then(response => {
                         const userData = response.data.user;
@@ -48,18 +48,18 @@ const EditProfile = ({ isModalOpen, toggleModal }) => {
                         console.error('Error al obtener datos del usuario:', error);
                     });
                 toggleModal();
-            } else {
-                console.error('Error inesperado al actualizar datos del usuario:', response.status);
             }
         } catch (error) {
             console.error('Error al guardar datos del usuario:', error);
             if (error.response && error.response.status === 401) {
                 toast.error('Contraseña antigua incorrecta.');
+            } else if (error.response && error.response.status === 400) {
+                toast.error('Las contraseñas no pueden ser iguales.');
             } else {
                 toast.error('Error al actualizar datos del usuario.');
             }
         }
-    };
+    };    
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);

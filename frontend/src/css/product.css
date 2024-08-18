@@ -81,6 +81,7 @@
     align-items: center;
     width: 100%;
     gap: 5px;
+    text-align: center;
 }
 
 .details__name p{
