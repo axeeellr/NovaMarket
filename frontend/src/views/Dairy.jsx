@@ -30,10 +30,6 @@ const App = () => {
         { name: 'Huevos', id: 'Huevos', x: 0.94, y: 0.73 },
         { name: 'Queso', id: 'Queso', x: 0.92, y: 0.57 },
         { name: 'Crema', id: 'Crema', x: 0.36, y: 0.63 },
-        /*{ name: 'Rábanos', id: 'Rábanos', x: 0.83, y: 0.56 },
-        { name: 'Cilantro', id: 'Cilantro Orgánico', x: 0.78, y: 0.53 },
-        { name: 'Pepinos', id: 'Pepino', x: 0.84, y: 0.43 },
-        { name: 'Papas', id: 'Papa Americana', x: 0.74, y: 0.51 },*/
     ];
 
     const arrows = [
@@ -232,7 +228,7 @@ const App = () => {
                         
                         <ul>
                             {products.map(product => (
-                                <li key={product.id} onClick={() => handleProductClick(product.id)}>
+                                <li key={product.id} onClick={() => handleProductClick(product.name)}>
                                     <FontAwesomeIcon icon={faCircle} className='dotProduct'/> {product.name}
                                 </li>
                             ))}

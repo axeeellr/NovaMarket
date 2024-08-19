@@ -82,6 +82,8 @@ const Cart = () => {
         }
     };
 
+    const baseUrl = 'https://novamarket-img.s3.us-east-2.amazonaws.com/';
+
     return (
         <>
             <div className="cart__container">
@@ -96,7 +98,7 @@ const Cart = () => {
                         cartProducts.map((product, index) => (
                             <div key={index} className="cart__product">
                                 <div className="product__image">
-                                    <img src={product.img} alt={product.name} />
+                                    <img src={`${baseUrl}${product.code}`} alt={product.name} />
                                 </div>
                                 <div className="product__information">
                                     <h3>{product.name}</h3>

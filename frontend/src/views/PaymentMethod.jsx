@@ -194,6 +194,8 @@ const PaymentMethod = () => {
         navigate('/profile')
     }
 
+    const baseUrl = 'https://novamarket-img.s3.us-east-2.amazonaws.com/';
+
     return(
     <>
         <div className="method__container">
@@ -260,7 +262,7 @@ const PaymentMethod = () => {
                     cartProducts.map((product, index) => (
                         <div key={index} className="summary__product">
                             <div className="summary__product__image">
-                                <img src={product.img} alt={product.name} />
+                                <img src={`${baseUrl}${product.code}`} alt={product.name} />
                             </div>
                             <div className="summary__product__information">
                                 <h3>{product.name}</h3>

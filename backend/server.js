@@ -5,6 +5,9 @@ const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 const fs = require('fs');
 const app = express()
+const multer = require('multer');
+const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+const path = require('path');
 
 const { decryptData, encryptData } = require('./cryptoutils');
 
@@ -27,7 +30,20 @@ const bodyParser = require('body-parser');
 // Configura body-parser para que pueda manejar solicitudes JSON.
 app.use(bodyParser.json());
 
+// Configurar el cliente S3
+const s3 = new S3Client({
+    region: 'us-east-2', // Por ejemplo, 'us-east-1'
+    credentials: {
+        accessKeyId: 'AKIAQFC27LIRTDCT3Q7Z',
+        secretAccessKey: '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'
+    }
+});
 
+// Configurar multer
+const upload = multer({
+    storage: multer.memoryStorage(),
+    limits: { fileSize: 5 * 1024 * 1024 } // 5MB tamaño máximo
+});
 
 //Email
 const transporter = nodemailer.createTransport({
@@ -725,14 +741,35 @@ app.get('/products', (req, res) => {
     });
 });
 
-// Ruta para añadir un nuevo producto
-app.post('/products', (req, res) => {
-    const { category, name, price, weight, img, code, brand, calories, type } = req.body;
-    const query = 'INSERT INTO products (category, name, price, weight, img, code, brand, calories, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
-    db.query(query, [category, name, price, weight, img, code, brand, calories, type], (err, result) => {
-        if (err) return res.status(500).json({ error: 'Error al añadir producto' });
-        res.status(201).json({ id: result.insertId });
-    });
+// Ruta para añadir un nuevo producto con imagen subida a S3
+app.post('/products', upload.single('file'), async (req, res) => {
+    const { category, name, price, weight, code, brand, calories, type } = req.body;
+    const file = req.file;
+
+    // Configurar los parámetros para S3
+    const uploadParams = {
+        Bucket: 'novamarket-img',
+        Key: `${code}`, // Nombre del archivo en S3
+        Body: file.buffer,
+        ContentType: file.mimetype
+    };
+
+    try {
+        // Subir la imagen a S3
+        const data = await s3.send(new PutObjectCommand(uploadParams));
+
+        // Guardar la información del producto en la base de datos
+        const query = 'INSERT INTO products (category, name, price, weight, img, code, brand, calories, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        db.query(query, [category, name, price, weight, `https://novamarket-img.s3.amazonaws.com/${code}`, code, brand, calories, type], (err, result) => {
+            if (err) {
+                return res.status(500).json({ error: 'Error al añadir producto' });
+            }
+            res.status(201).json({ id: result.insertId });
+        });
+    } catch (err) {
+        console.error('Error uploading image to S3:', err);
+        res.status(500).json({ error: 'Error uploading image to S3' });
+    }
 });
 
 // Ruta para eliminar un producto
@@ -745,24 +782,79 @@ app.delete('/products/:id', (req, res) => {
 });
 
 // Endpoint para actualizar un producto
-app.put('/products/:id', (req, res) => {
+app.put('/products/:id', upload.single('file'), async (req, res) => {
     const productId = req.params.id;
-    const { name, code, brand, calories, price, img, weight, category, type } = req.body;
+    const { name, code, brand, calories, price, weight, category, type } = req.body;
+    const file = req.file;
 
-    const query = `UPDATE products SET name = ?, code = ?, brand = ?, calories = ?, price = ?, img = ?, weight = ?, category = ?, type = ? WHERE id = ?`;
+    try {
+        if (file) {
+            // Obtener la URL de la imagen anterior del producto
+            const oldProductQuery = 'SELECT img FROM products WHERE id = ?';
+            db.query(oldProductQuery, [productId], async (err, result) => {
+                if (err) {
+                    console.error('Error fetching old product image URL:', err);
+                    return res.status(500).json({ error: 'Error fetching old product image URL' });
+                }
 
-    db.query(query, [name, code, brand, calories, price, img, weight, category, type, productId], (err, results) => {
-        if (err) {
-            console.error('Error updating product:', err);
-            return res.status(500).json({ error: 'Error updating product' });
+                // Eliminar la imagen antigua de S3 si existe
+                const oldImgKey = result[0].img.split('/').pop(); // Obtener solo el nombre del archivo
+                try {
+                    await s3.send(new DeleteObjectCommand({ Bucket: 'novamarket-img', Key: oldImgKey }));
+                } catch (deleteErr) {
+                    console.error('Error deleting old image from S3:', deleteErr);
+                }
+
+                // Subir la nueva imagen a S3
+                const uploadParams = {
+                    Bucket: 'novamarket-img',
+                    Key: `${code}`, // Nombre del archivo en S3
+                    Body: file.buffer,
+                    ContentType: file.mimetype
+                };
+
+                try {
+                    await s3.send(new PutObjectCommand(uploadParams));
+
+                    // Actualizar el producto en la base de datos
+                    const query = `UPDATE products SET name = ?, code = ?, brand = ?, calories = ?, price = ?, img = ?, weight = ?, category = ?, type = ? WHERE id = ?`;
+                    db.query(query, [name, code, brand, calories, price, `https://novamarket-img.s3.amazonaws.com/${code}`, weight, category, type, productId], (updateErr, results) => {
+                        if (updateErr) {
+                            console.error('Error updating product:', updateErr);
+                            return res.status(500).json({ error: 'Error updating product' });
+                        }
+
+                        if (results.affectedRows === 0) {
+                            return res.status(404).json({ error: 'Product not found' });
+                        }
+
+                        res.status(200).json({ message: 'Product updated successfully' });
+                    });
+                } catch (uploadErr) {
+                    console.error('Error uploading new image to S3:', uploadErr);
+                    res.status(500).json({ error: 'Error uploading new image to S3' });
+                }
+            });
+        } else {
+            // Si no hay archivo, simplemente actualiza el producto sin cambiar la imagen
+            const query = `UPDATE products SET name = ?, code = ?, brand = ?, calories = ?, price = ?, weight = ?, category = ?, type = ? WHERE id = ?`;
+            db.query(query, [name, code, brand, calories, price, weight, category, type, productId], (updateErr, results) => {
+                if (updateErr) {
+                    console.error('Error updating product:', updateErr);
+                    return res.status(500).json({ error: 'Error updating product' });
+                }
+
+                if (results.affectedRows === 0) {
+                    return res.status(404).json({ error: 'Product not found' });
+                }
+
+                res.status(200).json({ message: 'Product updated successfully' });
+            });
         }
-
-        if (results.affectedRows === 0) {
-            return res.status(404).json({ error: 'Product not found' });
-        }
-
-        res.status(200).json({ message: 'Product updated successfully' });
-    });
+    } catch (err) {
+        console.error('Error processing request:', err);
+        res.status(500).json({ error: 'Error processing request' });
+    }
 });
 
 

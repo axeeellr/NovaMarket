@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 18-08-2024 a las 20:37:59
+-- Tiempo de generación: 19-08-2024 a las 06:59:36
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -161,11 +161,56 @@ INSERT INTO `products` (`id`, `code`, `name`, `brand`, `price`, `img`, `calories
 (24, 'nm-xtra-0', 'Xtra', 'Xtra', 3.30, '', '', '1125 g', 'Limpieza', 'Jabón de limpieza'),
 (25, 'nm-xtralimon-0', 'Xtra Limón', 'Xtra ', 3.30, '', '', '1125 g', 'Limpieza', 'Jabón de limpieza'),
 (26, 'nm-xtraaloevera-0', 'Xtra Aloe Vera', 'Xtra ', 3.30, '', '', '1125 g', 'Limpieza', 'Jabón de limpieza'),
-(28, 'nm-bolsasplasticasparabasura-0', 'Bolsas plásticas para basura', 'Plasticbag', 2.90, '', '', '6 g', 'Limpieza', 'Bolsas plásticas para basura'),
+(28, 'nm-bolsasplasticasparabasura-0', 'Bolsas plásticas para basura', 'Plasticbag', 2.90, '', '', '6 u', 'Limpieza', 'Bolsas plásticas para basura'),
 (29, 'nm-dospinosentera-0', 'Dos Pinos entera ', 'Dos Pinos ', 1.84, '', '161 kcal', '1 L', 'Lácteos', 'Leche'),
 (30, 'nm-dospinossemidescremada-0', 'Dos Pinos semidescremada ', 'Dos Pinos ', 1.84, '', '125 kcal', '1 L', 'Lácteos', 'Leche'),
 (31, 'nm-saludentera-0', 'Salud entera ', 'Salud ', 1.80, '', '163 kcal', '1 L', 'Lácteos', 'Leche'),
-(32, 'nm-australiandeslactosada-0', 'Australian deslactosada ', 'Australian ', 1.85, '', '145 kcal', '1 L', 'Lácteos', 'Leche');
+(32, 'nm-australiandeslactosada-0', 'Australian deslactosada ', 'Australian ', 1.85, '', '145 kcal', '1 L', 'Lácteos', 'Leche'),
+(33, 'nm-yesfresa-0', 'Yes Fresa', 'Yes ', 0.69, '', '160 kcal', '212 Kg', 'Lácteos', 'Yogurt'),
+(34, 'nm-yesdurazno-0', 'Yes Durazno', 'Yes', 0.69, '', '162 kcal', '212 Kg', 'Lácteos', 'Yogurt'),
+(35, 'nm-yesmelocoton-0', 'Yes Melocotón', 'Yes', 0.69, '', '160 kcal', '212 Kg', 'Lácteos', 'Yogurt'),
+(36, 'nm-yogurtgriego-0', 'Yogurt Griego', 'Yes', 5.15, '', '130 kcal', '1 Kg', 'Lácteos', 'Yogurt'),
+(37, 'nm-yesfresa1kg-0', 'Yes Fresa', 'Yes ', 3.20, '', '160 kcal', '1 Kg', 'Lácteos', 'Yogurt'),
+(38, 'nm-yesvainilla1kg-0', 'Yes Vainilla', 'Yes ', 3.25, '', '163 kcal', '1 Kg', 'Lácteos', 'Yogurt'),
+(39, 'nm-flanyoplait-0 ', 'Flan Yoplait ', 'Yoplait ', 1.55, '', '120 kcal', '220 g', 'Lácteos', 'Flan'),
+(40, 'nm-danettedanone-0', 'Danette Danone', 'Danette ', 1.25, '', '110 kcal', '200 g', 'Lácteos', 'Flan'),
+(41, 'nm-cofileche-0', 'Cofileche', 'Salud', 1.75, '', '150 kcal', '473 ml', 'Lácteos', 'Cofileche'),
+(42, 'nm-laCatalanamediano-0', 'La Catalana mediano', 'La Catalana ', 5.90, '', '', '30 u', 'Lácteos', 'Huevos'),
+(43, 'nm-lacatalanamediano15u-0', 'La Catalana mediano', 'La Catalana', 4.95, '', '', '15 u', 'Lácteos', 'Huevos'),
+(44, 'nm-elgranjerorojomediano-0', 'El Granjero rojo mediano', 'El Granjero rojo ', 5.71, '', '', '30 u', 'Lácteos', 'Huevos'),
+(45, 'nm-elgranjerorojomediano15u-0', 'El Granjero rojo mediano', 'El Granjero rojo', 3.21, '', '', '15 u', 'Lácteos', 'Huevos'),
+(46, 'nm-elgranjerorojogrande-0', 'El Granjero rojo grande', 'El Granjero rojo ', 11.49, '', '', '15 u', 'Lácteos', 'Huevos'),
+(47, 'nm-duroblandopetacones-0', 'Duro Blando Petacones', 'Petacones', 3.25, '', '100 kcal', '170 g', 'Lácteos', 'Queso'),
+(48, 'nm-duroviejopetacones-0', 'Duro Viejo Petacones', 'Petacones', 3.55, '', '200 kcal', '170 g', 'Lácteos', 'Queso'),
+(49, 'nm-quesocremalactolac-0', 'Queso Crema Lactolac', 'Lactolac', 1.60, '', '120 kcal', '210 g', 'Lácteos', 'Queso'),
+(50, 'nm-quesoamericanolactolac-0', 'Queso Americano Lactolac', 'Lactolac', 1.66, '', '95 kcal', '240 g', 'Lácteos', 'Queso'),
+(51, 'nm-cremalactolac-0', 'Crema Lactolac ', 'Lactolac ', 1.95, '', '110 kcal', '380 g', 'Lácteos', 'Crema'),
+(52, 'nm-creamlightpetacones-0', 'Cream Light Petacones ', 'Petacones ', 2.85, '', '29 kcal ', '340 g', 'Lácteos', 'Crema'),
+(53, 'nm-cremapuracanjulian-0', 'Crema pura San Julián', 'San Julián', 4.15, '', '90 kcal', '340 g', 'Lácteos', 'Crema'),
+(54, 'nm-head&shouldersmanzana-0', 'Head & Shoulders Manzana', 'Head & Shoulders ', 5.70, '', '', '375 ml', 'Higiene', 'Shampoo'),
+(55, 'nm-head&shoulderscaida-0', 'Head & Shoulders Caída', 'Head & Shoulders', 3.70, '', '', '370 ml', 'Higiene', 'Shampoo'),
+(56, 'nm-soveregeneracionextrema-0', 'Dove Regeneración Extrema', 'Dove ', 11.50, '', '', '750 ml', 'Higiene', 'Shampoo'),
+(57, 'nm-pantenelisoextremo-0', 'Pantene Liso Extremo', 'Pantene ', 7.25, '', '', '400 ml', 'Higiene', 'Shampoo'),
+(58, 'nm-sedalkeratinaconantioxidante-0', 'Sedal Keratina con Antioxidante ', 'Sedal ', 4.50, '', '', '650 ml', 'Higiene', 'Shampoo'),
+(59, 'nm-doveoriginal-0', 'Dove Original', 'Dove ', 1.50, '', '', '90 g', 'Higiene', 'Jabón de higiene personal'),
+(60, 'nm-venzavite4Pack-0', 'Venza Vite 4 Pack', 'Venza ', 2.42, '', '', '110 g', 'Higiene', 'Jabón de higiene personal'),
+(61, 'nm-rexonaantibacterialavena3pack-0', 'Rexona Antibacterial Avena 3 Pack', 'Rexona ', 2.59, '', '', '110 g', 'Higiene', 'Jabón de higiene personal'),
+(62, 'nm-asepxianeutro-0', 'Asepxia Neutro', 'Asepxia ', 5.00, '', '', '100 g', 'Higiene', 'Jabón de higiene personal'),
+(63, 'nm-asepxiacarbon-0', 'Asepxia Carbón', 'Asepxia', 5.00, '', '', '100 g', 'Higiene', 'Jabón de higiene personal'),
+(64, 'nm-niveaaclaradonatural-0', 'Nivea Aclarado Natural ', 'Nivea ', 10.85, '', '', '220 ml', 'Higiene', 'Crema corporal'),
+(65, 'nm-lubridermpielnormal-0', 'Lubriderm Piel Normal', 'Lubriderm ', 12.19, '', '', '400 ml', 'Higiene', 'Crema corporal'),
+(66, 'nm-colgateanticaries-0', 'Colgate Anticaries ', 'Colgate', 2.55, '', '', '150 ml', 'Higiene', 'Pasta dental'),
+(67, 'nm-colgateluminouswhite-0', 'Colgate Luminous White', 'Colgate ', 6.80, '', '', '170 ml', 'Higiene', 'Pasta dental'),
+(68, 'nm-oralb3dwhite-0', 'Oral B 3D White', 'Oral B ', 3.61, '', '', '140 g', 'Higiene', 'Pasta dental'),
+(69, 'nm-encantosuper4rollos-0', 'Encanto Super 4 rollos', 'Encanto ', 1.50, '', '', '4 u', 'Higiene', 'Papel higiénico'),
+(70, 'nm-encanto1000hojas4rollos-0', 'Encanto 1000 hojas 4 rollos', 'Encanto ', 1.99, '', '', '4 u', 'Higiene', 'Papel higiénico'),
+(71, 'nm-scott12rollos-0', 'Scott 12 rollos', 'Scott ', 5.00, '', '', '12 u', 'Higiene', 'Papel higiénico'),
+(72, 'nm-rosalverde18rollos-0', 'Rosal Verde 18 rollos', 'Rosal ', 12.60, '', '', '18 u', 'Higiene', 'Papel higiénico'),
+(73, 'nm-hawaiiantropic70spf-0', 'Hawaiian Tropic 70 SPF', 'Hawaiian Tropic', 15.99, '', '', '180 ml', 'Higiene', 'Protector solar'),
+(74, 'nm-niveasunf50-0', 'Nivea Sun F50', 'Nivea', 14.15, '', '', '200 ml', 'Higiene', 'Protector solar'),
+(75, 'nm-niveasunpielsensible50spf-0', 'Nivea Sun Piel Sensible 50 SPF', 'Nivea ', 20.15, 'https://novamarket-img.s3.amazonaws.com/nm-niveasunpielsensible50spf-0', '', '200 ml', 'Higiene', 'Protector solar'),
+(76, 'sdfsdf', 'fdsfs', 'dfsd', 534.00, 'https://novamarket-img.s3.amazonaws.com/sdfsdf', 'sfds', 'fsd', 'Carnes', 'Detergente en polvo'),
+(77, 'vvvvv', 'vvvvv', 'vvvv', 54.00, 'https://novamarket-img.s3.amazonaws.com/vvvvv', 'vvv', 'vvv', 'Carnes', 'Desinfectante');
 
 -- --------------------------------------------------------
 
@@ -264,7 +309,7 @@ ALTER TABLE `cart_items`
 -- AUTO_INCREMENT de la tabla `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
 
 --
 -- AUTO_INCREMENT de la tabla `users`

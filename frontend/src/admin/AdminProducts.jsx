@@ -1,23 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrash, faPlus, faSignOut } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
 import '../css/adminproducts.css';
-
 import AdminHeader from '../components/HeaderAdmin';
 
 const AdminProducts = () => {
     const [products, setProducts] = useState([]);
-    const [newProduct, setNewProduct] = useState({ category: '', name: '', price: '', weight: '', img: '', code: '', brand: '', calories: '', type: '' });
+    const [newProduct, setNewProduct] = useState({ category: '', name: '', price: '', weight: '', code: '', brand: '', calories: '', type: '' });
     const [selectedCategory, setSelectedCategory] = useState('All');
-    const [selectedType, setSelectedType] = useState('All');
     const [editProduct, setEditProduct] = useState(null);
+    const fileInput = useRef(null);
 
     const categories = ['Frutas y verduras', 'Carnes', 'Granos', 'Limpieza', 'Lácteos', 'Higiene'];
     const types = ['Frutas y verduras', 'Carnes', "Arroz", 'Arroz Precocido', "Maíz", "Frijoles", "Lentejas", "Azúcar", "Sal", "Pan de caja", "Macarrones", "Aceite", "Sardina", "Jugos de caja", "Galletas", "Desinfectante", "Detergente en polvo", "Lavaplatos", "Lejía", "Suavizante", "Jabón de limpieza", "Bolsas plásticas para basura", "Leche", "Yogurt", "Flan", "Cofileche", "Huevos", "Queso", "Crema", "Shampoo", "Jabón de higiene personal", "Crema corporal", "Pasta dental", "Papel higiénico", "Protector solar"];
 
     useEffect(() => {
-        // Fetch products from the backend
         const fetchProducts = async () => {
             try {
                 const response = await axios.get('http://localhost:1001/products');
@@ -44,20 +42,58 @@ const AdminProducts = () => {
     };
 
     const handleSaveEdit = async () => {
+        const formData = new FormData();
+        formData.append('name', editProduct.name);
+        formData.append('code', editProduct.code);
+        formData.append('brand', editProduct.brand);
+        formData.append('calories', editProduct.calories);
+        formData.append('price', editProduct.price);
+        formData.append('weight', editProduct.weight);
+        formData.append('category', editProduct.category);
+        formData.append('type', editProduct.type);
+
+        if (fileInput.current.files[0]) {
+            formData.append('file', fileInput.current.files[0]);
+        }
+
         try {
-            await axios.put(`http://localhost:1001/products/${editProduct.id}`, editProduct);
+            await axios.put(`http://localhost:1001/products/${editProduct.id}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
             setProducts(products.map(product => product.id === editProduct.id ? editProduct : product));
             setEditProduct(null);
+            fileInput.current.value = null; // Limpiar el campo de archivo
         } catch (error) {
             console.error('Error updating product:', error);
         }
     };
 
     const handleAddProduct = async () => {
+        const formData = new FormData();
+        formData.append('name', newProduct.name);
+        formData.append('code', newProduct.code);
+        formData.append('brand', newProduct.brand);
+        formData.append('calories', newProduct.calories);
+        formData.append('price', newProduct.price);
+        formData.append('weight', newProduct.weight);
+        formData.append('category', newProduct.category);
+        formData.append('type', newProduct.type);
+
+        if (fileInput.current.files[0]) {
+            formData.append('file', fileInput.current.files[0]);
+        }
+
         try {
-            const response = await axios.post('http://localhost:1001/products', newProduct);
+            const response = await axios.post('http://localhost:1001/products', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
             setProducts([...products, { ...newProduct, id: response.data.id }]);
-            setNewProduct({ category: '', name: '', price: '', weight: '', img: '', code: '', brand: '', calories: '', type: ''});
+            setNewProduct({ category: '', name: '', price: '', weight: '', code: '', brand: '', calories: '', type: ''});
+            fileInput.current.value = null; // Limpiar el campo de archivo
         } catch (error) {
             console.error('Error adding product:', error);
         }
@@ -74,10 +110,6 @@ const AdminProducts = () => {
 
     const handleCategoryChange = (e) => {
         setSelectedCategory(e.target.value);
-    };
-
-    const handleTypeChange = (e) => {
-        setSelectedType(e.target.value);
     };
 
     const handleCategorySelectChange = (e) => {
@@ -125,7 +157,7 @@ const AdminProducts = () => {
                                 <option key={typ} value={typ}>{typ}</option>
                             ))}
                         </select>
-                        <input type="text" className='imgurl' placeholder="Imagen URL" name="img" value={editProduct ? editProduct.img : newProduct.img} onChange={handleChange} />
+                        <input type="file" ref={fileInput} />
                     </div>
                     <button onClick={editProduct ? handleSaveEdit : handleAddProduct}>
                         <FontAwesomeIcon icon={faPlus} /> {editProduct ? 'Guardar Cambios' : 'Añadir Producto'}
@@ -149,6 +181,7 @@ const AdminProducts = () => {
                             <th>Nombre</th>
                             <th>Precio</th>
                             <th>Peso</th>
+                            <th>Calorías</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -157,16 +190,17 @@ const AdminProducts = () => {
                             <tr key={product.id}>
                                 <td>{product.category}</td>
                                 <td>{product.type}</td>
-                                <td><img src={product.img} alt={product.name} className="product-image" /></td>
+                                <td><img src={product.img} alt={product.name} style={{ width: '50px' }} /></td>
                                 <td>{product.name}</td>
                                 <td>${product.price}</td>
                                 <td>{product.weight}</td>
+                                <td>{product.calories} kcal</td>
                                 <td>
                                     <button onClick={() => handleEdit(product)}>
-                                        <FontAwesomeIcon icon={faEdit} /> Editar
+                                        <FontAwesomeIcon icon={faEdit} />
                                     </button>
                                     <button onClick={() => handleDelete(product.id)}>
-                                        <FontAwesomeIcon icon={faTrash} /> Eliminar
+                                        <FontAwesomeIcon icon={faTrash} />
                                     </button>
                                 </td>
                             </tr>

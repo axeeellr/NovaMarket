@@ -66,6 +66,9 @@ function Product() {
 
     const detailsToShow = Object.values(detailsMap).filter(Boolean);
 
+    const baseUrl = 'https://novamarket-img.s3.us-east-2.amazonaws.com/';
+    const imageUrl = `${baseUrl}${product.code}.png`;
+
     return (
         <>
             <div className="title__product">
@@ -73,7 +76,7 @@ function Product() {
             </div>
             <div className="product__container">
                 <div className="product__img">
-                    <img src={product.img} alt={product.name} />
+                    <img src={imageUrl} alt={product.name} />
                 </div>
                 <div className="product__info">
                     <button onClick={() => addToCart(product, quantity)}>AÑADIR AL CARRITO &nbsp;<FontAwesomeIcon icon={faCartShopping} /></button>

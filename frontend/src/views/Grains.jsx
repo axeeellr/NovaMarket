@@ -240,7 +240,7 @@ const App = () => {
                         
                         <ul>
                             {products.map(product => (
-                                <li key={product.id} onClick={() => handleProductClick(product.id)}>
+                                <li key={product.id} onClick={() => handleProductClick(product.name)}>
                                     <FontAwesomeIcon icon={faCircle} className='dotProduct'/> {product.name}
                                 </li>
                             ))}
