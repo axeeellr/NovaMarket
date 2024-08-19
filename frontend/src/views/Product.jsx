@@ -67,7 +67,7 @@ function Product() {
     const detailsToShow = Object.values(detailsMap).filter(Boolean);
 
     const baseUrl = 'https://novamarket-img.s3.us-east-2.amazonaws.com/';
-    const imageUrl = `${baseUrl}${product.code}.png`;
+    const imageUrl = `${baseUrl}${product.code}`;
 
     return (
         <>
