@@ -26,7 +26,8 @@
     "react-img-mapper": "^1.5.1",
     "react-qr-reader": "^3.0.0-beta-1",
     "react-router-dom": "^6.22.3",
-    "react-tooltip": "^5.26.4"
+    "react-tooltip": "^5.26.4",
+    "react-transition-group": "^4.4.5"
   },
   "devDependencies": {
     "@types/react": "^18.2.55",

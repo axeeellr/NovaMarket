@@ -1,0 +1,29 @@
+/* Asegúrate de que el contenedor de transición cubra toda la pantalla */
+.transition-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100vh; /* Ocupa toda la altura de la ventana */
+    overflow: hidden; /* Oculta el desbordamiento */
+  }
+  
+  /* Estilos para la animación de transición */
+  .fade-enter {
+    opacity: 0;
+    background-color: black;
+  }
+  
+  .fade-enter-active {
+    opacity: 1;
+    transition: opacity 500ms ease-in-out;
+  }
+  
+  .fade-exit {
+    opacity: 1;
+    background-color: black;
+  }
+  
+  .fade-exit-active {
+    opacity: 0;
+    transition: opacity 500ms ease-in-out;
+  }
+  
