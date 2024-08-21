@@ -1,0 +1,97 @@
+.historial__tracker{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    background-csolor: red;
+}
+
+.historial__tracker h2{
+    color: #193E4E;
+}
+
+.stepper-wrapper {
+    display: flex;
+    justify-content: space-between;
+    color: #193E4E;
+    width: 100%;
+}
+
+.stepper-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+}
+
+.stepper-item::before {
+    position: absolute;
+    content: "";
+    border-bottom: 2px solid #ccc;
+    width: 100%;
+    top: 20px;
+    left: -50%;
+    z-index: 2;
+}
+
+.stepper-item::after {
+    position: absolute;
+    content: "";
+    border-bottom: 2px solid #ccc;
+    width: 100%;
+    top: 20px;
+    left: 50%;
+    z-index: 2;
+}
+
+.stepper-item .step-counter {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #ccc;
+    margin-bottom: 6px;
+}
+
+.stepper-item.activee {
+    font-weight: bold;
+}
+
+.stepper-item.activee .step-counter {
+    background-color: #7ea2b4;
+    color: #193E4E;
+}
+
+.stepper-item.completedd .step-counter {
+    background-color: #193E4E;
+    color: #F2EBCF;
+}
+
+.stepper-item.completedd::after {
+    position: absolute;
+    content: "";
+    border-bottom: 2px solid #193E4E;
+    width: 100%;
+    top: 20px;
+    left: 50%;
+    z-index: 3;
+}
+
+.step-name{
+    text-align: center;
+}
+
+.stepper-item:first-child::before {
+    content: none;
+}
+
+.stepper-item:last-child::after {
+    content: none;
+}

@@ -105,7 +105,7 @@ const PaymentMethod = () => {
                 }
 
                 //Establecer el valor de status
-                const statusValue = (parsedCartDetails.type === 'qr' ? 1 : 0)
+                const statusValue = (parsedCartDetails.type === 'qr' ? 'Entregado' : 'Recibido')
 
                 // 1. Guardar en la tabla `cart`.
                 const cartResponse = await fetch('http://localhost:1001/addCart', {

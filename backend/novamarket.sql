@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 19-08-2024 a las 06:59:36
+-- Tiempo de generación: 21-08-2024 a las 06:55:54
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -40,7 +40,8 @@ CREATE TABLE `address` (
 --
 
 INSERT INTO `address` (`id`, `id_user`, `name`, `latitude`, `longitude`) VALUES
-(1, 2, 'Casa', '13.718922522730699', '-89.15350678139549');
+(1, 2, 'Casa', '13.718922522730699', '-89.15350678139549'),
+(2, 2, 'casa centro', '13.695776046016357', '-89.19679641723633');
 
 -- --------------------------------------------------------
 
@@ -79,7 +80,7 @@ CREATE TABLE `cart` (
   `total` varchar(100) NOT NULL,
   `type` varchar(100) NOT NULL,
   `address_id` int(11) NOT NULL,
-  `status` int(11) NOT NULL
+  `status` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -87,7 +88,12 @@ CREATE TABLE `cart` (
 --
 
 INSERT INTO `cart` (`id`, `user_id`, `name`, `date`, `card_id`, `total`, `type`, `address_id`, `status`) VALUES
-(1, 2, 'limpieza', '2024-08-18 12:36:27', 1, '11.32', 'Domicilio', 1, 0);
+(1, 2, 'limpieza', '2024-08-18 12:36:27', 1, '11.32', 'Domicilio', 1, 'Recibido'),
+(2, 2, 'cofi y yogurt', '2024-08-20 17:28:48', 1, '8.65', 'QR', 0, '0'),
+(3, 2, 'compra random', '2024-08-20 18:45:29', 1, '4.68', 'Domicilio', 2, 'En Preparación'),
+(4, 2, 'bolsas y detergente', '2024-08-20 22:05:49', 1, '4.4', 'Domicilio', 1, 'Recibido'),
+(5, 2, 'Flan', '2024-08-20 22:14:47', 1, '1.55', 'Domicilio', 2, 'En Preparación'),
+(6, 2, 'churros', '2024-08-20 22:54:16', 1, '3.5', 'QR', 0, 'Entregado');
 
 -- --------------------------------------------------------
 
@@ -109,7 +115,16 @@ CREATE TABLE `cart_items` (
 INSERT INTO `cart_items` (`id`, `cart_id`, `product_id`, `quantity`) VALUES
 (1, 1, 25, 1),
 (2, 1, 5, 1),
-(3, 1, 13, 1);
+(3, 1, 13, 1),
+(4, 2, 36, 1),
+(5, 2, 41, 2),
+(6, 3, 35, 2),
+(7, 3, 16, 1),
+(8, 4, 19, 1),
+(9, 4, 28, 1),
+(10, 5, 39, 1),
+(11, 6, 81, 1),
+(12, 6, 82, 1);
 
 -- --------------------------------------------------------
 
@@ -209,8 +224,8 @@ INSERT INTO `products` (`id`, `code`, `name`, `brand`, `price`, `img`, `calories
 (73, 'nm-hawaiiantropic70spf-0', 'Hawaiian Tropic 70 SPF', 'Hawaiian Tropic', 15.99, '', '', '180 ml', 'Higiene', 'Protector solar'),
 (74, 'nm-niveasunf50-0', 'Nivea Sun F50', 'Nivea', 14.15, '', '', '200 ml', 'Higiene', 'Protector solar'),
 (75, 'nm-niveasunpielsensible50spf-0', 'Nivea Sun Piel Sensible 50 SPF', 'Nivea ', 20.15, 'https://novamarket-img.s3.amazonaws.com/nm-niveasunpielsensible50spf-0', '', '200 ml', 'Higiene', 'Protector solar'),
-(76, 'sdfsdf', 'fdsfs', 'dfsd', 534.00, 'https://novamarket-img.s3.amazonaws.com/sdfsdf', 'sfds', 'fsd', 'Carnes', 'Detergente en polvo'),
-(77, 'vvvvv', 'vvvvv', 'vvvv', 54.00, 'https://novamarket-img.s3.amazonaws.com/vvvvv', 'vvv', 'vvv', 'Carnes', 'Desinfectante');
+(81, 'nm-chipsahoy-0', 'Chips Ahoy', 'Nabisco', 2.25, 'https://novamarket-img.s3.amazonaws.com/nm-chipsahoy-0', '180 kcal', '222 g', 'Snacks', 'Galletas'),
+(82, 'nm-doritosnachoatrevido-0', 'Doritos Nacho Atrevido', 'Doritos', 1.25, 'https://novamarket-img.s3.amazonaws.com/nm-doritosnachoatrevido-0', '140 kcal', '150 g', 'Snacks', 'Churros');
 
 -- --------------------------------------------------------
 
@@ -285,7 +300,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `address`
 --
 ALTER TABLE `address`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `cards`
@@ -297,19 +312,19 @@ ALTER TABLE `cards`
 -- AUTO_INCREMENT de la tabla `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `cart_items`
 --
 ALTER TABLE `cart_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de la tabla `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
 
 --
 -- AUTO_INCREMENT de la tabla `users`

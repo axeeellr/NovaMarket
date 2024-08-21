@@ -12,8 +12,8 @@ const AdminProducts = () => {
     const [editProduct, setEditProduct] = useState(null);
     const fileInput = useRef(null);
 
-    const categories = ['Frutas y verduras', 'Carnes', 'Granos', 'Limpieza', 'Lácteos', 'Higiene'];
-    const types = ['Frutas y verduras', 'Carnes', "Arroz", 'Arroz Precocido', "Maíz", "Frijoles", "Lentejas", "Azúcar", "Sal", "Pan de caja", "Macarrones", "Aceite", "Sardina", "Jugos de caja", "Galletas", "Desinfectante", "Detergente en polvo", "Lavaplatos", "Lejía", "Suavizante", "Jabón de limpieza", "Bolsas plásticas para basura", "Leche", "Yogurt", "Flan", "Cofileche", "Huevos", "Queso", "Crema", "Shampoo", "Jabón de higiene personal", "Crema corporal", "Pasta dental", "Papel higiénico", "Protector solar"];
+    const categories = ['Frutas y verduras', 'Carnes', 'Granos', 'Limpieza', 'Lácteos', 'Higiene', 'Snacks'];
+    const types = ['Frutas y verduras', 'Carnes', "Arroz", 'Arroz Precocido', "Maíz", "Frijoles", "Lentejas", "Azúcar", "Sal", "Pan de caja", "Macarrones", "Aceite", "Sardina", "Jugos de caja", "Galletas", "Desinfectante", "Detergente en polvo", "Lavaplatos", "Lejía", "Suavizante", "Jabón de limpieza", "Bolsas plásticas para basura", "Leche", "Yogurt", "Flan", "Cofileche", "Huevos", "Queso", "Crema", "Shampoo", "Jabón de higiene personal", "Crema corporal", "Pasta dental", "Papel higiénico", "Protector solar", "Cereal", "Galletas", "Churros", "Pan dulce", "Chocolates", "Dulces"];
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -194,7 +194,7 @@ const AdminProducts = () => {
                                 <td>{product.name}</td>
                                 <td>${product.price}</td>
                                 <td>{product.weight}</td>
-                                <td>{product.calories} kcal</td>
+                                <td>{product.calories}</td>
                                 <td>
                                     <button onClick={() => handleEdit(product)}>
                                         <FontAwesomeIcon icon={faEdit} />

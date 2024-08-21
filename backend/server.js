@@ -527,20 +527,28 @@ app.get('/productByName', (req, res) => {
 app.get('/getCartDetails/:cartId', (req, res) => {
     const cartId = req.params.cartId;
 
-    // Consulta a la base de datos para obtener los detalles del carrito con el cartId
-    db.query('SELECT * FROM cart_items ci JOIN products p ON ci.product_id = p.id WHERE ci.cart_id = ?', [cartId], (err, results) => {
-        if (err) {
-            console.error("Error al obtener los detalles del carrito:", err);
-            return res.status(500).json({ error: 'Error al obtener los detalles del carrito' });
-        }
-        
-        // Si la consulta fue exitosa, devuelve los resultados
-        return res.status(200).json({
-            message: 'Detalles del carrito obtenidos exitosamente',
-            products: results
-        });
+    // Consulta para obtener los detalles del carrito y el estado
+    db.query(`
+        SELECT ci.*, p.name, p.img, p.weight, p.price, c.status 
+        FROM cart_items ci 
+        JOIN products p ON ci.product_id = p.id 
+        JOIN cart c ON ci.cart_id = c.id 
+        WHERE ci.cart_id = ?`, [cartId], 
+        (err, results) => {
+            if (err) {
+                console.error("Error al obtener los detalles del carrito:", err);
+                return res.status(500).json({ error: 'Error al obtener los detalles del carrito' });
+            }
+            
+            // Devuelve los resultados incluyendo el estado del pedido
+            return res.status(200).json({
+                message: 'Detalles del carrito obtenidos exitosamente',
+                products: results,
+                status: results.length > 0 ? results[0].status : null
+            });
     });
 });
+
 
 
 
@@ -917,7 +925,27 @@ app.get('/sales', (req, res) => {
 });
 
 
-//Ruta para actualizar el estado de las compras
+// Función para enviar un correo de notificación de estado
+const sendStatusUpdateEmail = (email, userName, orderStatus, cartName) => {
+    const mailOptions = {
+        from: 'novamarket.sv@gmail.com',
+        to: email,
+        subject: 'Actualización de Estado de tu Pedido',
+        html: `<p>Hola ${userName},</p>
+               <p>El estado de tu pedido (${cartName}) ha sido actualizado a: <strong>${orderStatus}</strong>.</p>
+               <p>Gracias por comprar en NovaMarket.</p>`
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.error("Error al enviar el correo de actualización de estado:", error);
+        } else {
+            console.log('Correo de actualización de estado enviado:', info.response);
+        }
+    });
+};
+
+// Ruta para actualizar el estado de las compras
 app.put('/status/:id', (req, res) => {
     const saleId = req.params.id;
     const status = req.body.status;
@@ -927,11 +955,24 @@ app.put('/status/:id', (req, res) => {
     db.query(query, [status, saleId], (err, result) => {
         if (err) {
             console.error('Error updating sale status:', err);
-            res.status(500).send('Error updating sale status');
-            return;
+            return res.status(500).send('Error updating sale status');
         }
-        res.send('Sale status updated successfully');
+
+        // Obtener el correo electrónico, nombre de usuario y nombre del carrito para enviar la notificación
+        db.query('SELECT u.email, u.name AS userName, c.name AS cartName FROM users u JOIN cart c ON u.id = c.user_id WHERE c.id = ?', [saleId], (err, result) => {
+            if (err) {
+                console.error("Error al obtener el usuario y nombre del carrito:", err);
+                return res.status(500).send('Error al obtener el usuario y nombre del carrito');
+            }
+
+            const user = result[0];
+            sendStatusUpdateEmail(user.email, user.userName, status, user.cartName);
+
+            res.send('Sale status updated and email sent successfully');
+        });
     });
 });
+
+
 
 

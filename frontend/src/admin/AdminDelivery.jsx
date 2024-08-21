@@ -1,21 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSignOut, faCheck } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import '../css/admindelivery.css';
 
 import AdminHeader from '../components/HeaderAdmin';
 
 const AdminDelivery = () => {
-
     const [orders, setOrders] = useState([]);
     const [selectedOrder, setSelectedOrder] = useState(null);
+    const [newStatus, setNewStatus] = useState('');
 
     useEffect(() => {
-        // Fetch orders from backend
         axios.get('http://localhost:1001/sales')
             .then(response => {
-                // Filter orders where type is 'Domicilio'
                 const filteredOrders = response.data.filter(sale => sale.cartType === 'Domicilio');
                 setOrders(filteredOrders);
             })
@@ -24,33 +20,33 @@ const AdminDelivery = () => {
             });
     }, []);
 
-    const handleLogout = () => {
-        logout();
-        navigate('/login'); // Redirige al usuario a la página de inicio de sesión
-    };
-
     const handleOrderClick = (order) => {
         setSelectedOrder(order);
+        setNewStatus(order.status); // Setea el estado actual cuando seleccionas un pedido
     };
 
     const handleBackClick = () => {
         setSelectedOrder(null);
+        setNewStatus(''); // Resetea el estado cuando vuelves a la lista
     };
 
-    const handleCompleteClick = (orderId) => {
-        axios.put(`http://localhost:1001/status/${orderId}`, { status: 1 })
-            .then(response => {
-                setOrders(prevOrders =>
-                    prevOrders.map(order =>
-                        order.cartId === orderId
-                            ? { ...order, status: 1 }
-                            : order
-                    )
-                );
-            })
-            .catch(error => {
-                console.error('Error al actualizar el estado del pedido:', error);
-            });
+    const handleSaveStatus = () => {
+        if (selectedOrder) {
+            axios.put(`http://localhost:1001/status/${selectedOrder.cartId}`, { status: newStatus })
+                .then(response => {
+                    setOrders(prevOrders =>
+                        prevOrders.map(order =>
+                            order.cartId === selectedOrder.cartId
+                                ? { ...order, status: newStatus }
+                                : order
+                        )
+                    );
+                    setSelectedOrder({ ...selectedOrder, status: newStatus }); // Actualiza el estado del pedido seleccionado
+                })
+                .catch(error => {
+                    console.error('Error al actualizar el estado del pedido:', error);
+                });
+        }
     };
 
     const openGoogleMaps = (latitude, longitude) => {
@@ -65,12 +61,12 @@ const AdminDelivery = () => {
 
     return (
         <>
-            <AdminHeader/>
+            <AdminHeader />
             <div className="admin-delivery">
                 {selectedOrder ? (
                     <div className="order-details">
                         <button onClick={handleBackClick}>Volver</button>
-                        <h2 className='order-details-title'>Detalles del Pedido #{selectedOrder.cartId}</h2>
+                        <h2 className='order-details-title'>Detalles del Pedido #{selectedOrder.cartId} | {selectedOrder.cartName}</h2>
                         <h2 className='order-details-user'><strong>Usuario:</strong> {selectedOrder.userName} (ID: {selectedOrder.userId})</h2>
                         {selectedOrder.cartType === 'Domicilio' && selectedOrder.address && (
                             <>
@@ -92,6 +88,17 @@ const AdminDelivery = () => {
                                 </div>
                             </>
                         )}
+                        <h2>Estado del pedido:</h2>
+                        <select
+                            value={newStatus}
+                            onChange={(e) => setNewStatus(e.target.value)}
+                        >
+                            <option value="Recibido">Recibido</option>
+                            <option value="En Preparación">En Preparación</option>
+                            <option value="En Camino">En Camino</option>
+                            <option value="Entregado">Entregado</option>
+                        </select>
+                        <button onClick={handleSaveStatus} className="save-status-btn">Guardar Estado</button>
                         <table>
                             <thead>
                                 <tr>
@@ -125,17 +132,12 @@ const AdminDelivery = () => {
                             </thead>
                             <tbody>
                                 {orders.map(order => (
-                                    <tr key={order.cartId} style={{ backgroundColor: order.status === 1 ? 'lightgreen' : '' }}>
+                                    <tr key={order.cartId} style={{ backgroundColor: order.status === 'Entregado' ? 'lightgreen' : '' }}>
                                         <td>{order.cartId}</td>
                                         <td>{order.cartName}</td>
                                         <td>{order.userName}</td>
                                         <td>
                                             <button onClick={() => handleOrderClick(order)}>Ver Detalles</button>
-                                            {order.status !== 1 && (
-                                                <button onClick={() => handleCompleteClick(order.cartId)} className='completed'>
-                                                    <FontAwesomeIcon icon={faCheck} />
-                                                </button>
-                                            )}
                                         </td>
                                     </tr>
                                 ))}
