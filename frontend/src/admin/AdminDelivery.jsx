@@ -105,7 +105,7 @@ const AdminDelivery = () => {
                                     <tr key={item.id}>
                                         <td>{item.productName}</td>
                                         <td>{item.quantity}</td>
-                                        <td>${item.price.toFixed(2)}</td>
+                                        <td>${item.price}</td>
                                     </tr>
                                 ))}
                             </tbody>

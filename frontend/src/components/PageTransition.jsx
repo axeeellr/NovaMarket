@@ -1,13 +1,13 @@
 import React from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { useLocation } from 'react-router-dom';
-import '../css/pagetransition.css'; // Asegúrate de tener los estilos correctos
+import '../css/pagetransition.css';
 
 const PageTransition = ({ children }) => {
   const location = useLocation();
   const currentPath = location.pathname;
 
-  // Define las rutas que tendrán la transición
+  // Rutas que deberían tener la transición
   const routesWithTransition = [
     '/shop/meats',
     '/shop/grains',
@@ -19,9 +19,9 @@ const PageTransition = ({ children }) => {
   ];
 
   // Verifica si la ruta actual debe tener la transición
-  const shouldTransition = routesWithTransition.some(route =>
-    currentPath.startsWith(route)
-  );
+  const shouldTransition =
+    routesWithTransition.some(route => currentPath.startsWith(route)) &&
+    !currentPath.startsWith('/product');  // Excluir rutas que empiezan con /product
 
   return (
     <TransitionGroup>
@@ -29,14 +29,16 @@ const PageTransition = ({ children }) => {
         <CSSTransition
           key={location.key}
           classNames="fade"
-          timeout={1000} // Duración de la transición en milisegundos
+          timeout={500}
         >
           <div className="transition-wrapper">
             {children}
           </div>
         </CSSTransition>
       ) : (
-        children
+        <div className="no-transition-wrapper">
+          {children}
+        </div>
       )}
     </TransitionGroup>
   );

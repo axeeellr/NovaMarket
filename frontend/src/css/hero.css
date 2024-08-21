@@ -149,7 +149,7 @@
         display: none;
     }
 
-    .hero button{
+    .hero__info button{
         display: flex;
         justify-content: center;
         align-items: center;
@@ -163,7 +163,7 @@
         box-shadow: 0px 0px 25px 0px rgba(0,0,0,0.65);
         cursor: pointer;
         letter-spacing: 1px;
-        width: 510px;
+        width: 27vw;
     }
 
     .hero button:hover{

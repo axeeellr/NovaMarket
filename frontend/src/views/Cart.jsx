@@ -67,9 +67,9 @@ const Cart = () => {
     // Función para manejar el evento de continuar
     const handleContinue = () => {
         if (parsedCartDetails.name == '' || parsedCartDetails.name == null) {
-            toast('¡La compra aún no tiene nombre!');
+            toast.error('¡La compra aún no tiene nombre!');
         } else if(localStorage.getItem('cart') == '[]'){
-            toast('¡No hay productos en el carrito!');
+            toast.error('¡No hay productos en el carrito!');
         }else {
             parsedCartDetails.price = calculateTotal();
             localStorage.setItem('cartDetails', JSON.stringify(parsedCartDetails));

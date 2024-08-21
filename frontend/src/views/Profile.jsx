@@ -16,8 +16,6 @@ import PaymentMethods from '../components/PaymentMethods';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignOut, faEdit } from '@fortawesome/free-solid-svg-icons';
 
-import novalogostar from '../assets/novalogostar.png'
-
 function Profile() {
     const navigate = useNavigate();
     const { logout, user } = useUser();
@@ -54,7 +52,6 @@ function Profile() {
                     </div>
                 </div>
             </div>
-            <img src={novalogostar} className='novalogo' alt=""/>
             <Menu />
 
             <Toaster
