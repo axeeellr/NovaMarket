@@ -9,6 +9,10 @@ const multer = require('multer');
 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 const path = require('path');
 
+const { OAuth2Client } = require('google-auth-library');
+const CLIENT_ID = '230090427927-qu0pihm7sc8p7pphkuk7tqogffm23icu.apps.googleusercontent.com';
+const client = new OAuth2Client(CLIENT_ID);
+
 const { decryptData, encryptData } = require('./cryptoutils');
 
 app.use(cors())
@@ -119,6 +123,56 @@ app.get('/check-verification-status', (req, res) => {
             return res.status(400).json({ error: 'Usuario no encontrado' });
         }
     });
+});
+
+
+
+app.post('/google-login', async (req, res) => {
+    const { token } = req.body;
+
+    try {
+        const ticket = await client.verifyIdToken({
+            idToken: token,
+            audience: CLIENT_ID,
+        });
+
+        const payload = ticket.getPayload();
+        const email = payload['email'];
+
+        // Buscar usuario en la base de datos
+        db.query('SELECT * FROM users WHERE email = ?', [email], (error, results) => {
+            if (error) {
+                console.error('Error al buscar usuario:', error);
+                return res.status(500).json({ error: 'Error al buscar usuario' });
+            }
+
+            if (results.length === 0) {
+                // Si el usuario no existe, crear uno nuevo
+                const newUser = {
+                    name: payload['name'],
+                    email: payload['email'],
+                    password: '' // No es necesario si solo usas Google Login
+                };
+
+                db.query('INSERT INTO users SET ?', newUser, (error, results) => {
+                    if (error) {
+                        console.error('Error al guardar el usuario:', error);
+                        return res.status(500).json({ error: 'Error al guardar el usuario' });
+                    }
+
+                    // Retornar el usuario autenticado
+                    res.json({ user: newUser });
+                });
+            } else {
+                // Retornar el usuario existente
+                res.json({ user: results[0] });
+            }
+        });
+
+    } catch (error) {
+        console.error('Error al autenticar con Google:', error);
+        res.status(500).json({ error: 'Error al autenticar con Google' });
+    }
 });
 
 
