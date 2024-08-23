@@ -127,6 +127,7 @@ app.get('/check-verification-status', (req, res) => {
 
 
 
+//Ruta para Google Login
 app.post('/google-login', async (req, res) => {
     const { token } = req.body;
 
@@ -151,10 +152,13 @@ app.post('/google-login', async (req, res) => {
                 const newUser = {
                     name: payload['name'],
                     email: payload['email'],
-                    password: '' // No es necesario si solo usas Google Login
+                    password: '',
+                    verificationToken: '',
+                    role: 'user',
+                    verified: 1
                 };
 
-                db.query('INSERT INTO users SET ?', newUser, (error, results) => {
+                db.query('INSERT INTO users (name, email, password, verification_token, role, verified) VALUES (?, ?, ?, ?, ?, ?)', [newUser.name, newUser.email, newUser.password, newUser.verificationToken, newUser.role, newUser.verified], (error, results) => {
                     if (error) {
                         console.error('Error al guardar el usuario:', error);
                         return res.status(500).json({ error: 'Error al guardar el usuario' });

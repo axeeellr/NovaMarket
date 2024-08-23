@@ -156,8 +156,6 @@ function Login() {
                                 onSuccess={handleGoogleLogin} 
                                 onError={() => toast('¡Error al iniciar sesión con Google!')}
                             />
-                            <FontAwesomeIcon icon={faFacebook} className='socialIcon'/>
-                            <FontAwesomeIcon icon={faTwitter} className='socialIcon'/>
                         </div>
                     </form>
                 </div>
@@ -178,8 +176,6 @@ function Login() {
                                 onSuccess={handleGoogleLogin} 
                                 onError={() => toast('¡Error al iniciar sesión con Google!')}
                             />
-                            <FontAwesomeIcon icon={faFacebook} className='socialIcon'/>
-                            <FontAwesomeIcon icon={faTwitter} className='socialIcon'/>
                         </div>
                     </form>
                 </div>
