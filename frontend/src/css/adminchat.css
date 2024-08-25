@@ -15,12 +15,21 @@
 }
 
 .chat__selection{
+    border-bottom: 1px dotted #918264;
     position: relative;
     padding: 10px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat__selection:hover{
+    background-color: #918264;
 }
 
 .chat__selection p{
     max-width: 75%;
+    font-weight: 350;
 }
 
 .unseen{
@@ -65,7 +74,7 @@
     height: 75%;
     display: flex;
     flex-direction: column;
-    justify-content: end;
+    justify-contsent: end;
     padding: 20px 15px;
     color: #193E4E;
     overflow-y: scroll;

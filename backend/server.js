@@ -1,21 +1,39 @@
 const express = require('express')
 const mysql2 = require('mysql2')
+const http = require('http'); // Necesario para Socket.IO
+const { Server } = require('socket.io');
 const cors = require('cors')
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 const fs = require('fs');
-const app = express()
 const multer = require('multer');
 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 const path = require('path');
+
+const app = express();
+const server = http.createServer(app); // Crear servidor HTTP
+const io = new Server(server, {
+    cors: {
+        origin: '*', // Asegúrate de que tu front-end pueda conectarse
+        methods: ['GET', 'POST'],
+    },
+});
+
+app.use(cors())
+
+app.get('/', (req, res) => {
+    return res.json("From backend side")
+})
+
+const bodyParser = require('body-parser');
+
+app.use(bodyParser.json());
 
 const { OAuth2Client } = require('google-auth-library');
 const CLIENT_ID = '230090427927-qu0pihm7sc8p7pphkuk7tqogffm23icu.apps.googleusercontent.com';
 const client = new OAuth2Client(CLIENT_ID);
 
 const { decryptData, encryptData } = require('./cryptoutils');
-
-app.use(cors())
 
 const db = mysql2.createConnection({
     host: 'localhost',
@@ -24,15 +42,60 @@ const db = mysql2.createConnection({
     database: 'novamarket'
 })
 
-app.get('/', (req, res) => {
-    return res.json("From backend side")
-})
 
-// Importa el módulo 'body-parser' para procesar los datos enviados en el cuerpo de las solicitudes POST.
-const bodyParser = require('body-parser');
 
-// Configura body-parser para que pueda manejar solicitudes JSON.
-app.use(bodyParser.json());
+// Ruta para obtener todos los usuarios que han enviado mensajes
+app.get('/chats/users', (req, res) => {
+    db.query('SELECT DISTINCT users.id, users.name FROM messages JOIN users ON users.id = messages.sender_id WHERE messages.sender_id != 1', (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        res.json(results);
+    });
+});
+
+
+
+// Ruta para obtener mensajes de un usuario específico
+app.get('/chats/:userId', (req, res) => {
+    const userId = req.params.userId;
+    db.query('SELECT * FROM messages WHERE sender_id = ? OR receiver_id = ?', [userId, userId], (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        res.json(results);
+    });
+});
+
+
+
+// Configurar Socket.io para mensajes en tiempo real
+io.on('connection', (socket) => {
+    console.log('Nuevo usuario conectado');
+
+    socket.on('send_message', (data) => {
+        const { sender_id, receiver_id, content } = data;
+        db.query('INSERT INTO messages (sender_id, receiver_id, content) VALUES (?, ?, ?)', [sender_id, receiver_id, content], (err, results) => {
+            if (err) {
+                console.error('Error al enviar el mensaje:', err);
+                return;
+            }
+            io.emit('receive_message', { id: results.insertId, sender_id, receiver_id, content, timestamp: new Date() });
+        });
+    });
+
+    socket.on('disconnect', () => {
+        console.log('Usuario desconectado');
+    });
+});
+
+
+
+server.listen(3000, () => {
+    console.log('Servidor corriendo en el puerto 3000');
+});
+
+
 
 // Configurar el cliente S3
 const s3 = new S3Client({

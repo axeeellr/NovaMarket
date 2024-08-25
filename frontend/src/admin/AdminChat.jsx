@@ -1,66 +1,81 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import io from 'socket.io-client';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSortDown, faPaperPlane, faImages, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
-
+import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import '../css/adminchat.css';
-import vendedor from '../assets/vendedor.png';
+
+const socket = io.connect('http://localhost:3000');
 
 const AdminChat = () => {
+    const [users, setUsers] = useState([]);
+    const [messages, setMessages] = useState([]);
+    const [currentUser, setCurrentUser] = useState(null);
+    const [message, setMessage] = useState('');
+
+    useEffect(() => {
+        fetch('http://localhost:1001/chats/users')
+            .then((res) => res.json())
+            .then((data) => setUsers(data));
+
+        socket.on('receive_message', (data) => {
+            if (data.sender_id === currentUser?.id || data.receiver_id === currentUser?.id) {
+                setMessages((prevMessages) => [...prevMessages, data]);
+            }
+        });
+
+        return () => socket.off('receive_message');
+    }, [currentUser]);
+
+    const selectUser = (user) => {
+        setCurrentUser(user);
+        fetch(`http://localhost:1001/chats/${user.id}`)
+            .then((res) => res.json())
+            .then((data) => setMessages(data));
+    };
+
+    const sendMessage = (e) => {
+        e.preventDefault();
+        if (currentUser) {
+            const adminId = 1;
+            socket.emit('send_message', { sender_id: adminId, receiver_id: currentUser.id, content: message });
+            setMessage('');
+        }
+    };
+
     return (
-        <>
         <div className="admin__chat">
             <div className="admin__chat__selection">
-                <div className="chat__selection">
-                    <h2>Pepe Aguilar</h2>
-                    <p>Contesten</p>
-                </div>
-                <div className="chat__selection">
-                    <h2>Nacho Mendez</h2>
-                    <p>Hola, necesito ayuda para realizar el pa...</p>
-                    <div className="unseen"></div>
-                </div>
+                {users.map((user) => (
+                    <div key={user.id} className="chat__selection" onClick={() => selectUser(user)}>
+                        <h2>{user.name}</h2>
+                        <p>Haz click para entrar...</p>
+                    </div>
+                ))}
             </div>
-            <div className='admin__chat__container'>
-                <div className="admin__chat__header">
-                    <div className="admin__chat__header__info">
-                        <h2>Pepe Aguilar</h2>
+
+                <div className='admin__chat__container'>
+                    <div className="admin__chat__header">
+                        <h2>{currentUser ? currentUser.name : 'Selecciona un usuario'}</h2>
+                    </div>
+                    <div className="admin__chat__content">
+                        {messages.map((msg, index) => (
+                            <div key={index} className={msg.sender_id === 1 ? 'admin__message__sent' : 'admin__message__received'}>
+                                <div className="admin__message__content">
+                                    <p>{msg.content}</p>
+                                </div>
+                                <p className='admin__message__time'>{new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                            </div>
+                        ))}
+                    </div>
+                    <div className="admin__chat__writer">
+                        <form onSubmit={sendMessage}>
+                            <input type="text" placeholder='Mensaje...' value={message} onChange={(e) => setMessage(e.target.value)} />
+                            <button type="submit"><FontAwesomeIcon icon={faPaperPlane} /></button>
+                        </form>
                     </div>
                 </div>
-                <div className="admin__chat__content">
-                    <div className="admin__message__sent">
-                        <div className="admin__message__content">
-                            <p>Hola, estoy aquí para ayudarte</p>
-                        </div>
-                        <p className='admin__message__time'>03:35</p>
-                    </div>
-                    <div className="admin__message__received">
-                        <div className="admin__message__content">
-                            <p>Hola, quiero comprar arroz y no me deja seleccionarlo, que hago??</p>
-                        </div>
-                        <p className='admin__message__time'>03:40</p>
-                    </div>
-                    <div className="admin__message__received">
-                        <div className="admin__message__content">
-                            <p>Contesten</p>
-                        </div>
-                        <p className='admin__message__time'>03:53</p>
-                    </div>
-                </div>
-                <div className="admin__chat__writer">
-                    <form method='post'>
-                        <div className="admin__file__input">
-                            <input type="file" id="fileUpload" className="admin__file-input" />
-                            <label htmlFor="fileUpload" className="admin__file__input__label">
-                                <FontAwesomeIcon icon={faImages} />
-                            </label>
-                        </div>
-                        <input type="text" placeholder='Mensaje...' />
-                        <button type="submit"><FontAwesomeIcon icon={faPaperPlane} /></button>
-                    </form>
-                </div>
-            </div>
+ 
         </div>
-        </>
     );
 };
 
