@@ -1,8 +1,8 @@
-const express = require('express')
-const mysql2 = require('mysql2')
+const express = require('express');
+const mysql2 = require('mysql2');
 const http = require('http'); // Necesario para Socket.IO
 const { Server } = require('socket.io');
-const cors = require('cors')
+const cors = require('cors');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 const fs = require('fs');
@@ -28,20 +28,25 @@ const client = new OAuth2Client(CLIENT_ID);
 
 const { decryptData, encryptData } = require('./cryptoutils');
 
-// Configuración de base de datos usando createConnection
-const db = mysql2.createConnection({
+// Configuración de base de datos usando createPool
+const pool = mysql2.createPool({
     host: 'us-cluster-east-01.k8s.cleardb.net',
     user: 'b86bc3853542cf',
     password: '69f12cce',
-    database: 'heroku_73c14a8f4a3cf5f'
+    database: 'heroku_73c14a8f4a3cf5f',
+    waitForConnections: true,
+    connectionLimit: 10, // Ajusta el límite de conexiones según tus necesidades
+    queueLimit: 0
 });
 
-db.connect((err) => {
+// Para manejar errores de conexión
+pool.getConnection((err, connection) => {
     if (err) {
-        console.error('Error al conectar a la base de datos:', err);
+        console.error('Error al obtener conexión de la base de datos:', err);
         return;
     }
-    console.log('Conectado a la base de datos');
+    if (connection) connection.release();
+    console.log('Conectado al pool de la base de datos');
 });
 
 
@@ -49,7 +54,7 @@ db.connect((err) => {
 // Ruta para obtener mensajes de un usuario específico
 app.get('/chats/:userId', (req, res) => {
     const userId = req.params.userId;
-    db.query('SELECT * FROM messages WHERE sender_id = ? OR receiver_id = ?', [userId, userId], (err, results) => {
+    pool.query('SELECT * FROM messages WHERE sender_id = ? OR receiver_id = ?', [userId, userId], (err, results) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
@@ -65,7 +70,7 @@ io.on('connection', (socket) => {
 
     socket.on('send_message', (data) => {
         const { sender_id, receiver_id, content } = data;
-        db.query('INSERT INTO messages (sender_id, receiver_id, content) VALUES (?, ?, ?)', [sender_id, receiver_id, content], (err, results) => {
+        pool.query('INSERT INTO messages (sender_id, receiver_id, content) VALUES (?, ?, ?)', [sender_id, receiver_id, content], (err, results) => {
             if (err) {
                 console.error('Error al enviar el mensaje:', err);
                 return;
@@ -128,7 +133,7 @@ const sendVerificationEmail = (email, verificationLink) => {
 app.get('/verify-email', (req, res) => {
     const { token } = req.query;
 
-    db.query('SELECT * FROM users WHERE verification_token = ?', [token], (err, results) => {
+    pool.query('SELECT * FROM users WHERE verification_token = ?', [token], (err, results) => {
         if (err) {
             console.error("Error al verificar el token:", err);
             return res.status(500).json({ error: 'Error al verificar el token' });
@@ -137,7 +142,7 @@ app.get('/verify-email', (req, res) => {
         if (results.length > 0) {
             const user = results[0];
 
-            db.query('UPDATE users SET verified = 1, verification_token = NULL WHERE id = ?', [user.id], (err, result) => {
+            pool.query('UPDATE users SET verified = 1, verification_token = NULL WHERE id = ?', [user.id], (err, result) => {
                 if (err) {
                     console.error("Error al actualizar la verificación del usuario:", err);
                     return res.status(500).json({ error: 'Error al actualizar la verificación del usuario' });
@@ -157,7 +162,7 @@ app.get('/verify-email', (req, res) => {
 app.get('/check-verification-status', (req, res) => {
     const { userId } = req.query;
 
-    db.query('SELECT verified FROM users WHERE id = ?', [userId], (err, results) => {
+    pool.query('SELECT verified FROM users WHERE id = ?', [userId], (err, results) => {
         if (err) {
             console.error("Error al verificar el estado del usuario:", err);
             return res.status(500).json({ error: 'Error al verificar el estado del usuario' });
@@ -188,7 +193,7 @@ app.post('/google-login', async (req, res) => {
         const email = payload['email'];
 
         // Buscar usuario en la base de datos
-        db.query('SELECT * FROM users WHERE email = ?', [email], (error, results) => {
+        pool.query('SELECT * FROM users WHERE email = ?', [email], (error, results) => {
             if (error) {
                 console.error('Error al buscar usuario:', error);
                 return res.status(500).json({ error: 'Error al buscar usuario' });
@@ -205,7 +210,7 @@ app.post('/google-login', async (req, res) => {
                     verified: 1
                 };
 
-                db.query('INSERT INTO users (name, email, password, verification_token, role, verified) VALUES (?, ?, ?, ?, ?, ?)', [newUser.name, newUser.email, newUser.password, newUser.verificationToken, newUser.role, newUser.verified], (error, results) => {
+                pool.query('INSERT INTO users (name, email, password, verification_token, role, verified) VALUES (?, ?, ?, ?, ?, ?)', [newUser.name, newUser.email, newUser.password, newUser.verificationToken, newUser.role, newUser.verified], (error, results) => {
                     if (error) {
                         console.error('Error al guardar el usuario:', error);
                         return res.status(500).json({ error: 'Error al guardar el usuario' });
@@ -235,7 +240,7 @@ app.post('/registro', (req, res) => {
     const role = 'user';
 
     // Verificar si el correo electrónico ya está registrado
-    db.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
+    pool.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
         if (err) {
             console.error("Error al verificar el correo electrónico:", err);
             return res.status(500).json({ error: 'Error al verificar el correo electrónico' });
@@ -247,7 +252,7 @@ app.post('/registro', (req, res) => {
         }
 
         // Insertar el nuevo usuario en la base de datos
-        db.query('INSERT INTO users (name, email, password, verification_token, role) VALUES (?, ?, ?, ?, ?)', [name, email, password, verificationToken, role], (err, result) => {
+        pool.query('INSERT INTO users (name, email, password, verification_token, role, verified, banned) VALUES (?, ?, ?, ?, ?, ?, ?)', [name, email, password, verificationToken, role, 0, 0], (err, result) => {
             if (err) {
                 console.error("Error al registrar usuario:", err);
                 return res.status(500).json({ error: 'Error al registrar usuario' });
@@ -255,10 +260,10 @@ app.post('/registro', (req, res) => {
 
             if (result.affectedRows > 0) {
                 const userId = result.insertId;
-                const verificationLink = `http://localhost:1001/verify-email?token=${verificationToken}`;
+                const verificationLink = `https://nova-market.vercel.app/verificationsuccessfull?token=${verificationToken}`;
                 sendVerificationEmail(email, verificationLink);
 
-                db.query('SELECT * FROM users WHERE id = ?', [userId], (err, results) => {
+                pool.query('SELECT * FROM users WHERE id = ?', [userId], (err, results) => {
                     if (err) {
                         console.error("Error al obtener los datos del usuario:", err);
                         return res.status(500).json({ error: 'Error al obtener los datos del usuario' });
@@ -285,7 +290,7 @@ app.post('/login', (req, res) => {
 
     // Aquí agregamos la lógica para verificar las credenciales del usuario.
     // En primer lugar, recuperamos el usuario con el correo electrónico proporcionado.
-    db.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
+    pool.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
         if (err) {
             return res.status(500).json({ error: 'Error al iniciar sesión' });
         }
@@ -322,7 +327,7 @@ app.post('/login', (req, res) => {
 app.get('/data/:id', (req, res) => {
     const id = req.params.id;
 
-    db.query('SELECT * FROM users WHERE id = ?', [id], (err, results) => {
+    pool.query('SELECT * FROM users WHERE id = ?', [id], (err, results) => {
         if (err) {
             console.error("Error al obtener los datos del usuario:", err);
             return res.status(500).json({ error: 'Error al obtener los datos del usuario' });
@@ -342,7 +347,7 @@ app.get('/data/:id', (req, res) => {
 //Ruta para encontrar el producto por QR
 app.get('/product', (req, res) => {
     const qrCode = req.query.code;
-    db.query('SELECT * FROM products WHERE code = ?', [qrCode], (err, results) => {
+    pool.query('SELECT * FROM products WHERE code = ?', [qrCode], (err, results) => {
         if (err) {
             return res.status(500).json({ error: 'Error al consultar la base de datos' });
         }
@@ -362,7 +367,7 @@ app.put('/data/:id', (req, res) => {
     const { name, email, oldPassword, newPassword } = req.body;
 
     if (oldPassword && newPassword) {
-        db.query('SELECT password FROM users WHERE id = ?', [id], (err, results) => {
+        pool.query('SELECT password FROM users WHERE id = ?', [id], (err, results) => {
             if (err) {
                 console.error("Error al verificar la contraseña antigua:", err);
                 return res.status(500).json({ error: 'Error al verificar la contraseña antigua' });
@@ -377,7 +382,7 @@ app.put('/data/:id', (req, res) => {
                 }
 
                 const encryptedNewPassword = encryptData(newPassword);
-                db.query('UPDATE users SET name = ?, email = ?, password = ? WHERE id = ?', [name, email, encryptedNewPassword, id], (err, result) => {
+                pool.query('UPDATE users SET name = ?, email = ?, password = ? WHERE id = ?', [name, email, encryptedNewPassword, id], (err, result) => {
                     if (err) {
                         console.error("Error al actualizar datos del usuario:", err);
                         return res.status(500).json({ error: 'Error al actualizar datos del usuario' });
@@ -390,7 +395,7 @@ app.put('/data/:id', (req, res) => {
             }
         });
     } else {
-        db.query('UPDATE users SET name = ?, email = ? WHERE id = ?', [name, email, id], (err, result) => {
+        pool.query('UPDATE users SET name = ?, email = ? WHERE id = ?', [name, email, id], (err, result) => {
             if (err) {
                 console.error("Error al actualizar datos del usuario:", err);
                 return res.status(500).json({ error: 'Error al actualizar datos del usuario' });
@@ -408,7 +413,7 @@ app.put('/data/:id', (req, res) => {
 app.post('/cards', (req, res) => {
     const { id_user, number, holder, date, cvv } = req.body;
 
-    db.query('INSERT INTO cards (id_user, number, holder, date, cvv) VALUES (?, ?, ?, ?, ?)', [id_user, number, holder, date, cvv], (err, result) => {
+    pool.query('INSERT INTO cards (id_user, number, holder, date, cvv) VALUES (?, ?, ?, ?, ?)', [id_user, number, holder, date, cvv], (err, result) => {
         if (err) {
             // Maneja el error de la base de datos
             console.error("Error al registrar la tarjeta:", err);
@@ -433,7 +438,7 @@ app.get('/getCards/:userId', (req, res) => {
     const userId = req.params.userId;
 
     // Consulta a la base de datos para obtener las tarjetas de crédito asociadas al ID de usuario
-    db.query('SELECT * FROM cards WHERE id_user = ?', [userId], (err, results) => {
+    pool.query('SELECT * FROM cards WHERE id_user = ?', [userId], (err, results) => {
         if (err) {
             console.error("Error al obtener los datos de las tarjetas de crédito:", err);
             return res.status(500).json({ error: 'Error al obtener los datos de las tarjetas de crédito' });
@@ -456,7 +461,7 @@ app.get('/getCards/:userId', (req, res) => {
 app.get('/getCarts/:userId', (req, res) => {
     const userId = req.params.userId;
 
-    db.query('SELECT * FROM cart WHERE user_id = ?', [userId], (err, results) => {
+    pool.query('SELECT * FROM cart WHERE user_id = ?', [userId], (err, results) => {
         if (err) {
             console.error("Error al obtener los carritos:", err);
             return res.status(500).json({ error: 'Error al obtener los carritos' });
@@ -480,7 +485,7 @@ app.post('/addCart', (req, res) => {
     const { user_id, name, date, card_id, total, type, address_id, status } = req.body;
 
     // Consulta SQL para insertar datos en la tabla `cart`
-    db.query('INSERT INTO cart (user_id, name, date, card_id, total, type, address_id, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [user_id, name, date, card_id, total, type, address_id, status], (err, result) => {
+    pool.query('INSERT INTO cart (user_id, name, date, card_id, total, type, address_id, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [user_id, name, date, card_id, total, type, address_id, status], (err, result) => {
         if (err) {
             console.error("Error al registrar el carrito:", err);
             return res.status(500).json({ error: 'Error al registrar el carrito' });
@@ -504,7 +509,7 @@ app.post('/addCartItem', (req, res) => {
     const { cart_id, product_id, quantity } = req.body;
 
     // Consulta SQL para insertar datos en la tabla `cart_items`
-    db.query('INSERT INTO cart_items (cart_id, product_id, quantity) VALUES (?, ?, ?)', [cart_id, product_id, quantity], (err, result) => {
+    pool.query('INSERT INTO cart_items (cart_id, product_id, quantity) VALUES (?, ?, ?)', [cart_id, product_id, quantity], (err, result) => {
         if (err) {
             console.error("Error al registrar el elemento del carrito:", err);
             return res.status(500).json({ error: 'Error al registrar el elemento del carrito' });
@@ -527,7 +532,7 @@ app.post('/completePurchase', (req, res) => {
     const { cart_id, user_id } = req.body;
 
     // Obtener los detalles del carrito
-    db.query('SELECT * FROM cart WHERE id = ?', [cart_id], (err, cartResults) => {
+    pool.query('SELECT * FROM cart WHERE id = ?', [cart_id], (err, cartResults) => {
         if (err) {
             console.error("Error al obtener los detalles del carrito", err);
             return res.status(500).json({ error: 'Error al obtener los detalles del carrito' });
@@ -535,7 +540,7 @@ app.post('/completePurchase', (req, res) => {
 
         const cart = cartResults[0];
 
-        db.query('SELECT ci.quantity, p.name, p.price FROM cart_items ci JOIN products p ON ci.product_id = p.id WHERE ci.cart_id = ?', [cart_id], (err, cartItemsResults) => {
+        pool.query('SELECT ci.quantity, p.name, p.price FROM cart_items ci JOIN products p ON ci.product_id = p.id WHERE ci.cart_id = ?', [cart_id], (err, cartItemsResults) => {
             if (err) {
                 console.error("Error al obtener los detalles del carritoo", err);
                 return res.status(500).json({ error: 'Error al obtener los artículos del carrito' });
@@ -544,7 +549,7 @@ app.post('/completePurchase', (req, res) => {
             const cartItems = cartItemsResults;
 
             // Obtener los detalles del usuario y la dirección de facturación
-            db.query('SELECT * FROM users WHERE id = ?', [user_id], (err, userResults) => {
+            pool.query('SELECT * FROM users WHERE id = ?', [user_id], (err, userResults) => {
                 if (err) {
                     console.error("Error al obtener los detalles del carritooo", err);
                     return res.status(500).json({ error: 'Error al obtener los detalles del usuario' });
@@ -552,7 +557,7 @@ app.post('/completePurchase', (req, res) => {
 
                 const user = userResults[0];
 
-                db.query('SELECT * FROM cards WHERE id_user = ?', [user.id], (err, cardResults) => {
+                pool.query('SELECT * FROM cards WHERE id_user = ?', [user.id], (err, cardResults) => {
                     if (err) {
                         console.error("Error al obtener los detalles del carritoooo", err);
                         return res.status(500).json({ error: 'Error al obtener la dirección de facturación' });
@@ -614,7 +619,7 @@ app.post('/completePurchase', (req, res) => {
 //Añadir al carrito desde la shop
 app.get('/productByName', (req, res) => {
     const productName = req.query.name;
-    db.query('SELECT * FROM products WHERE name = ?', [productName], (err, results) => {
+    pool.query('SELECT * FROM products WHERE name = ?', [productName], (err, results) => {
         if (err) {
             return res.status(500).json({ error: 'Error al consultar la base de datos' });
         }
@@ -633,7 +638,7 @@ app.get('/getCartDetails/:cartId', (req, res) => {
     const cartId = req.params.cartId;
 
     // Consulta para obtener los detalles del carrito y el estado
-    db.query(`
+    pool.query(`
         SELECT ci.*, p.name, p.img, p.weight, p.price, c.status 
         FROM cart_items ci 
         JOIN products p ON ci.product_id = p.id 
@@ -662,7 +667,7 @@ app.post('/guardar-direccion', (req, res) => {
     const { userId, addressName, lat, lng } = req.body;
 
     // Inserta la nueva dirección en la base de datos
-    db.query('INSERT INTO address (id_user, name, latitude, longitude) VALUES (?, ?, ?, ?)', [userId, addressName, lat, lng], (err, result) => {
+    pool.query('INSERT INTO address (id_user, name, latitude, longitude) VALUES (?, ?, ?, ?)', [userId, addressName, lat, lng], (err, result) => {
         if (err) {
             console.error("Error al guardar la dirección:", err);
             return res.status(500).json({ error: 'Error al guardar la dirección' });
@@ -682,7 +687,7 @@ app.get('/getAddresses/:userId', (req, res) => {
     const userId = req.params.userId;
 
     // Consulta a la base de datos para obtener las direcciones asociadas al ID de usuario
-    db.query('SELECT * FROM address WHERE id_user = ?', [userId], (err, results) => {
+    pool.query('SELECT * FROM address WHERE id_user = ?', [userId], (err, results) => {
         if (err) {
             console.error("Error al obtener los datos de las direcciones:", err);
             return res.status(500).json({ error: 'Error al obtener los datos de las direcciones' });
@@ -706,7 +711,7 @@ app.get('/getAddress/:addressId', (req, res) => {
     const addressId = req.params.addressId;
 
     // Consulta a la base de datos para obtener la dirección específica por ID
-    db.query('SELECT * FROM address WHERE id = ?', [addressId], (err, results) => {
+    pool.query('SELECT * FROM address WHERE id = ?', [addressId], (err, results) => {
         if (err) {
             console.error("Error al obtener los datos de la dirección:", err);
             return res.status(500).json({ error: 'Error al obtener los datos de la dirección' });
@@ -727,7 +732,7 @@ app.delete('/deleteAddress/:id', (req, res) => {
     const addressId = req.params.id;
 
     // Eliminar la dirección de la base de datos
-    db.query('DELETE FROM address WHERE id = ?', [addressId], (err, result) => {
+    pool.query('DELETE FROM address WHERE id = ?', [addressId], (err, result) => {
         if (err) {
             console.error("Error al eliminar la dirección:", err);
             return res.status(500).json({ error: 'Error al eliminar la dirección' });
@@ -746,7 +751,7 @@ app.post('/comments', (req, res) => {
         return res.status(400).json({ error: 'El comentario es requerido' });
     }
 
-    db.query('INSERT INTO comments (id_user, comment) VALUES (?, ?)', [userId, comment], (err, result) => {
+    pool.query('INSERT INTO comments (id_user, comment) VALUES (?, ?)', [userId, comment], (err, result) => {
         if (err) {
             console.error('Error al guardar el comentario:', err);
             return res.status(500).json({ error: 'Error al guardar el comentario' });
@@ -762,7 +767,7 @@ app.get('/api/products/:type', (req, res) => {
     const { type } = req.params;
     const query = 'SELECT * FROM products WHERE type = ?';
     
-    db.query(query, [type], (err, results) => {
+    pool.query(query, [type], (err, results) => {
         if (err) {
             res.status(500).json({ error: 'Database query error' });
             return;
@@ -775,7 +780,7 @@ app.get('/api/products/:type', (req, res) => {
 
 // Ruta para obtener notificaciones
 app.get('/notifications', (req, res) => {
-    db.query('SELECT * FROM notifications ORDER BY id DESC', (err, results) => {
+    pool.query('SELECT * FROM notifications ORDER BY id DESC', (err, results) => {
         if (err) {
             console.error('Error al obtener notificaciones:', err);
             return res.status(500).json({ error: 'Error al obtener notificaciones' });
@@ -824,7 +829,7 @@ app.get('/notifications', (req, res) => {
 //ADMIN USERS
 // Ruta para obtener todos los usuarios
 app.get('/users', (req, res) => {
-    db.query('SELECT * FROM users WHERE banned = 0', (err, results) => {
+    pool.query('SELECT * FROM users WHERE banned = 0', (err, results) => {
         if (err) return res.status(500).json({ error: 'Error al obtener usuarios' });
         res.json(results);
     });
@@ -832,7 +837,7 @@ app.get('/users', (req, res) => {
 
 // Ruta para obtener todos los usuarios baneados
 app.get('/banned-users', (req, res) => {
-    db.query('SELECT * FROM users WHERE banned = 1', (err, results) => {
+    pool.query('SELECT * FROM users WHERE banned = 1', (err, results) => {
         if (err) return res.status(500).json({ error: 'Error al obtener usuarios baneados' });
         res.json(results);
     });
@@ -841,7 +846,7 @@ app.get('/banned-users', (req, res) => {
 // Ruta para banear un usuario
 app.post('/ban-user', (req, res) => {
     const { userId } = req.body;
-    db.query('UPDATE users SET banned = 1 WHERE id = ?', [userId], (err, result) => {
+    pool.query('UPDATE users SET banned = 1 WHERE id = ?', [userId], (err, result) => {
         if (err) {
             return res.status(500).json({ error: 'Error al banear usuario' });
         }
@@ -852,7 +857,7 @@ app.post('/ban-user', (req, res) => {
 // Ruta para desbanear un usuario
 app.post('/unban-user', (req, res) => {
     const { userId } = req.body;
-    db.query('UPDATE users SET banned = 0 WHERE id = ?', [userId], (err, result) => {
+    pool.query('UPDATE users SET banned = 0 WHERE id = ?', [userId], (err, result) => {
         if (err) {
             return res.status(500).json({ error: 'Error al desbanear usuario' });
         }
@@ -863,7 +868,7 @@ app.post('/unban-user', (req, res) => {
 // Ruta para eliminar un usuario
 app.delete('/users/:id', (req, res) => {
     const id = req.params.id;
-    db.query('DELETE FROM users WHERE id = ?', [id], (err) => {
+    pool.query('DELETE FROM users WHERE id = ?', [id], (err) => {
         if (err) return res.status(500).json({ error: 'Error al eliminar usuario' });
         res.status(200).json({ message: 'Usuario eliminado exitosamente' });
     });
@@ -875,7 +880,7 @@ app.delete('/users/:id', (req, res) => {
 //ADMIN PRODUCTS
 // Ruta para obtener todos los productos
 app.get('/products', (req, res) => {
-    db.query('SELECT * FROM products', (err, results) => {
+    pool.query('SELECT * FROM products', (err, results) => {
         if (err) return res.status(500).json({ error: 'Error al obtener productos' });
         res.json(results);
     });
@@ -900,7 +905,7 @@ app.post('/products', upload.single('file'), async (req, res) => {
 
         // Guardar la información del producto en la base de datos
         const query = 'INSERT INTO products (category, name, price, weight, img, code, brand, calories, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
-        db.query(query, [category, name, price, weight, `https://novamarket-img.s3.amazonaws.com/${code}`, code, brand, calories, type], (err, result) => {
+        pool.query(query, [category, name, price, weight, `https://novamarket-img.s3.amazonaws.com/${code}`, code, brand, calories, type], (err, result) => {
             if (err) {
                 return res.status(500).json({ error: 'Error al añadir producto' });
             }
@@ -915,7 +920,7 @@ app.post('/products', upload.single('file'), async (req, res) => {
 // Ruta para eliminar un producto
 app.delete('/products/:id', (req, res) => {
     const id = req.params.id;
-    db.query('DELETE FROM products WHERE id = ?', [id], (err) => {
+    pool.query('DELETE FROM products WHERE id = ?', [id], (err) => {
         if (err) return res.status(500).json({ error: 'Error al eliminar producto' });
         res.status(200).json({ message: 'Producto eliminado exitosamente' });
     });
@@ -931,7 +936,7 @@ app.put('/products/:id', upload.single('file'), async (req, res) => {
         if (file) {
             // Obtener la URL de la imagen anterior del producto
             const oldProductQuery = 'SELECT img FROM products WHERE id = ?';
-            db.query(oldProductQuery, [productId], async (err, result) => {
+            pool.query(oldProductQuery, [productId], async (err, result) => {
                 if (err) {
                     console.error('Error fetching old product image URL:', err);
                     return res.status(500).json({ error: 'Error fetching old product image URL' });
@@ -958,7 +963,7 @@ app.put('/products/:id', upload.single('file'), async (req, res) => {
 
                     // Actualizar el producto en la base de datos
                     const query = `UPDATE products SET name = ?, code = ?, brand = ?, calories = ?, price = ?, img = ?, weight = ?, category = ?, type = ? WHERE id = ?`;
-                    db.query(query, [name, code, brand, calories, price, `https://novamarket-img.s3.amazonaws.com/${code}`, weight, category, type, productId], (updateErr, results) => {
+                    pool.query(query, [name, code, brand, calories, price, `https://novamarket-img.s3.amazonaws.com/${code}`, weight, category, type, productId], (updateErr, results) => {
                         if (updateErr) {
                             console.error('Error updating product:', updateErr);
                             return res.status(500).json({ error: 'Error updating product' });
@@ -978,7 +983,7 @@ app.put('/products/:id', upload.single('file'), async (req, res) => {
         } else {
             // Si no hay archivo, simplemente actualiza el producto sin cambiar la imagen
             const query = `UPDATE products SET name = ?, code = ?, brand = ?, calories = ?, price = ?, weight = ?, category = ?, type = ? WHERE id = ?`;
-            db.query(query, [name, code, brand, calories, price, weight, category, type, productId], (updateErr, results) => {
+            pool.query(query, [name, code, brand, calories, price, weight, category, type, productId], (updateErr, results) => {
                 if (updateErr) {
                     console.error('Error updating product:', updateErr);
                     return res.status(500).json({ error: 'Error updating product' });
@@ -1004,7 +1009,7 @@ app.put('/products/:id', upload.single('file'), async (req, res) => {
 //ADMIN SALES
 // Ruta para obtener todas las ventas
 app.get('/sales', (req, res) => {
-    db.query(`
+    pool.query(`
         SELECT c.id AS cartId, c.name AS cartName, c.user_id AS userId, u.name AS userName, c.total AS cartTotal, c.type AS cartType, c.status AS status, c.date AS date, c.address_id AS addressId
         FROM cart c
         JOIN users u ON c.user_id = u.id
@@ -1020,7 +1025,7 @@ app.get('/sales', (req, res) => {
             return res.json(carts);
         }
 
-        db.query(`
+        pool.query(`
             SELECT ci.cart_id AS cartId, p.name AS productName, ci.quantity, p.price
             FROM cart_items ci
             JOIN products p ON ci.product_id = p.id
@@ -1031,7 +1036,7 @@ app.get('/sales', (req, res) => {
                 return res.status(500).json({ error: 'Error al obtener los detalles de los carritos' });
             }
 
-            db.query(`
+            pool.query(`
                 SELECT cc.id AS cartId, a.id AS addressId, a.name AS addressName, a.latitude, a.longitude
                 FROM cart cc
                 JOIN address a ON cc.address_id = a.id
@@ -1084,14 +1089,14 @@ app.put('/status/:id', (req, res) => {
 
     const query = 'UPDATE cart SET status = ? WHERE id = ?';
 
-    db.query(query, [status, saleId], (err, result) => {
+    pool.query(query, [status, saleId], (err, result) => {
         if (err) {
             console.error('Error updating sale status:', err);
             return res.status(500).send('Error updating sale status');
         }
 
         // Obtener el correo electrónico, nombre de usuario y nombre del carrito para enviar la notificación
-        db.query('SELECT u.email, u.name AS userName, c.name AS cartName FROM users u JOIN cart c ON u.id = c.user_id WHERE c.id = ?', [saleId], (err, result) => {
+        pool.query('SELECT u.email, u.name AS userName, c.name AS cartName FROM users u JOIN cart c ON u.id = c.user_id WHERE c.id = ?', [saleId], (err, result) => {
             if (err) {
                 console.error("Error al obtener el usuario y nombre del carrito:", err);
                 return res.status(500).send('Error al obtener el usuario y nombre del carrito');
@@ -1112,7 +1117,7 @@ app.put('/status/:id', (req, res) => {
 app.post('/publish-notification', (req, res) => {
     const { title, message, icon } = req.body;
 
-    db.query('INSERT INTO notifications (title, message, icon) VALUES (?, ?, ?)', [title, message, icon], (err, result) => {
+    pool.query('INSERT INTO notifications (title, message, icon) VALUES (?, ?, ?)', [title, message, icon], (err, result) => {
         if (err) {
             console.error('Error al guardar la notificación:', err);
             return res.status(500).json({ error: 'Error al guardar la notificación' });
@@ -1123,7 +1128,7 @@ app.post('/publish-notification', (req, res) => {
 
 // Ruta para obtener notificaciones publicadas
 app.get('/published-notifications', (req, res) => {
-    db.query('SELECT * FROM notifications', (err, results) => {
+    pool.query('SELECT * FROM notifications', (err, results) => {
         if (err) {
             console.error('Error al obtener notificaciones publicadas:', err);
             return res.status(500).json({ error: 'Error al obtener notificaciones publicadas' });
@@ -1137,7 +1142,7 @@ app.get('/published-notifications', (req, res) => {
 app.delete('/delete-notification/:id', (req, res) => {
     const { id } = req.params;
 
-    db.query('DELETE FROM notifications WHERE id = ?', [id], (err, result) => {
+    pool.query('DELETE FROM notifications WHERE id = ?', [id], (err, result) => {
         if (err) {
             console.error('Error al eliminar la notificación:', err);
             return res.status(500).json({ error: 'Error al eliminar la notificación' });

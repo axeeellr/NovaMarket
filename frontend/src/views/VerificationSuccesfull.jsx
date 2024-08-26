@@ -1,32 +1,40 @@
-import React, {useState, useEffect} from 'react';
-import { useNavigate } from 'react-router-dom';
-
-import TitlePage from '../components/TitlePage';
+import React, { useEffect } from 'react';
+import axios from 'axios';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import vendedor from '../assets/vendedor.png';
-
 import '../css/verification.css';
 
-const VerificationSuccessfull = () => {
-
+const VerificationSuccessful = () => {
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const token = searchParams.get('token');
 
-    const goHome = () => {
-        navigate('/')
-    }
+    useEffect(() => {
+        const verifyToken = async () => {
+            try {
+                await axios.get(`https://novamarket-backend-bb524c4ea0b6.herokuapp.com/verify-email?token=${token}`);
+                // Redirige a la página principal o de éxito
+                navigate('/');
+            } catch (error) {
+                console.error('Error al verificar el token:', error);
+            }
+        };
 
-    return(
-        <>
+        if (token) {
+            verifyToken();
+        }
+    }, [token, navigate]);
+
+    return (
         <div className="verification">
             <div className="verification__info">
                 <h1>¡Verificación exitosa!</h1>
-                <p>Ya puedes usar NovaMarket, haz click en el botón o vuelve a la página de verificación para continuar.</p>
-                <button onClick={goHome}>IR A NOVAMARKET</button>
+                <p>Ya puedes ir a la página de NovaMarket y usar todas sus funciones.</p>
             </div>
-            <img src={vendedor} />
+            <img src={vendedor} alt="Vendedor" />
         </div>
-        </>
-    )
+    );
 };
 
-export default VerificationSuccessfull;
+export default VerificationSuccessful;
