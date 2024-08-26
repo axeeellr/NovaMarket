@@ -8,23 +8,7 @@ import '../css/verification.css';
 const VerificationSuccessful = () => {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
-    const token = searchParams.get('token');
 
-    useEffect(() => {
-        const verifyToken = async () => {
-            try {
-                await axios.get(`https://novamarket-backend-bb524c4ea0b6.herokuapp.com/verify-email?token=${token}`);
-                // Redirige a la página principal o de éxito
-                navigate('/');
-            } catch (error) {
-                console.error('Error al verificar el token:', error);
-            }
-        };
-
-        if (token) {
-            verifyToken();
-        }
-    }, [token, navigate]);
 
     return (
         <div className="verification">
