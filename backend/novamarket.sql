@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 21-08-2024 a las 06:55:54
+-- Tiempo de generación: 26-08-2024 a las 00:20:41
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -129,6 +129,33 @@ INSERT INTO `cart_items` (`id`, `cart_id`, `product_id`, `quantity`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `messages`
+--
+
+CREATE TABLE `messages` (
+  `id` int(11) NOT NULL,
+  `sender_id` int(11) NOT NULL,
+  `receiver_id` int(11) NOT NULL,
+  `content` varchar(100) NOT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `messages`
+--
+
+INSERT INTO `messages` (`id`, `sender_id`, `receiver_id`, `content`, `timestamp`) VALUES
+(1, 2, 1, 'hi everyone', '2024-08-25 02:19:12'),
+(2, 1, 2, 'hi bro', '2024-08-25 02:19:41'),
+(3, 2, 1, 'how are you', '2024-08-25 02:27:39'),
+(4, 2, 1, 'you know what im saying', '2024-08-25 02:31:00'),
+(5, 1, 2, 'ha', '2024-08-25 02:31:09'),
+(6, 5, 1, 'youuuu', '2024-08-25 02:52:28'),
+(7, 1, 5, 'sup bro', '2024-08-25 02:54:13');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `products`
 --
 
@@ -225,7 +252,8 @@ INSERT INTO `products` (`id`, `code`, `name`, `brand`, `price`, `img`, `calories
 (74, 'nm-niveasunf50-0', 'Nivea Sun F50', 'Nivea', 14.15, '', '', '200 ml', 'Higiene', 'Protector solar'),
 (75, 'nm-niveasunpielsensible50spf-0', 'Nivea Sun Piel Sensible 50 SPF', 'Nivea ', 20.15, 'https://novamarket-img.s3.amazonaws.com/nm-niveasunpielsensible50spf-0', '', '200 ml', 'Higiene', 'Protector solar'),
 (81, 'nm-chipsahoy-0', 'Chips Ahoy', 'Nabisco', 2.25, 'https://novamarket-img.s3.amazonaws.com/nm-chipsahoy-0', '180 kcal', '222 g', 'Snacks', 'Galletas'),
-(82, 'nm-doritosnachoatrevido-0', 'Doritos Nacho Atrevido', 'Doritos', 1.25, 'https://novamarket-img.s3.amazonaws.com/nm-doritosnachoatrevido-0', '140 kcal', '150 g', 'Snacks', 'Churros');
+(82, 'nm-doritosnachoatrevido-0', 'Doritos Nacho Atrevido', 'Doritos', 1.25, 'https://novamarket-img.s3.amazonaws.com/nm-doritosnachoatrevido-0', '140 kcal', '150 g', 'Snacks', 'Churros'),
+(83, 'mmmm', 'mmm', 'mmm', 999.99, 'https://novamarket-img.s3.amazonaws.com/mmmm', 'mmm', 'mmm', 'Lácteos', 'Galletas');
 
 -- --------------------------------------------------------
 
@@ -250,7 +278,10 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `verification_token`, `role`, `verified`, `banned`) VALUES
 (1, 'NovaMarket', 'novamarket.sv@gmail.com', 'U2FsdGVkX1/l/JetN5d2UyHNTGDFZzcrH/ihfwERAto=', '', 'admin', 1, 0),
-(2, 'axel', 'axelramireezz@gmail.com', 'U2FsdGVkX1/fsQdSqPK2qwBka1e3gqIvFmO9qGmZfgk=', '', 'user', 1, 0);
+(2, 'axel', 'axelramireezz@gmail.com', 'U2FsdGVkX1/fsQdSqPK2qwBka1e3gqIvFmO9qGmZfgk=', '', 'user', 1, 0),
+(3, 'SivarTour', 'sivartour.travel@gmail.com', '', '', 'user', 1, 0),
+(4, 'marito', 'marito@gmail.com', 'U2FsdGVkX183/8cU6ZLQEr5BUCzD+FIg3TrG8OLD3IE=', '616b34d9806c97ba0d89acb33c59a712a0e410c7407c808920e4fbd567994b57', 'user', 0, 0),
+(5, 'maritogod', 'temic27495@kwalah.com', 'U2FsdGVkX1+mGacXH71MHUx82Pqwab6Qotj3FmvEnXs=', '', 'user', 1, 0);
 
 --
 -- Índices para tablas volcadas
@@ -278,6 +309,12 @@ ALTER TABLE `cart`
 -- Indices de la tabla `cart_items`
 --
 ALTER TABLE `cart_items`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `messages`
+--
+ALTER TABLE `messages`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -321,16 +358,22 @@ ALTER TABLE `cart_items`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
+-- AUTO_INCREMENT de la tabla `messages`
+--
+ALTER TABLE `messages`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
 -- AUTO_INCREMENT de la tabla `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
 
 --
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -755,6 +755,25 @@ app.delete('/deleteAddress/:id', (req, res) => {
 
 
 
+app.post('/comments', (req, res) => {
+    const { userId, comment } = req.body;
+
+    if (!comment) {
+        return res.status(400).json({ error: 'El comentario es requerido' });
+    }
+
+    db.query('INSERT INTO comments (id_user, comment) VALUES (?, ?)', [userId, comment], (err, result) => {
+        if (err) {
+            console.error('Error al guardar el comentario:', err);
+            return res.status(500).json({ error: 'Error al guardar el comentario' });
+        }
+
+        return res.status(201).json({ message: 'Comentario guardado con éxito', commentId: result.insertId });
+    });
+});
+
+
+
 app.get('/api/products/:type', (req, res) => {
     const { type } = req.params;
     const query = 'SELECT * FROM products WHERE type = ?';
@@ -767,6 +786,21 @@ app.get('/api/products/:type', (req, res) => {
         res.json(results);
     });
 });
+
+
+
+// Ruta para obtener notificaciones
+app.get('/notifications', (req, res) => {
+    db.query('SELECT * FROM notifications ORDER BY id DESC', (err, results) => {
+        if (err) {
+            console.error('Error al obtener notificaciones:', err);
+            return res.status(500).json({ error: 'Error al obtener notificaciones' });
+        }
+        res.status(200).json({ notifications: results });
+    });
+});
+
+
 
 
 
@@ -1093,6 +1127,48 @@ app.put('/status/:id', (req, res) => {
         });
     });
 });
+
+
+
+//ADMIN NOTIFICATIONS
+// Ruta para guardar notificaciones publicadas en la base de datos
+app.post('/publish-notification', (req, res) => {
+    const { title, message, icon } = req.body;
+
+    db.query('INSERT INTO notifications (title, message, icon) VALUES (?, ?, ?)', [title, message, icon], (err, result) => {
+        if (err) {
+            console.error('Error al guardar la notificación:', err);
+            return res.status(500).json({ error: 'Error al guardar la notificación' });
+        }
+        return res.status(201).json({ message: 'Notificación guardada con éxito' });
+    });
+});
+
+// Ruta para obtener notificaciones publicadas
+app.get('/published-notifications', (req, res) => {
+    db.query('SELECT * FROM notifications', (err, results) => {
+        if (err) {
+            console.error('Error al obtener notificaciones publicadas:', err);
+            return res.status(500).json({ error: 'Error al obtener notificaciones publicadas' });
+        }
+        res.status(200).json({ notifications: results });
+    });
+});
+
+
+// Ruta para eliminar una notificación
+app.delete('/delete-notification/:id', (req, res) => {
+    const { id } = req.params;
+
+    db.query('DELETE FROM notifications WHERE id = ?', [id], (err, result) => {
+        if (err) {
+            console.error('Error al eliminar la notificación:', err);
+            return res.status(500).json({ error: 'Error al eliminar la notificación' });
+        }
+        res.status(200).json({ message: 'Notificación eliminada con éxito' });
+    });
+});
+
 
 
 

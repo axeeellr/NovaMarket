@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import vendedor from '../assets/vendedor.png';
-import '../css/shop.css';
+import '../css/fruits.css';
 
 const Help = ({ helpVisible, setHelpVisible }) => {
     return (

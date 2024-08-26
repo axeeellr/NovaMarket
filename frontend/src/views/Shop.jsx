@@ -7,6 +7,7 @@ import '../css/fruits.css';
 import TitlePage from '../components/TitlePage';
 import MenuShop from '../components/MenuShop';
 import Chat from '../components/Chat';
+import Help from '../components/Help';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
@@ -15,6 +16,7 @@ const App = () => {
     const navigate = useNavigate();
     const [menuVisible, setMenuVisible] = useState(false);
     const [tooltip, setTooltip] = useState({ visible: false, name: '', x: 0, y: 0 });
+    const [helpVisible, setHelpVisible] = useState(false);
 
     const arrows = [
         { name: 'nada', id: 'nada', x: 0.2, y: 0.3 },
@@ -41,12 +43,18 @@ const App = () => {
             });
         }
 
-        // Centrando la imagen horizontalmente
         const container = containerRef.current;
         if (container) {
             container.scrollTo({
                 left: (container.scrollWidth - container.clientWidth) / 2
             });
+        }
+
+        // Verificar si el usuario ha visitado la página antes
+        const hasVisited = localStorage.getItem('hasVisited');
+        if (!hasVisited) {
+            setHelpVisible(true);
+            localStorage.setItem('hasVisited', 'true');
         }
     }, [arrows]);
 
@@ -56,7 +64,7 @@ const App = () => {
 
     const handleArrowClick = area => {
         if (area.id === 'Entrar') {
-            navigate('/shop/fruits'); // Reemplazar con la ruta deseada
+            navigate('/shop/fruits'); 
         }
     };
 
@@ -68,8 +76,8 @@ const App = () => {
         setTooltip({
             visible: true,
             name: point.name,
-            x: x + 10,  // Offset for better positioning
-            y: y + 10   // Offset for better positioning
+            x: x + 10,  
+            y: y + 10   
         });
     };
 
@@ -88,7 +96,7 @@ const App = () => {
                     className="responsive-image"
                 />
                 {arrows
-                    .filter(arrow => arrow.id !== 'nada') // Filtrar el primer arrow
+                    .filter(arrow => arrow.id !== 'nada') 
                     .map(arrow => (
                         <div
                             key={arrow.id}
@@ -119,6 +127,7 @@ const App = () => {
                 </div>
 
                 <Chat />
+                <Help helpVisible={helpVisible} setHelpVisible={setHelpVisible} />
             </div>
         </>
     );

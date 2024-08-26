@@ -5,6 +5,27 @@
     padding: 25px 0;
 }
 
+.icon-selector{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 25px;
+    color: #193E4E;
+}
+
+.selecteded{
+    background-color: #C5B28A;
+    padding: 7px;
+    border-radius: 5px;
+}
+
+.title-notifications{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #193E4E;
+}
+
 .admin-notifications h1,
 .admin-notifications h2 {
     text-align: center;
@@ -64,7 +85,8 @@
 }
 
 .notification-form button,
-.notifications-list button {
+.notifications-list button,
+.published-notifications button {
     padding: 10px 15px;
     border: none;
     cursor: pointer;
@@ -84,7 +106,8 @@
 }
 
 .notification-form button:nth-child(even),
-.notifications-list button:nth-child(even){
+.notifications-list button:nth-child(even),
+.published-notifications button:nth-child(odd){
     background-color: #f44336;
     color: white;
 }
