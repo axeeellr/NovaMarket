@@ -14,7 +14,7 @@ import Cart from '../components/AddToCart';
 
 const fetchProductDataByName = async (productName) => {
     try {
-        const response = await fetch(`http://localhost:1001/productByName?name=${productName}`);
+        const response = await fetch(`https://novamarket-backend-bb524c4ea0b6.herokuapp.com/productByName?name=${productName}`);
         if (!response.ok) {
             throw new Error('Producto no encontrado');
         }

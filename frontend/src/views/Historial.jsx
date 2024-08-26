@@ -19,7 +19,7 @@ const Historial = () => {
 
     const fetchCartDetails = async (cartId) => {
         try {
-            const response = await fetch(`http://localhost:1001/getCartDetails/${cartId}`);
+            const response = await fetch(`https://novamarket-backend-bb524c4ea0b6.herokuapp.com/getCartDetails/${cartId}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch cart details');
             }

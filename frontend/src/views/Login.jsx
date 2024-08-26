@@ -41,7 +41,7 @@ function Login() {
             if (user) {
                 const userId = user.id;
                 try {
-                    const response = await axios.get(`http://localhost:1001/check-verification-status?userId=${userId}`);
+                    const response = await axios.get(`https://novamarket-backend-bb524c4ea0b6.herokuapp.com/check-verification-status?userId=${userId}`);
                     if (!response.data.verified) {
                         localStorage.removeItem('firstVisit');
                         localStorage.removeItem('user');
@@ -71,7 +71,7 @@ function Login() {
         }
 
         try {
-            const response = await axios.post('http://localhost:1001/login', { email: loginEmail, password: loginPassword });
+            const response = await axios.post('https://novamarket-backend-bb524c4ea0b6.herokuapp.com/login', { email: loginEmail, password: loginPassword });
             const user = response.data.user;
             login(user);
             if (user.role === 'admin') {
@@ -87,7 +87,7 @@ function Login() {
 
     const handleGoogleLogin = async (credentialResponse) => {
         try {
-            const response = await axios.post('http://localhost:1001/google-login', {
+            const response = await axios.post('https://novamarket-backend-bb524c4ea0b6.herokuapp.com/google-login', {
                 token: credentialResponse.credential
             });
             const user = response.data.user;
@@ -120,7 +120,7 @@ function Login() {
         const encryptedPassword = encryptData(registroPassword);
 
         try {
-            const response = await axios.post('http://localhost:1001/registro', { name: registroNombre, email: registroEmail, password: encryptedPassword });
+            const response = await axios.post('https://novamarket-backend-bb524c4ea0b6.herokuapp.com/registro', { name: registroNombre, email: registroEmail, password: encryptedPassword });
             const user = response.data.user;
             login(user);
             navigate('/verification'); // Redirige a la página de verificación

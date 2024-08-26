@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import '../css/adminchat.css';
 
-const socket = io.connect('http://localhost:3000');
+const socket = io.connect('https://novamarket-backend-bb524c4ea0b6.herokuapp.com');
 
 const AdminChat = () => {
     const [users, setUsers] = useState([]);
@@ -13,7 +13,7 @@ const AdminChat = () => {
     const [message, setMessage] = useState('');
 
     useEffect(() => {
-        fetch('http://localhost:1001/chats/users')
+        fetch('https://novamarket-backend-bb524c4ea0b6.herokuapp.com/chats/users')
             .then((res) => res.json())
             .then((data) => setUsers(data));
 
@@ -28,7 +28,7 @@ const AdminChat = () => {
 
     const selectUser = (user) => {
         setCurrentUser(user);
-        fetch(`http://localhost:1001/chats/${user.id}`)
+        fetch(`https://novamarket-backend-bb524c4ea0b6.herokuapp.com/chats/${user.id}`)
             .then((res) => res.json())
             .then((data) => setMessages(data));
     };

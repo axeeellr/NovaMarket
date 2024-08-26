@@ -10,7 +10,7 @@ const AdminDelivery = () => {
     const [newStatus, setNewStatus] = useState('');
 
     useEffect(() => {
-        axios.get('http://localhost:1001/sales')
+        axios.get('https://novamarket-backend-bb524c4ea0b6.herokuapp.com/sales')
             .then(response => {
                 const filteredOrders = response.data.filter(sale => sale.cartType === 'Domicilio');
                 setOrders(filteredOrders);
@@ -32,7 +32,7 @@ const AdminDelivery = () => {
 
     const handleSaveStatus = () => {
         if (selectedOrder) {
-            axios.put(`http://localhost:1001/status/${selectedOrder.cartId}`, { status: newStatus })
+            axios.put(`https://novamarket-backend-bb524c4ea0b6.herokuapp.com/status/${selectedOrder.cartId}`, { status: newStatus })
                 .then(response => {
                     setOrders(prevOrders =>
                         prevOrders.map(order =>

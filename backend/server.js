@@ -20,14 +20,7 @@ const io = new Server(server, {
 });
 
 app.use(cors())
-
-app.get('/', (req, res) => {
-    return res.json("From backend side")
-})
-
-const bodyParser = require('body-parser');
-
-app.use(bodyParser.json());
+app.use(express.json());
 
 const { OAuth2Client } = require('google-auth-library');
 const CLIENT_ID = '230090427927-qu0pihm7sc8p7pphkuk7tqogffm23icu.apps.googleusercontent.com';
@@ -35,23 +28,20 @@ const client = new OAuth2Client(CLIENT_ID);
 
 const { decryptData, encryptData } = require('./cryptoutils');
 
+// Configuración de base de datos usando createConnection
 const db = mysql2.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'novamarket'
-})
+    host: 'us-cluster-east-01.k8s.cleardb.net',
+    user: 'b86bc3853542cf',
+    password: '69f12cce',
+    database: 'heroku_73c14a8f4a3cf5f'
+});
 
-
-
-// Ruta para obtener todos los usuarios que han enviado mensajes
-app.get('/chats/users', (req, res) => {
-    db.query('SELECT DISTINCT users.id, users.name FROM messages JOIN users ON users.id = messages.sender_id WHERE messages.sender_id != 1', (err, results) => {
-        if (err) {
-            return res.status(500).json({ error: err.message });
-        }
-        res.json(results);
-    });
+db.connect((err) => {
+    if (err) {
+        console.error('Error al conectar a la base de datos:', err);
+        return;
+    }
+    console.log('Conectado a la base de datos');
 });
 
 
@@ -87,12 +77,6 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         console.log('Usuario desconectado');
     });
-});
-
-
-
-server.listen(3000, () => {
-    console.log('Servidor corriendo en el puerto 3000');
 });
 
 
@@ -805,13 +789,6 @@ app.get('/notifications', (req, res) => {
 
 
 
-const port = 1001;
-
-app.listen(port, ()=>{
-    console.log("listening on", port)
-})
-
-
 
 
 
@@ -1171,5 +1148,8 @@ app.delete('/delete-notification/:id', (req, res) => {
 
 
 
+const PORT = process.env.PORT || 3000;
 
-
+server.listen(PORT, () => {
+    console.log(`Servidor corriendo en el puerto ${PORT}`);
+});

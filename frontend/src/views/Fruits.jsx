@@ -85,7 +85,7 @@ const App = () => {
         } else {
             setSelectedPoint(point);
             if (point) {
-                axios.get(`http://localhost:1001/api/products/${point.id}`)
+                axios.get(`https://novamarket-backend-bb524c4ea0b6.herokuapp.com/api/products/${point.id}`)
                     .then(response => {
                         const fetchedProducts = response.data;
                         setProducts(fetchedProducts);

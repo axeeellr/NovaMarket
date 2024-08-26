@@ -15,8 +15,8 @@ const AdminUsers = () => {
         // Fetch users and banned users from the backend
         const fetchData = async () => {
             try {
-                const usersResponse = await axios.get('http://localhost:1001/users');
-                const bannedResponse = await axios.get('http://localhost:1001/banned-users');
+                const usersResponse = await axios.get('https://novamarket-backend-bb524c4ea0b6.herokuapp.com/users');
+                const bannedResponse = await axios.get('https://novamarket-backend-bb524c4ea0b6.herokuapp.com/banned-users');
                 setUsers(usersResponse.data);
                 setBannedUsers(bannedResponse.data);
             } catch (error) {
@@ -28,7 +28,7 @@ const AdminUsers = () => {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`http://localhost:1001/users/${id}`);
+            await axios.delete(`https://novamarket-backend-bb524c4ea0b6.herokuapp.com/users/${id}`);
             setUsers(users.filter(user => user.id !== id));
         } catch (error) {
             console.error('Error deleting user:', error);
@@ -38,7 +38,7 @@ const AdminUsers = () => {
     const handleBan = async (id) => {
         try {
             const userToBan = users.find(user => user.id === id);
-            await axios.post('http://localhost:1001/ban-user', { userId: id });
+            await axios.post('https://novamarket-backend-bb524c4ea0b6.herokuapp.com/ban-user', { userId: id });
             setBannedUsers([...bannedUsers, userToBan]);
             setUsers(users.filter(user => user.id !== id));
         } catch (error) {
@@ -49,7 +49,7 @@ const AdminUsers = () => {
     const handleUnban = async (id) => {
         try {
             const userToUnban = bannedUsers.find(user => user.id === id);
-            await axios.post('http://localhost:1001/unban-user', { userId: id });
+            await axios.post('https://novamarket-backend-bb524c4ea0b6.herokuapp.com/unban-user', { userId: id });
             setUsers([...users, userToUnban]);
             setBannedUsers(bannedUsers.filter(user => user.id !== id));
         } catch (error) {

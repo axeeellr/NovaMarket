@@ -15,7 +15,7 @@ const EditProfile = ({ isModalOpen, toggleModal }) => {
 
     useEffect(() => {
         if (user.id) {
-            axios.get(`http://localhost:1001/data/${user.id}`)
+            axios.get(`https://novamarket-backend-bb524c4ea0b6.herokuapp.com/data/${user.id}`)
                 .then(response => {
                     const userData = response.data.user;
                     setName(userData.name);
@@ -36,10 +36,10 @@ const EditProfile = ({ isModalOpen, toggleModal }) => {
         }
     
         try {
-            const response = await axios.put(`http://localhost:1001/data/${user.id}`, updatedData);
+            const response = await axios.put(`https://novamarket-backend-bb524c4ea0b6.herokuapp.com/data/${user.id}`, updatedData);
             if (response.status === 200) {
                 toast.success('¡Datos actualizados!');
-                axios.get(`http://localhost:1001/data/${user.id}`)
+                axios.get(`https://novamarket-backend-bb524c4ea0b6.herokuapp.com/data/${user.id}`)
                     .then(response => {
                         const userData = response.data.user;
                         login(userData);

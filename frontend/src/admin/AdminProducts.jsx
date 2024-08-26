@@ -18,7 +18,7 @@ const AdminProducts = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await axios.get('http://localhost:1001/products');
+                const response = await axios.get('https://novamarket-backend-bb524c4ea0b6.herokuapp.com/products');
                 setProducts(response.data);
             } catch (error) {
                 console.error('Error fetching products:', error);
@@ -30,7 +30,7 @@ const AdminProducts = () => {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`http://localhost:1001/products/${id}`);
+            await axios.delete(`https://novamarket-backend-bb524c4ea0b6.herokuapp.com/products/${id}`);
             setProducts(products.filter(product => product.id !== id));
         } catch (error) {
             console.error('Error deleting product:', error);
@@ -57,7 +57,7 @@ const AdminProducts = () => {
         }
 
         try {
-            await axios.put(`http://localhost:1001/products/${editProduct.id}`, formData, {
+            await axios.put(`https://novamarket-backend-bb524c4ea0b6.herokuapp.com/products/${editProduct.id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -86,7 +86,7 @@ const AdminProducts = () => {
         }
 
         try {
-            const response = await axios.post('http://localhost:1001/products', formData, {
+            const response = await axios.post('https://novamarket-backend-bb524c4ea0b6.herokuapp.com/products', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }

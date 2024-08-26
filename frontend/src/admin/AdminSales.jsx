@@ -12,7 +12,7 @@ const AdminSales = () => {
 
     useEffect(() => {
         // Fetch sales from backend
-        axios.get('http://localhost:1001/sales')
+        axios.get('https://novamarket-backend-bb524c4ea0b6.herokuapp.com/sales')
             .then(response => {
                 const filteredSales = response.data.filter(sale => sale.cartType !== 'Domicilio');
                 const sortedSales = filteredSales.sort((a, b) => {
@@ -36,7 +36,7 @@ const AdminSales = () => {
     };
 
     const handleCompleteClick = sale => {
-        axios.put(`http://localhost:1001/status/${sale.cartId}`, { status: 1 })
+        axios.put(`https://novamarket-backend-bb524c4ea0b6.herokuapp.com/status/${sale.cartId}`, { status: 1 })
             .then(response => {
                 setSales(prevSales =>
                     prevSales.map(s => s.id === sale.id ? { ...s, status: 1 } : s)

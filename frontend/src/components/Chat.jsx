@@ -8,7 +8,7 @@ import '../css/fruits.css';
 // Supongamos que tienes un contexto de usuario para obtener el ID del usuario.
 import { useUser } from '../UserContext';
 
-const socket = io.connect('http://localhost:3000');
+const socket = io.connect('https://novamarket-backend-bb524c4ea0b6.herokuapp.com');
 
 const Chat = () => {
     const [chatVisible, setChatVisible] = useState(false);
@@ -20,7 +20,7 @@ const Chat = () => {
 
     useEffect(() => {
         // Obtener historial de mensajes desde el backend cuando el componente se monta
-        fetch(`http://localhost:1001/chats/${userId}`)
+        fetch(`https://novamarket-backend-bb524c4ea0b6.herokuapp.com/chats/${userId}`)
             .then((res) => res.json())
             .then((data) => setMessages(data))
             .catch((err) => console.error('Error al cargar mensajes:', err));
