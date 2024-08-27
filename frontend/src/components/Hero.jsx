@@ -10,9 +10,15 @@ import '../css/hero.css';
 function Hero() {
     const { isAuthenticated } = useUser();
 
+    const video = document.getElementById('background-video');
+
+    video.addEventListener('click', (event) => {
+        event.preventDefault();
+    });
+
     return (
         <div className="hero">
-            <video src={videobackground} className='background' autoPlay muted loop></video>
+            <video src={videobackground} className='background' id='background-video' autoPlay muted loop></video>
             <div className="hero__info">
                 <img src={logo} className='logo' />
                 <h1>¡Donde puedes comprar sin esperar!</h1>

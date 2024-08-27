@@ -481,8 +481,11 @@ app.get('/getCarts/:userId', (req, res) => {
 app.post('/addCart', (req, res) => {
     const { user_id, name, date, card_id, total, type, address_id, status } = req.body;
 
+    // Convertir la fecha a formato MySQL (YYYY-MM-DD HH:MM:SS)
+    const formattedDate = new Date(date).toISOString().slice(0, 19).replace('T', ' ');
+
     // Consulta SQL para insertar datos en la tabla `cart`
-    pool.query('INSERT INTO cart (user_id, name, date, card_id, total, type, address_id, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [user_id, name, date, card_id, total, type, address_id, status], (err, result) => {
+    pool.query('INSERT INTO cart (user_id, name, date, card_id, total, type, address_id, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [user_id, name, formattedDate, card_id, total, type, address_id, status], (err, result) => {
         if (err) {
             console.error("Error al registrar el carrito:", err);
             return res.status(500).json({ error: 'Error al registrar el carrito' });
@@ -576,7 +579,7 @@ app.post('/completePurchase', (req, res) => {
                     const total = (parseFloat(subtotal) + deliveryFee).toFixed(2);
 
                     // Reemplazar placeholders en la plantilla HTML
-                    let invoiceHtml = fs.readFileSync('../frontend/src/components/Invoice.html', 'utf-8');
+                    let invoiceHtml = fs.readFileSync('Invoice.html', 'utf-8');
                     invoiceHtml = invoiceHtml
                         .replace('{{userName}}', user.name)
                         .replace('{{orderNumber}}', cart_id)
