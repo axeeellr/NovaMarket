@@ -110,12 +110,12 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-const sendVerificationEmail = (email, verificationLink) => {
+const sendVerificationEmail = (email, verificationCode) => {
     const mailOptions = {
         from: 'novamarket.sv@gmail.com',
         to: email,
-        subject: 'Verificación de Correo Electrónico',
-        html: `<p>Por favor verifica tu correo electrónico haciendo click en el siguiente enlace: <a href="${verificationLink}">Verificar Correo</a></p>`
+        subject: 'Código de Verificación de NovaMarket',
+        html: `<p>Tu código de verificación es: <strong>${verificationCode}</strong></p><p>Por favor, ingresa este código en la aplicación para verificar tu correo electrónico.</p>`
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
@@ -129,29 +129,28 @@ const sendVerificationEmail = (email, verificationLink) => {
 
 
 
-//Ruta para verificar el correo
-app.get('/verify-email', (req, res) => {
-    const { token } = req.query;
 
-    pool.query('SELECT * FROM users WHERE verification_token = ?', [token], (err, results) => {
+// Ruta para verificar el código de verificación
+app.post('/verify-code', (req, res) => {
+    const { userId, verificationCode } = req.body;
+
+    pool.query('SELECT * FROM users WHERE id = ? AND verification_token = ?', [userId, verificationCode], (err, results) => {
         if (err) {
-            console.error("Error al verificar el token:", err);
-            return res.status(500).json({ error: 'Error al verificar el token' });
+            console.error("Error al verificar el código:", err);
+            return res.status(500).json({ error: 'Error al verificar el código' });
         }
 
         if (results.length > 0) {
-            const user = results[0];
-
-            pool.query('UPDATE users SET verified = 1, verification_token = NULL WHERE id = ?', [user.id], (err, result) => {
+            pool.query('UPDATE users SET verified = 1, verification_token = "" WHERE id = ?', [userId], (err, result) => {
                 if (err) {
                     console.error("Error al actualizar la verificación del usuario:", err);
                     return res.status(500).json({ error: 'Error al actualizar la verificación del usuario' });
                 }
 
-                return res.status(200).json({ message: 'Correo electrónico verificado exitosamente' });
+                return res.status(200).json({ verified: true, message: 'Correo electrónico verificado exitosamente' });
             });
         } else {
-            return res.status(400).json({ error: 'Token de verificación inválido' });
+            return res.status(400).json({ error: 'Código de verificación incorrecto' });
         }
     });
 });
@@ -236,7 +235,7 @@ app.post('/google-login', async (req, res) => {
 // Ruta para el registro de usuarios.
 app.post('/registro', (req, res) => {
     const { name, email, password } = req.body;
-    const verificationToken = crypto.randomBytes(32).toString('hex');
+    const verificationCode = Math.floor(1000 + Math.random() * 9000).toString(); // Genera un código de 4 dígitos
     const role = 'user';
 
     // Verificar si el correo electrónico ya está registrado
@@ -252,18 +251,16 @@ app.post('/registro', (req, res) => {
         }
 
         // Insertar el nuevo usuario en la base de datos
-        pool.query('INSERT INTO users (name, email, password, verification_token, role, verified, banned) VALUES (?, ?, ?, ?, ?, ?, ?)', [name, email, password, verificationToken, role, 0, 0], (err, result) => {
+        pool.query('INSERT INTO users (name, email, password, verification_token, role, verified, banned) VALUES (?, ?, ?, ?, ?, ?, ?)', [name, email, password, verificationCode, role, 0, 0], (err, result) => {
             if (err) {
                 console.error("Error al registrar usuario:", err);
                 return res.status(500).json({ error: 'Error al registrar usuario' });
             }
 
             if (result.affectedRows > 0) {
-                const userId = result.insertId;
-                const verificationLink = `https://nova-market.vercel.app/verificationsuccessfull?token=${verificationToken}`;
-                sendVerificationEmail(email, verificationLink);
+                sendVerificationEmail(email, verificationCode);
 
-                pool.query('SELECT * FROM users WHERE id = ?', [userId], (err, results) => {
+                pool.query('SELECT * FROM users WHERE id = ?', [result.insertId], (err, results) => {
                     if (err) {
                         console.error("Error al obtener los datos del usuario:", err);
                         return res.status(500).json({ error: 'Error al obtener los datos del usuario' });
