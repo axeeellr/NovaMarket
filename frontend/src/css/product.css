@@ -5,24 +5,25 @@
     justify-content: center;
     height: 90vh;
     width: 100%;
-    backgrousnd-color: blue;
+    background-colors: blue;
 }
 
 .product__img{
     object-fit: cover;
-    min-height: 40%;
-    max-height: 45%;
+    max-height: 500px;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 0;
     padding: 0;
+    background-colors: purple;
 }
 
 .product__img img{
-    height: 70%;
-    max-width: 85%;
+    height: 90%;
+    max-width: 80%;
+    background-colsor: red;
 }
 
 .product__info{
@@ -35,8 +36,7 @@
     align-items: center;
     padding: 30px 30px 130px 30px;
     gap: 20px;
-    max-height: 55%;
-    min-height: 60%;
+    height: 500px;
     width: 100%;
 }
 

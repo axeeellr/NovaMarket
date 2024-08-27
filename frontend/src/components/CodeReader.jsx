@@ -15,13 +15,12 @@ const CodeReader = (props) => {
                     console.error(data.error);
                 } else {
                     if (localStorage.getItem('cartDetails')) {
-                        // Recuperar del localStorage
                         const cartDetailsFromStorage = localStorage.getItem('cartDetails');
                         const parsedCartDetails = JSON.parse(cartDetailsFromStorage);
                 
                         parsedCartDetails.type = 'qr';
                         localStorage.setItem('cartDetails', JSON.stringify(parsedCartDetails));
-                    }else{
+                    } else {
                         const cartDetails = {
                             name: null,
                             price: null,
@@ -30,33 +29,34 @@ const CodeReader = (props) => {
                             address: null
                         };
                 
-                        // Convertir a JSON
-                        const cartDetailsJSON = JSON.stringify(cartDetails);
-                
-                        // Guardar en localStorage
-                        localStorage.setItem('cartDetails', cartDetailsJSON);
+                        localStorage.setItem('cartDetails', JSON.stringify(cartDetails));
                     }
                     navigate(`/product/${encodeURIComponent(data.name)}`, { state: { productData: data } });
                 }
             })
-        .catch(error => console.error('Error al consultar el servidor:', error));
+            .catch(error => console.error('Error al consultar el servidor:', error));
         }
 
-    }, [data, navigate])
+    }, [data, navigate]);
 
     return (
         <>
             <QrReader
-            onResult={(result, error) => {
-                if (!!result) {
-                    setData(result?.text);
-                }
+                constraints={{
+                    video: {
+                        facingMode: { ideal: 'environment' } // Selecciona la cámara trasera
+                    }
+                }}
+                onResult={(result, error) => {
+                    if (!!result) {
+                        setData(result?.text);
+                    }
     
-                if (!!error) {
-                //console.info(error);
-                }
-            }}
-            style={{ width: '100%' }}
+                    if (!!error) {
+                        // console.info(error);
+                    }
+                }}
+                style={{ width: '100%' }}
             />
         </>
     );
