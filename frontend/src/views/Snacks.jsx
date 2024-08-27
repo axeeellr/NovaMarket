@@ -5,7 +5,7 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight, faXmark, faCircle } from '@fortawesome/free-solid-svg-icons';
 
-import fruits from '../assets/snacks.jpg';
+const fruits = 'https://novamarket-img.s3.us-east-2.amazonaws.com/snacks.jpg';
 import '../css/fruits.css';
 
 import TitlePage from '../components/TitlePage';

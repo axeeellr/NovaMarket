@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import vendedor from '../assets/vendedor.png';
+const vendedor = 'https://novamarket-img.s3.us-east-2.amazonaws.com/vendedor.png';
 import '../css/verification.css';
 
 const VerificationSuccessful = () => {

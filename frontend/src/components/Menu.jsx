@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import '../css/menu.css';
-import qrCode from '../assets/qrCode.png';
+const qrCode = 'https://novamarket-img.s3.us-east-2.amazonaws.com/qrCode.png';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faStore, faBell, faUser, faCartPlus } from '@fortawesome/free-solid-svg-icons';

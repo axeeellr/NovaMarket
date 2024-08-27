@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import io from 'socket.io-client';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSortDown, faPaperPlane, faImages } from '@fortawesome/free-solid-svg-icons';
-import vendedor from '../assets/vendedor.png';
+const vendedor = 'https://novamarket-img.s3.us-east-2.amazonaws.com/vendedor.png';
 import '../css/fruits.css';
 
 // Supongamos que tienes un contexto de usuario para obtener el ID del usuario.

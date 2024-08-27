@@ -33,6 +33,7 @@ import AdminSales from './admin/AdminSales';
 import AdminChat from './admin/AdminChat';
 import AdminNotifications from './admin/AdminNotifications';
 import AdminDelivery from './admin/AdminDelivery';
+import NotFound from './views/NotFound';
 
 const AppRouter = () => {
     const { isAuthenticated } = useUser();
@@ -69,6 +70,7 @@ const AppRouter = () => {
                     <Route path="/adminchat" element={<ProtectedRoute element={AdminChat} adminOnly />} />
                     <Route path="/adminnotifications" element={<ProtectedRoute element={AdminNotifications} adminOnly />} />
                     <Route path="/admindelivery" element={<ProtectedRoute element={AdminDelivery} adminOnly />} />
+                    <Route path="*" element={<NotFound />} />
                 </Routes>
             </PageTransition>
         </Router>

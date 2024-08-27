@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import fruits from '../assets/entrance.png';
+const fruits = 'https://novamarket-img.s3.us-east-2.amazonaws.com/entrance.png';
 import '../css/fruits.css';
 
 import TitlePage from '../components/TitlePage';

@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useUser } from '../UserContext';
 
 import TitlePage from '../components/TitlePage';
-import vendedor from '../assets/vendedor.png';
+const vendedor = 'https://novamarket-img.s3.us-east-2.amazonaws.com/vendedor.png';
 import '../css/verification.css';
 
 const Verification = () => {

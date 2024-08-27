@@ -4,7 +4,7 @@ import { useUser } from '../UserContext';
 import axios from 'axios';
 import { Toaster, toast } from 'react-hot-toast';
 
-import qrCode from '../assets/qrCode.png';
+const qrCode = 'https://novamarket-img.s3.us-east-2.amazonaws.com/qrCode.png';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faStore, faBell, faUser, faCartPlus } from '@fortawesome/free-solid-svg-icons';

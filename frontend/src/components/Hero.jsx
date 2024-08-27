@@ -12,7 +12,7 @@ function Hero() {
 
     return (
         <div className="hero">
-            <video src={videobackground} className='background' id='background-video' autoPlay muted loop></video>
+            <video src={videobackground} className='background' id='background-video' autoPlay muted loop playsInline></video>
             <div className="hero__info">
                 <img src={logo} className='logo' />
                 <h1>¡Donde puedes comprar sin esperar!</h1>
