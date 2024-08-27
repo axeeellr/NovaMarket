@@ -206,10 +206,11 @@ app.post('/google-login', async (req, res) => {
                     password: '',
                     verificationToken: '',
                     role: 'user',
-                    verified: 1
+                    verified: 1,
+                    banned: 0
                 };
 
-                pool.query('INSERT INTO users (name, email, password, verification_token, role, verified) VALUES (?, ?, ?, ?, ?, ?)', [newUser.name, newUser.email, newUser.password, newUser.verificationToken, newUser.role, newUser.verified], (error, results) => {
+                pool.query('INSERT INTO users (name, email, password, verification_token, role, verified, banned) VALUES (?, ?, ?, ?, ?, ?, ?)', [newUser.name, newUser.email, newUser.password, newUser.verificationToken, newUser.role, newUser.verified, newUser.banned], (error, results) => {
                     if (error) {
                         console.error('Error al guardar el usuario:', error);
                         return res.status(500).json({ error: 'Error al guardar el usuario' });
