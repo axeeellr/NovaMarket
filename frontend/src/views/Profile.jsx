@@ -6,7 +6,6 @@ import { useUser } from '../UserContext';
 import '../css/root.css';
 import '../css/profile.css';
 
-import Header from '../components/Header';
 import Menu from '../components/Menu';
 import TitlePage from '../components/TitlePage';
 import EditProfile from '../components/EditProfile';
