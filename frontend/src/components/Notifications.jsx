@@ -33,7 +33,7 @@ function Notifications() {
     useEffect(() => {
         const fetchNotifications = async () => {
             try {
-                const response = await axios.get('https://novamarket-backend-bb524c4ea0b6.herokuapp.com/notifications');
+                const response = await axios.get('https://novamarket.onrender.com/notifications');
                 setNotifications(response.data.notifications);
             } catch (error) {
                 console.error('Error al obtener notificaciones:', error);

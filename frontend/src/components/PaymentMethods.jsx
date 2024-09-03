@@ -45,7 +45,7 @@ const PaymentMethods = ({ user }) => {
         }
 
         try {
-            const response = await fetch('https://novamarket-backend-bb524c4ea0b6.herokuapp.com/cards', {
+            const response = await fetch('https://novamarket.onrender.com/cards', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(cardData)
@@ -68,7 +68,7 @@ const PaymentMethods = ({ user }) => {
 
     const fetchUserCards = async () => {
         try {
-            const response = await fetch(`https://novamarket-backend-bb524c4ea0b6.herokuapp.com/getCards/${user.id}`);
+            const response = await fetch(`https://novamarket.onrender.com/getCards/${user.id}`);
             if (response.ok) {
                 const data = await response.json();
                 setCards(data.cards);

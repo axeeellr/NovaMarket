@@ -31,7 +31,7 @@ const Verification = () => {
     const handleSubmit = async () => {
         const verificationCode = code.join('');
         try {
-            const response = await axios.post('https://novamarket-backend-bb524c4ea0b6.herokuapp.com/verify-code', {
+            const response = await axios.post('https://novamarket.onrender.com/verify-code', {
                 userId,
                 verificationCode,
             });

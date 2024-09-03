@@ -40,7 +40,7 @@ const AdminNotifications = () => {
         // Cargar notificaciones publicadas desde la base de datos
         const fetchPublishedNotifications = async () => {
             try {
-                const response = await axios.get('https://novamarket-backend-bb524c4ea0b6.herokuapp.com/published-notifications');
+                const response = await axios.get('https://novamarket.onrender.com/published-notifications');
                 setPublishedNotifications(response.data.notifications);
             } catch (error) {
                 console.error('Error al cargar notificaciones publicadas:', error);
@@ -67,7 +67,7 @@ const AdminNotifications = () => {
         setNewMessage('');
 
         try {
-            await axios.post('https://novamarket-backend-bb524c4ea0b6.herokuapp.com/publish-notification', {
+            await axios.post('https://novamarket.onrender.com/publish-notification', {
                 title: newNotification.title,
                 message: newNotification.message,
                 icon: newNotification.icon.iconName
@@ -88,7 +88,7 @@ const AdminNotifications = () => {
             setPublishedNotifications(publishedNotifications.filter(notification => notification.id !== id));
             
             try {
-                await axios.delete(`https://novamarket-backend-bb524c4ea0b6.herokuapp.com/delete-notification/${id}`);
+                await axios.delete(`https://novamarket.onrender.com/delete-notification/${id}`);
             } catch (error) {
                 console.error('Error al eliminar la notificación:', error);
             }

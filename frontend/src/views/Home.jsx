@@ -17,7 +17,7 @@ function Home() {
     const userId = user.id;
     const checkVerificationStatus = async () => {
       try {
-        const response = await axios.get(`https://novamarket-backend-bb524c4ea0b6.herokuapp.com/check-verification-status?userId=${userId}`);
+        const response = await axios.get(`https://novamarket.onrender.com/check-verification-status?userId=${userId}`);
         if (!response.data.verified) {
           localStorage.removeItem('firstVisit')
           localStorage.removeItem('user')

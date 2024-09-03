@@ -42,7 +42,7 @@ function Header() {
 
             if (user) {
                 try {
-                    const response = await axios.post('https://novamarket-backend-bb524c4ea0b6.herokuapp.com/comments', {
+                    const response = await axios.post('https://novamarket.onrender.com/comments', {
                         userId: user ? user.id : null,  // Asumiendo que el user tiene un id
                         comment
                     });

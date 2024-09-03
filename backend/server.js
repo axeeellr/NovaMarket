@@ -51,6 +51,37 @@ pool.getConnection((err, connection) => {
 
 
 
+// Ruta para obtener la lista de usuarios que han chateado con el administrador
+app.get('/chats/users', (req, res) => {
+    const adminId = 1; // Asume que el admin tiene un ID de 1
+
+    const query = `
+        SELECT DISTINCT 
+            users.id, users.name
+        FROM 
+            users
+        JOIN 
+            messages 
+        ON 
+            (users.id = messages.sender_id AND messages.receiver_id = ?) 
+        OR 
+            (users.id = messages.receiver_id AND messages.sender_id = ?)
+    `;
+
+    pool.query(query, [adminId, adminId], (err, results) => {
+        if (err) {
+            console.error('Error en la consulta SQL:', err);
+            return res.status(500).json({ error: 'Error en la consulta SQL' });
+        }
+
+        console.log('Resultados de la consulta:', results); // Para depuración
+        res.json(results);
+    });
+});
+
+
+
+
 // Ruta para obtener mensajes de un usuario específico
 app.get('/chats/:userId', (req, res) => {
     const userId = req.params.userId;

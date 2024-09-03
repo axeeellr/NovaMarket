@@ -8,7 +8,7 @@ const CodeReader = (props) => {
 
     useEffect(() => {
         if (data !== 'No result'){
-            fetch(`https://novamarket-backend-bb524c4ea0b6.herokuapp.com/product?code=${encodeURIComponent(data)}`)
+            fetch(`https://novamarket.onrender.com/product?code=${encodeURIComponent(data)}`)
             .then(response => response.json())
             .then(data => {
                 if (data.error) {
