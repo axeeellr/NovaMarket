@@ -92,7 +92,7 @@ const PaymentMethod = () => {
                 const cartPrice = parseFloat(parsedCartDetails.price); // Convertir a número.
                 const userId = user.id; // Obtener el ID del usuario desde el contexto.
                 const cardId = selectedCard.id;
-                const addressId = parsedCartDetails.address === null ? '' : parsedCartDetails.address;
+                const addressId = parsedCartDetails.address === null ? 0 : parsedCartDetails.address;
 
                 // Recuperar y establecer el valor de type
                 let cartType;

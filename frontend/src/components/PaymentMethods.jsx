@@ -21,6 +21,17 @@ const PaymentMethods = ({ user }) => {
 
     const handleAddCardSubmit = async (e) => {
         e.preventDefault();
+
+        // Validar fecha de vencimiento
+        const [expiryYear, expiryMonth] = expiryDate.split('-').map(Number);
+        const today = new Date();
+        const expiry = new Date(expiryYear, expiryMonth - 1); // Meses en JS son 0-indexados
+
+        if (expiry < today) {
+            toast.error('Fecha de vencimiento inválida.');
+            return;
+        }
+
         const cardData = {
             id_user: user.id,
             number: cardNumber,

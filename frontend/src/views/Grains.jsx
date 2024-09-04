@@ -5,7 +5,7 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight, faCircle } from '@fortawesome/free-solid-svg-icons';
 
-const fruits = 'https://novamarket-img.s3.us-east-2.amazonaws.com/grains.jpg';
+const fruits = 'https://novamarket-img.s3.us-east-2.amazonaws.com/grainss.jpg';
 import '../css/fruits.css';
 
 import TitlePage from '../components/TitlePage';
@@ -42,7 +42,6 @@ const App = () => {
     ];
 
     const imgRef = useRef(null);
-    const containerRef = useRef(null);
     const menuRef = useRef(null);
 
     useEffect(() => {
@@ -69,14 +68,6 @@ const App = () => {
                     arrowElement.style.left = `${left}px`;
                     arrowElement.style.top = `${top}px`;
                 }
-            });
-        }
-
-        // Centrando la imagen horizontalmente
-        const container = containerRef.current;
-        if (container) {
-            container.scrollTo({
-                left: (container.scrollWidth - container.clientWidth) / 2
             });
         }
     }, [points, arrows]);
@@ -191,7 +182,7 @@ const App = () => {
     return (
         <>
             <TitlePage />
-            <div className="shop__container aisle" ref={containerRef}>
+            <div className="shop__container aisle">
                 <img
                     ref={imgRef}
                     src={fruits}

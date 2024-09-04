@@ -1,45 +1,31 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { useLocation } from 'react-router-dom';
 import '../css/pagetransition.css';
 
 const PageTransition = ({ children }) => {
   const location = useLocation();
-  const currentPath = location.pathname;
+  const [transitionKey, setTransitionKey] = useState(location.pathname);
 
-  // Rutas que deberían tener la transición
-  const routesWithTransition = [
-    '/shop/meats',
-    '/shop/grains',
-    '/shop/hygiene',
-    '/shop/snacks',
-    '/shop/dairy',
-    '/shop/cleaning',
-    '/shop/fruits'
-  ];
+  useEffect(() => {
+    // Actualiza la clave de transición solo si la ruta ha cambiado
+    setTransitionKey(location.pathname);
+  }, [location.pathname]);
 
-  // Verifica si la ruta actual debe tener la transición
-  const shouldTransition =
-    routesWithTransition.some(route => currentPath.startsWith(route)) &&
-    !currentPath.startsWith('/product');  // Excluir rutas que empiezan con /product
+  // Verifica si la ruta debe tener transición
+  const shouldTransition = location.pathname.startsWith('/shop');
 
   return (
     <TransitionGroup>
-      {shouldTransition ? (
-        <CSSTransition
-          key={location.key}
-          classNames="fade"
-          timeout={500}
-        >
-          <div className="transition-wrapper">
-            {children}
-          </div>
-        </CSSTransition>
-      ) : (
-        <div className="no-transition-wrapper">
+      <CSSTransition
+        key={transitionKey}
+        classNames={shouldTransition ? 'fade' : 'no-fade'}
+        timeout={500}
+      >
+        <div className={shouldTransition ? 'transition-wrapper' : 'no-transition-wrapper'}>
           {children}
         </div>
-      )}
+      </CSSTransition>
     </TransitionGroup>
   );
 };
