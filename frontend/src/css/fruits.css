@@ -355,7 +355,8 @@ a {
     bottom: -90vh; /* Ocultar inicialmente */
     left: 0;
     right: 0;
-    height: 90vh;
+    height: 85vh;
+    max-height: 90vh;
     width: 100%;
     display: flex;
     flex-direction: column;

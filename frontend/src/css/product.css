@@ -10,7 +10,8 @@
 
 .product__img{
     object-fit: cover;
-    max-height: 500px;
+    height: 40%;
+    max-height: 40%;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -21,7 +22,7 @@
 }
 
 .product__img img{
-    height: 90%;
+    height: 100%;
     max-width: 80%;
     background-colsor: red;
 }
@@ -36,7 +37,7 @@
     align-items: center;
     padding: 30px 30px 130px 30px;
     gap: 20px;
-    height: 500px;
+    height: 60%;
     width: 100%;
 }
 
@@ -132,6 +133,8 @@
 
 .title__product{
     padding: 20px;
+    position: relative;
+    z-index: 99;
 }
 
 

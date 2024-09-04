@@ -134,7 +134,7 @@ const Meats = () => {
                                 left: `${point.x * 100}%`,
                                 top: `${point.y * 100}%`,
                             }}
-                            onClick={(e) => toggleMenuProductsVisibility(point, e)}
+                            onClick={(e) => handlePointClick(point, e)}
                             onMouseEnter={(e) => handleMouseEnter(e, point)}
                             onMouseLeave={handleMouseLeave}
                         />
