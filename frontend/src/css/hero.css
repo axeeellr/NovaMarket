@@ -86,36 +86,12 @@
 @media only screen and (min-width: 768px){
 
     .hero{
-        width: 100%;
-        height: 85vh;
-        position: relative;
+        width: 80%;
+        height: 100vh;
+        padding-left: 20%;
         display: flex;
-        flex-direction: column;
         justify-content: center;
         align-items: start;
-        gap: 15px;
-    }
-
-    .hero__info{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: start;
-        gap: 15px;
-        width: 30%;
-        margin-left: 50px;
-        padding-left: 25px;
-        border-left: 12px solid #F2EBCF;
-        position: relative;
-    }
-
-    .hero::after{
-        content: '';
-        position: absolute;
-        z-index: -90;
-        width: 100%;
-        height: 100%;
-        background-color: #193e4e;
     }
 
     .hero::before{
@@ -124,7 +100,7 @@
         border-top-right-radius: 0;
         z-index: -49;
         position: absolute;
-        background-color: rgba(0, 0, 0, 0.70);
+        background-color: rgba(0, 0, 0, 0.75);
         width: 100%;
         height: 100%;
     }
@@ -139,22 +115,20 @@
         border-top-right-radius: 0;
     }
 
-    .hero h1{
-        displsay: none;
-        color: #F2EBCF;
-        text-align: left;
-        font-size: 24px;
-        margin-top: -5px;
-        font-weight: 500;
-        width: 200%;
-        display: none;
+    .hero__info{
+        background-colors: red;
+        margin: 0 33% 0 33%;
+        width: 70%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: start;
+        position: relative;
     }
 
     .hero__info button{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 15px 0;
+        position: absolute;
+        text-align: center;
         border-radius: 10px;
         border: none;
         background-color: #F2EBCF;
@@ -164,7 +138,8 @@
         box-shadow: 0px 0px 25px 0px rgba(0,0,0,0.65);
         cursor: pointer;
         letter-spacing: 1px;
-        width: 27vw;
+        width: 100%;
+        padding: 14px 0;
     }
 
     .hero button:hover{
@@ -175,6 +150,10 @@
     .logo{
         display: flex;
         width: 100%;
+    }
+
+    .hero h1{
+        display: none;
     }
 
 }

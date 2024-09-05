@@ -37,10 +37,12 @@ function Home() {
 
   return (
     <>
+    <div className="home">
       <Header />
       <Hero />
       <IndexContent />
       <Menu />
+    </div>
     </>
   );
 };

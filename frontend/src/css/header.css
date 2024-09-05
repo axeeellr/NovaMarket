@@ -61,47 +61,58 @@
     cursor: pointer;
 }
 
+.header__pc{
+    display: none;
+}
+
 
 @media only screen and (min-width: 768px){
     .header{
-        width: 100%;
-        height: 15vh;
+        display: none;
+    }
+
+    .header__pc{
         display: flex;
-        flex-direction: column;
+        height: 15vh;
+        padding-left: 20%;
+        width: 100%;
+        position: absolute;
+        background-color: transparent;
+        z-index: 10;
+    }
+
+    .header__search__pc{
+        display: flex;
         align-items: center;
         justify-content: center;
-        gap: 20px;
-        background-color: #193e4e;
-        box-shadow: 0px 0px 25px 0px rgba(0,0,0,0.50);
-        z-index: 5;
+        width: 100%;
+        padding-left: 30px;
+        background-colsor: green;
     }
 
-    .header__info__text{
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        margin-top: 10px;
+    .header__search__pc input{
+        border-radius: 10px;
+        border: none;
+        height: 55px;
+        width: 60%;
+        padding: 15px;
+        outline: none;
+        box-shadow: 0px 0px 25px -5px rgba(0,0,0,0.75);
+        background-color: rgba(67, 66, 66, 0.7);
+        border: 2px solid rgb(67, 66, 66);
+        padding-left: 45px;
+        position: relative;
     }
 
-    .header__info h2{
-        font-size: 28px;
+    .header__search__pc input::placeholder{
+        color: rgb(241, 241, 241);
+        font-size: 15px;
     }
 
-    .header__info p{
-        font-size: 20px;
-    }
-
-    .header__search input{
-        display: none;
-        visibility: hidden;
-    }
-
-    .notis{
-        font-size: 30px;
-        cursor: pointer;
-        padding-left: 15px;
-        margin-left: 15px;
-        border-left: 4px solid #F2EBCF;
-        color: #F2EBCF;
+    .lupaHeaderPc{
+        position: absolute;
+        left: 0;
+        margin-left: 39%;
+        color: rgb(241, 241, 241);
     }
 }

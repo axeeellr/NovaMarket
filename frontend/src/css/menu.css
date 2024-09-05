@@ -83,43 +83,66 @@ a{
     display: none;
 }
 
+.menu__container__pc{
+    display: none;
+}
+
 @media only screen and (min-width: 768px){
 
     .menu__container{
         display: none;
     }
 
-    .menu-header{
+    .menu__container__pc{
         display: flex;
-        justify-content: center;
+        flex-direction: column;
+        justify-content: start;
         align-items: center;
-        gap: 25px;
-        background-colosr: blue;
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 20%;
+        padding: 30px 0;
+        background-image: radial-gradient( circle farthest-corner at 10% 20%,  rgba(25, 62, 78) 0%, rgb(62, 120, 145) 79% );
+        box-shadow: 0px 0px 25px 0px rgba(0,0,0,0.75);
     }
 
-    .menu__left-header, .menu__right-header{
+    .pc__logo{
+        width: 80%;
+    }
+
+    .pc__logo img{
+        width: 100%;
+    }
+
+    .pc__menu{
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        justify-content: center;
+        gap: 25px;
+        margin: 50px 0;
+    }
+
+    .pc__menu__option{
         display: flex;
         justify-content: center;
         align-items: center;
         gap: 15px;
-        font-size: 30px;
-    }
-
-    .menu__center-header{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .scannerIcon-header{
-        height: 50px;
+        font-weight: 500;
+        color: #F2EBCF;
+        font-size: 27px;
+        padding-left: 10px;
+        border-top-left-radius: 2px;
+        border-bottom-left-radius: 2px;
     }
     
-    a{
-        color: #F2EBCF;
+    .pc__menu__option p{
+        font-size: 22px;
     }
 
-    .cart-icon-container-header{
+    .cart-icon-containerPc{
         position: relative;
         display: flex;
         justify-content: center;
@@ -128,11 +151,11 @@ a{
         height: 100%;
     }
     
-    .cart-item-count-header{
+    .cart-item-countPc{
         position: absolute;
-        font-size: 16px;
+        font-size: 13px;
         text-align: center;
-        background-color: #C5B28A;
+        background-color: #F2EBCF;
         color: #193e4e;
         font-weight: bold;
         border-radius: 50%;
@@ -142,7 +165,60 @@ a{
     }
 
     .active{
-        color: #bba982;
+        color: #C5B28A;
+        font-weight: bold;
+        border-left: 6px solid #C5B28A;
     }
 
+    .scannerIconPc{
+        height: 30px;
+        width: 30px;
+    }
+
+    .pc__chat{
+        position: absolute;
+        bottom: 0;
+        margin: 30px 0;
+        width: 80%;
+        border-radius: 10px;
+        box-shadow: 0px 0px 20px -5px rgba(0,0,0,0.75);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        height: 70px;
+    }
+
+    .chat__thumbnailPc {
+        position: relative;
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+        z-index: 1;
+        background-color: #F2EBCF;
+        transition: opacity 0.4s ease;
+    }
+    
+    .chat__thumbnailPc img{
+        width: 100%;
+        object-fit: cover;
+    }
+    
+    .chat__thumbnailPc p {
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 0 0 0 0;
+        font-weight: 650;
+        background-color: #F2EBCF;
+        border-radius: 50%;
+        padding: 0 5px;
+        text-align: center;
+        color: #193e4e;
+    }
+
+    .pc__chat h2{
+        font-size: 23px;
+        color: #F2EBCF;
+    }
 }

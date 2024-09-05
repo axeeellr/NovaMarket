@@ -7,7 +7,8 @@ import { Toaster, toast } from 'react-hot-toast';
 const qrCode = 'https://novamarket-img.s3.us-east-2.amazonaws.com/qrCode.png';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faStore, faBell, faUser, faCartPlus } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faStore, faBell, faUser, faCartPlus, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faComment } from '@fortawesome/free-regular-svg-icons';
 
 import Notifications from './Notifications';
 
@@ -112,6 +113,13 @@ function Header() {
                 />
             </form>
             {showNotifications && <Notifications />}
+        </div>
+
+        <div className="header__pc">
+            <form className="header__search__pc" onKeyDown={handleCommentSubmit}>
+                <input type="search" value={comment} onChange={handleCommentChange} placeholder="¿Algún comentario? Contáctate con nosotros"/>
+                <FontAwesomeIcon icon={faComment} className='lupaHeaderPc'/>
+            </form>
         </div>
 
         <Toaster

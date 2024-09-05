@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { Toaster, toast } from 'react-hot-toast';
 
 import '../css/root.css';
@@ -28,6 +28,7 @@ const fetchProductDataByName = async (productName) => {
 };
 
 function Product() {
+    const navigate = useNavigate();
     const { data: name } = useParams();
     const { state } = useLocation();
     const [product, setProduct] = useState(state?.productData || null);
@@ -54,8 +55,12 @@ function Product() {
         }
     };
 
+    const handleGoHome = () => {
+        navigate('/');
+    };
+
     if (!product) {
-        return <p>Producto no encontrado</p>;
+        return (<><p>Producto no encontrado</p><button onClick={handleGoHome}>Volver a inicio</button></>);
     }
 
     const detailsMap = {
