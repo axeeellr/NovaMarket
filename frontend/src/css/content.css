@@ -3,7 +3,7 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    padding-bottom: 120px;
+    padding-bottom: 100px;
 }
 
 .content__infoScanner{
@@ -73,7 +73,11 @@
     padding: 0 20px;
 }
 
-.content__infoStep h3{
+.content__infoStep h2{
+    font-size: 20px;
+}
+
+.content__infoStep h3, .content__infoStep h2{
     color: #193E4E;
 }
 
@@ -171,45 +175,221 @@
     color: #193E4E;
 }
 
+footer {
+    margin-stop: 50px;
+    background-color: #C5B28A;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    gap: 15px;
+    color: #193E4E;
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+    box-shadow: 0px 0px 30px -10px rgba(0,0,0,0.55);
+}
+
+footer.show {
+    max-height: 500px; /* Ajusta según el contenido */
+    opacity: 1;
+    padding: 20px;
+}
+
+
+.footer__top{
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.footer__about, .footer__categories, .footer__links{
+    display: flex;
+    flex-direction: column;
+}
+
+.footer__about h2, .footer__categories h2, .footer__links h2{
+    margin-bottom: 5px;
+}
+
+.footer__top h2{
+    color: #193E4E;
+    font-size: 20px;
+}
+
+.footer__top p{
+    font-size: 15px;
+}
+
+.footer__bottom{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    border-top: 2px solid #F2EBCF;
+    padding: 10px 0 0 0;
+}
+
+.footer__copy{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.footer__media{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.toggle-footer-button{
+    background-color: transparent;
+    border: none;
+    color: #193E4E;
+    font-size: 25px;
+    margin-top: 20px;
+}
+
 @media only screen and (min-width: 768px){
     .content{
-        width: 70%;
-        margin: 0 auto;
+        padding: 50px 0 0 20%;
         display: flex;
-        justify-content: space-around;
+        flex-direction: column;
+        justify-content: center;
         align-items: center;
-        padding: 50px 0;
-        min-height: 200px;
-        color: #193E4E;
+        gap: 30px;
     }
 
-    .content__info{
-
-    }
-
-    .content__info p{
-        font-size: 19px;
+    .content__infoScanner{
+        justify-content: space-evenly;
+        background-colsor: red;
     }
 
     .content__info h3{
-        font-size: 27px;
+        font-size: 30px;
+    }
+
+    .content__info p{
+        font-size: 18px;
+        width: 70%;
     }
 
     .content__info button{
+        padding: 10px 30px;
+        font-size: 18px;
+    }
+
+    .content__infoStep{
+        gap: 30px;
+    }
+
+    .content__infoStep h2{
+        font-size: 30px;
+        color: #193E4E;
+    }
+
+    .content__infoStep h3{
+        font-size: 25px;
+    }
+
+    .StepProgress p{
+        font-size: 18px;
+    }
+
+    .StepProgress {
+        position: relative;
+        padding-left: 45px;
+        list-style: none;
+        width: 50%;
+    }
+
+    .toggle-footer-button{
+        display: none;
+    }
+
+    footer {
+        margin-top: 50px;
+        background-color: #C5B28A;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+        color: #193E4E;
+        box-shadow: 0px 0px 30px -10px rgba(0,0,0,0.55);
+        padding: 30px !important;
+    }
+    
+    .footer__top{
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        flex-wrap: wrap;
+        gasp: 30px;
+        width: 75%;
+        bsackground-color: red;
+    }
+
+    .footer__about{
+        width: 50%;
+    }
+    
+    .footer__about, .footer__categories, .footer__links{
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .footer__about h2, .footer__categories h2, .footer__links h2{
+        margin-bottom: 5px;
+    }
+    
+    .footer__top h2{
+        color: #193E4E;
+        font-size: 22px;
+    }
+    
+    .footer__top p{
+        font-size: 18px;
+    }
+    
+    .footer__bottom{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        border-top: 3px solid #F2EBCF;
+        padding: 10px 0 0 0;
+        width: 75%;
+    }
+    
+    .footer__copy{
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 10px 25px;
-        border-radius: 5px;
+        text-align: center;
+    }
+    
+    .footer__media{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        font-size: 22px;
+    }
+    
+    .toggle-footer-button{
+        background-color: transparent;
         border: none;
-        background-color: #193E4E;
-        color: #F2EBCF;
-        font-weight: bold;
-        margin-top: 10px;
-        font-size: 15px;
-        box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.45);
-        text-decoration: none;
-        letter-spacing: 1px;
-        cursor: pointer;
+        color: #193E4E;
+        font-size: 25px;
+        margin-top: 20px;
     }
 }

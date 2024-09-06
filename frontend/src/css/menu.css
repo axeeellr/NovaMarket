@@ -136,10 +136,17 @@ a{
         padding-left: 10px;
         border-top-left-radius: 2px;
         border-bottom-left-radius: 2px;
+        transition: .1s;
+    }
+
+    .pc__menu__option:hover{
+        color: #C5B28A;
+        border-left: 6px solid #C5B28A;
+        font-weight: bold;
     }
     
     .pc__menu__option p{
-        font-size: 22px;
+        font-size: 24px;
     }
 
     .cart-icon-containerPc{

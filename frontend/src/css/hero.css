@@ -83,77 +83,97 @@
     width: 100%;
 }
 
-@media only screen and (min-width: 768px){
+.hero__pc{
+    display: none;
+}
 
+@media only screen and (min-width: 768px){
     .hero{
+        display: none;
+    }
+
+    .hero__pc{
+        display: flex;
         width: 80%;
         height: 100vh;
-        padding-left: 20%;
-        display: flex;
-        justify-content: center;
-        align-items: start;
-    }
-
-    .hero::before{
-        content: '';
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
-        z-index: -49;
-        position: absolute;
-        background-color: rgba(0, 0, 0, 0.75);
-        width: 100%;
-        height: 100%;
-    }
-
-    .background{
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        z-index: -50;
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
-    }
-
-    .hero__info{
-        background-colors: red;
-        margin: 0 33% 0 33%;
-        width: 70%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: start;
+        margin-left: 20%;
         position: relative;
     }
 
-    .hero__info button{
+    .hero__pc::before{
+        content: '';
+        z-index: -49;
         position: absolute;
-        text-align: center;
+        background-color: rgba(0, 0, 0, 0.70);
+        width: 100%;
+        height: 100%;
+    }
+    
+    .background__pc{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        z-index: -50;
+        object-fit: cover;
+    }
+
+    .hero__info__pc{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding-left: 100px;
+        gap: 15px;
+    }
+
+    .hero__info__pc h1{
+        color: #F2EBCF;
+        width: 60%;
+        font-size: 50px;
+    }
+
+    .hero__info__pc p{
+        color: #F2EBCF;
+        width: 45%;
+        font-size: 19px;
+    }
+
+    .hero__pc button{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 12px 0;
         border-radius: 10px;
         border: none;
-        background-color: #F2EBCF;
-        color: #193E4E;
+        background-color: #193E4E;
+        color: #F2EBCF;
         font-weight: bold;
-        font-size: 25px;
-        box-shadow: 0px 0px 25px 0px rgba(0,0,0,0.65);
+        font-size: 20px;
+        box-shadow: 0px 0px 25px 0px rgba(0,0,0,0.45);
         cursor: pointer;
         letter-spacing: 1px;
+        width: 20%;
+        z-index: 1;
+        transition: .3s ease;
+    }
+
+    .hero__pc button:hover {
+        background-color: #091f29;
+        color: #F2EBCF;
+    }
+
+    .hero__info__pc a{
+        background-coslor: red;
         width: 100%;
-        padding: 14px 0;
     }
 
-    .hero button:hover{
-        background-color: #d6c6a2;
-        color: #193E4E;
-    }
-
-    .logo{
+    .hero__info__pc__icons{
+        color: #F2EBCF;
+        width: 60%;
+        background-colors: red;
+        font-size: 20px;
         display: flex;
-        width: 100%;
-    }
-
-    .hero h1{
-        display: none;
+        align-items: center;
+        gap: 10px;
     }
 
 }

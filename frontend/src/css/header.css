@@ -84,10 +84,10 @@
     .header__search__pc{
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: start;
         width: 100%;
-        padding-left: 30px;
-        background-colsor: green;
+        padding-left: 100px;
+        position: relative;
     }
 
     .header__search__pc input{
@@ -102,6 +102,7 @@
         border: 2px solid rgb(67, 66, 66);
         padding-left: 45px;
         position: relative;
+        color: rgb(241, 241, 241);
     }
 
     .header__search__pc input::placeholder{
@@ -112,7 +113,8 @@
     .lupaHeaderPc{
         position: absolute;
         left: 0;
-        margin-left: 39%;
+        margin-left: 10%;
         color: rgb(241, 241, 241);
+        z-index: 99;
     }
 }
