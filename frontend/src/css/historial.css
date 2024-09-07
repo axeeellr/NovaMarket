@@ -95,3 +95,15 @@
 .stepper-item:last-child::after {
     content: none;
 }
+
+@media only screen and (min-width: 768px){
+    .historial__tracker{
+        margin-left: 20%;
+        width: 80%;
+    }
+
+    .historial__tracker h2{
+        font-size: 30px;
+        margin-bottom: 30px;
+    }
+}

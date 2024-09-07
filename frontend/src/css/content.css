@@ -325,6 +325,10 @@ footer.show {
         color: #193E4E;
         box-shadow: 0px 0px 30px -10px rgba(0,0,0,0.55);
         padding: 30px !important;
+        opacity: 1;
+        max-height: 500px; /* Ajusta según el contenido */
+        opacity: 1;
+        padding: 20px;
     }
     
     .footer__top{

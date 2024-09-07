@@ -637,7 +637,7 @@ a {
     }
 
     .chat__thumbnail.visible {
-        opacity: 1;
+        display: none;
     }
 
     .chat__thumbnail img {
@@ -652,4 +652,6 @@ a {
         background-color: #F2EBCF;
         border-radius: 50%;
     }
+
+
 }

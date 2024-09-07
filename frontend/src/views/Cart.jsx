@@ -68,7 +68,7 @@ const Cart = () => {
     const handleContinue = () => {
         if (parsedCartDetails.name == '' || parsedCartDetails.name == null) {
             toast.error('¡La compra aún no tiene nombre!');
-        } else if(localStorage.getItem('cart') == '[]'){
+        } else if(localStorage.getItem('cart') == '[]' || !localStorage.getItem('cart')){
             toast.error('¡No hay productos en el carrito!');
         }else {
             parsedCartDetails.price = calculateTotal();
@@ -117,14 +117,14 @@ const Cart = () => {
                     ) : (
                         <p className='emptyCart'>No hay productos en el carrito...</p>
                     )}
-                </div>
-                
                 <div className="cart__button">
                     <button onClick={handleContinue}>
                         <span>CONTINUAR</span>
                         <span>${calculateTotal()}</span>
                     </button>
                 </div>
+                </div>
+                
             </div>
 
             <Menu />

@@ -11,12 +11,19 @@ import '../css/scanner.css';
 
 const Scanner = () => {
 
+  const navigate = useNavigate();
+
+  const handleGoHome = () => {
+      navigate('/');
+  };
+
   const [isVisible, setIsVisible] = useState(false)
   const toggleVisibility = () => {
     setIsVisible(!isVisible)
   }
 
   return (
+    <>
     <div className='scanner__container'>
       <TitlePage/>
       <CodeReader/>
@@ -25,6 +32,12 @@ const Scanner = () => {
         {isVisible && <p>Enfoca con tu cámara el código QR del producto para añadirlo a tu carrito de compras.</p>}
       </div>
     </div>
+
+    <div className="scanner__pc">
+      <h1>¡Esta función solo está disponible en la versión móvil!</h1>
+      <button onClick={handleGoHome}>Volver al inicio</button>
+    </div>
+    </>
   );
 };
 

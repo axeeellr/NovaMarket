@@ -388,6 +388,32 @@
 }
 
 @media only screen and (min-width: 768px){
+    .profile__container{
+        margin-left: 20%;
+        padding: 30px;
+    }
 
+    .profile{
+        margin-bottom: 0;
+        min-height: auto;
+        flex-wrap: wrap;
+        display: flex;
+        flex-direction: row;
+    }
+
+    .profile__data{
+        width: 25%;
+    }
+    
+    .profile__history{
+        width: 60%;
+        border-left: 4px dashed #193E4E;
+        padding-left: 60px;
+    }
+
+    .profile__payment{
+        width: auto;
+        margin: 30px 0;
+    }
     
 }
