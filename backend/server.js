@@ -390,6 +390,23 @@ app.get('/product', (req, res) => {
 
 
 
+//Ruta para seleccionar productos de la misma categoría
+app.get('/productsByCategory', (req, res) => {
+    const category = req.query.category;
+    pool.query('SELECT * FROM products WHERE category = ?', [category], (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: 'Error al consultar la base de datos' });
+        }
+        if (results.length > 0) {
+            res.json(results);
+        } else {
+            res.status(404).json({ error: 'No se encontraron productos en esta categoría' });
+        }
+    });
+});
+
+
+
 // Ruta para actualizar los datos del usuario
 app.put('/data/:id', (req, res) => {
     const id = req.params.id;

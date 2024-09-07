@@ -27,6 +27,20 @@ const fetchProductDataByName = async (productName) => {
     }
 };
 
+const fetchRecommendedProducts = async (category) => {
+    try {
+        const response = await fetch(`https://novamarket.onrender.com/productsByCategory?category=${category}`);
+        if (!response.ok) {
+            throw new Error('Recomendaciones no disponibles');
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error(error);
+        return [];
+    }
+};
+
 function Product() {
     const navigate = useNavigate();
     const { data: name } = useParams();
@@ -34,12 +48,23 @@ function Product() {
     const [product, setProduct] = useState(state?.productData || null);
     const { addToCart } = Cart();
     const [quantity, setQuantity] = useState(1);
+    const [recommendations, setRecommendations] = useState([]);
 
     useEffect(() => {
         if (!product) {
             fetchProductDataByName(name).then(setProduct);
         }
     }, [name, product]);
+
+    useEffect(() => {
+        if (product) {
+            fetchRecommendedProducts(product.category).then(data => {
+                // Seleccionar productos aleatorios de la misma categoría
+                const randomProducts = data.sort(() => 0.5 - Math.random()).slice(0, 5);
+                setRecommendations(randomProducts);
+            });
+        }
+    }, [product]);
 
     useEffect(() => {
         localStorage.setItem('productQuantity', quantity);
@@ -60,7 +85,12 @@ function Product() {
     };
 
     if (!product) {
-        return (<><p>Producto no encontrado</p><button onClick={handleGoHome}>Volver a inicio</button></>);
+        return (
+            <>
+                <p>Producto no encontrado</p>
+                <button onClick={handleGoHome}>Volver a inicio</button>
+            </>
+        );
     }
 
     const detailsMap = {
@@ -99,6 +129,17 @@ function Product() {
                             <FontAwesomeIcon icon={faSquareMinus} onClick={decrementQuantity} />
                             <p>{quantity}</p>
                             <FontAwesomeIcon icon={faSquarePlus} onClick={incrementQuantity} />
+                        </div>
+                    </div>
+                    <div className="product__info__recomendations">
+                        <h1>También podría interesarte:</h1>
+                        <div className="recomendations">
+                            {recommendations.map((recProduct) => (
+                                <div className="product__recomendation" key={recProduct.id}>
+                                    <img src={`${baseUrl}${recProduct.code}`} alt={recProduct.name} />
+                                    <h2>{recProduct.name}</h2>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
