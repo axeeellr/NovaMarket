@@ -2,13 +2,11 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../css/content.css';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFacebook, faInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons';
-import { faCircleInfo, faCaretUp } from '@fortawesome/free-solid-svg-icons'; // Añadir iconos
+import Footer from '../components/Footer'; // Importa el componente Footer
 
 function IndexContent() {
-    const [currentStep, setCurrentStep] = useState(0); // Comienza en el paso 0
-    const [isFooterVisible, setFooterVisible] = useState(false); // Estado para controlar visibilidad del footer
+    const [currentStep, setCurrentStep] = useState(0);
+    const [isFooterVisible, setFooterVisible] = useState(false);
 
     const steps = [
         { title: "Escanea los productos", description: "Escanea el código QR de los productos que quieres comprar" },
@@ -23,11 +21,12 @@ function IndexContent() {
     };
 
     const toggleFooter = () => {
-        setFooterVisible(!isFooterVisible); // Alterna la visibilidad del footer
+        setFooterVisible(!isFooterVisible);
     };
 
     return (
         <div className="content">
+            {/* Contenido principal */}
             <div className="content__infoScanner">
                 <div className="content__img">
                     <img src="https://storage.googleapis.com/support-kms-prod/mQmcrC93Ryi2U4x5UdZNeyHQMybbyk71yCVm" alt="Escanea tus productos" />
@@ -44,10 +43,10 @@ function IndexContent() {
                 <h2>¿Cómo comprar?</h2>
                 <ul className="StepProgress">
                     {steps.map((step, index) => (
-                        <li 
-                            key={index} 
+                        <li
+                            key={index}
                             className={`StepProgress-item ${index < currentStep ? 'is-done' : ''} ${index === currentStep ? 'current' : ''}`}
-                            onClick={() => handleStepClick(index)} // Hacer clic para cambiar de paso
+                            onClick={() => handleStepClick(index)}
                             style={{ cursor: 'pointer' }}
                         >
                             <h3>{step.title}</h3>
@@ -59,41 +58,7 @@ function IndexContent() {
                 </ul>
             </div>
 
-            <button onClick={toggleFooter} className="toggle-footer-button">
-                <FontAwesomeIcon icon={isFooterVisible ? faCaretUp : faCircleInfo} />
-            </button>
-
-            <footer className={isFooterVisible ? 'show' : ''}>
-                <div className="footer__top">
-                    <div className="footer__about">
-                        <h2>Sobre Nosotros</h2>
-                        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nisi eveniet eaque animi, cupiditate totam et fugit, expedita rem, debitis tempore reiciendis ullam optio? Consequuntur voluptatibus ipsum accusantium veritatis laudantium iste est eius? Ullam provident iusto, minima temporibus.</p>
-                    </div>
-                    <div className="footer__categories">
-                        <h2>Integrantes</h2>
-                        <p>Abner Navarro</p>
-                        <p>Jasmín Flores</p>
-                        <p>Axel Ramírez</p>
-                        <p>René Cornejo</p>
-                    </div>
-                    <div className="footer__links">
-                        <h2>Enlaces</h2>
-                        <p>Acerda de</p>
-                        <p>Contáctanos</p>
-                        <p>Política de privacidad</p>
-                    </div>
-                </div>
-                <div className="footer__bottom">
-                    <div className="footer__copy">
-                        <p>Copyright &copy; 2024 Todos los derechos reservados por NovaMarket</p>
-                    </div>
-                    <div className="footer__media">
-                        <FontAwesomeIcon icon={faFacebook} />
-                        <FontAwesomeIcon icon={faInstagram} />
-                        <FontAwesomeIcon icon={faLinkedin} />
-                    </div>
-                </div>
-            </footer>
+            <Footer isFooterVisible={isFooterVisible} toggleFooter={toggleFooter} />
         </div>
     );
 }

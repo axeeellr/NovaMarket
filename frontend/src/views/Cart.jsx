@@ -6,6 +6,7 @@ import { faSquareMinus, faSquarePlus, faEdit } from '@fortawesome/free-solid-svg
 import '../css/cart.css';
 import TitlePage from '../components/TitlePage';
 import Menu from '../components/Menu';
+import Footer from '../components/Footer';
 
 const Cart = () => {
     const navigate = useNavigate();
@@ -14,6 +15,7 @@ const Cart = () => {
     const [cartName, setCartName] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [productToDeleteIndex, setProductToDeleteIndex] = useState(null);
+    const [isFooterVisible, setFooterVisible] = useState(false);
     
     useEffect(() => {
         const cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -82,6 +84,10 @@ const Cart = () => {
         }
     };
 
+    const toggleFooter = () => {
+        setFooterVisible(!isFooterVisible);
+    };
+
     const baseUrl = 'https://novamarket-img.s3.us-east-2.amazonaws.com/';
 
     return (
@@ -126,6 +132,7 @@ const Cart = () => {
                 </div>
                 
             </div>
+                <Footer  className="footerprofile" isFooterVisible={isFooterVisible} toggleFooter={toggleFooter} />
 
             <Menu />
 

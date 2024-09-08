@@ -84,6 +84,11 @@ function Product() {
         navigate('/');
     };
 
+    const handleViewProduct = (recProduct) => {
+        // Navegar a la página del producto recomendado
+        navigate(`/product/${recProduct.name}`, { state: { productData: recProduct } });
+    };
+
     if (!product) {
         return (
             <>
@@ -137,7 +142,7 @@ function Product() {
                             {recommendations.map((recProduct) => (
                                 <div className="product__recomendation" key={recProduct.id}>
                                     <img src={`${baseUrl}${recProduct.code}`} alt={recProduct.name} />
-                                    <h2>{recProduct.name}</h2>
+                                    <button onClick={() => handleViewProduct(recProduct)}>VER</button>
                                 </div>
                             ))}
                         </div>

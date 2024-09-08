@@ -6,6 +6,11 @@
     gap: 25px;
 }
 
+.titlecardselect{
+    color: #193E4E;
+    margin-bottom: -10px;
+}
+
 .method__cards{
     display: flex;
     align-items: center;
@@ -254,6 +259,7 @@
     padding: 5px 5px;
     border-radius: 10px;
     min-height: 100px;
+    background-colosr: red;
 }
 
 .summary__product__image{
@@ -263,7 +269,7 @@
 }
 
 .summary__product__image img{
-    width: 100%;
+    height: 100%;
 }
 
 .summary__product__information{
@@ -294,4 +300,39 @@ hr{
     height: 1px;
     background-color: #193E4E;
     border: none;
+}
+
+@media only screen and (min-width: 768px){
+    .method__container{
+        margin-left: 20%;
+        width: 80%;
+        padding: 50px 100px;
+        min-height: 100vh;
+        flex-wrap: wrap;
+    }
+
+    .summary__product{
+        height: 125px;
+        justify-content: start;
+    }
+
+    .summary__product__image{
+        height: 100%;
+        width: 15%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .summary__product__image img{
+        height: 100%;
+    }
+
+    .summary__product__information{
+        width: 85%;
+    }
+
+    .delivery__map{
+        height: 300px;
+        width: 35%;
+    }
 }

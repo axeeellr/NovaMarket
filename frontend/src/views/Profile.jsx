@@ -11,6 +11,7 @@ import TitlePage from '../components/TitlePage';
 import EditProfile from '../components/EditProfile';
 import History from '../components/History';
 import PaymentMethods from '../components/PaymentMethods';
+import Footer from '../components/Footer';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignOut, faEdit } from '@fortawesome/free-solid-svg-icons';
@@ -19,6 +20,7 @@ function Profile() {
     const navigate = useNavigate();
     const { logout, user } = useUser();
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isFooterVisible, setFooterVisible] = useState(false);
 
     const handleLogout = () => {
         navigate('/')
@@ -27,6 +29,10 @@ function Profile() {
 
     const toggleModal = () => {
         setIsModalOpen(!isModalOpen);
+    };
+
+    const toggleFooter = () => {
+        setFooterVisible(!isFooterVisible);
     };
 
     return (
@@ -65,6 +71,7 @@ function Profile() {
             />
 
             <EditProfile isModalOpen={isModalOpen} toggleModal={toggleModal} />
+            <Footer  className="footerprofile" isFooterVisible={isFooterVisible} toggleFooter={toggleFooter} />
         </>
     );
 }

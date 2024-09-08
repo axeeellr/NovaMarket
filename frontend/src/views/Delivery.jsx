@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import TitlePage from '../components/TitlePage';
 import Menu from '../components/Menu';
+import Footer from '../components/Footer';
 
 import { useUser } from '../UserContext';
 
@@ -21,10 +22,15 @@ const Delivery = () => {
     const [selectedAddress, setSelectedAddress] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [addressToDelete, setAddressToDelete] = useState(null);
+    const [isFooterVisible, setFooterVisible] = useState(false);
 
     // Recuperar del localStorage
     const cartDetailsFromStorage = localStorage.getItem('cartDetails');
     const parsedCartDetails = JSON.parse(cartDetailsFromStorage);
+
+    const toggleFooter = () => {
+        setFooterVisible(!isFooterVisible);
+    };
 
     const fetchUserAddresses = async () => {
         try {
@@ -182,6 +188,8 @@ const Delivery = () => {
                     },
                 }}
             />
+
+            <Footer  className="footerprofile" isFooterVisible={isFooterVisible} toggleFooter={toggleFooter} />
         </>
     );
 };

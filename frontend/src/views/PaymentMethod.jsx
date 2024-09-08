@@ -5,6 +5,7 @@ import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 
 import TitlePage from '../components/TitlePage';
 import Menu from '../components/Menu';
+import Footer from '../components/Footer';
 
 import { useUser } from '../UserContext';
 
@@ -20,6 +21,7 @@ const PaymentMethod = () => {
     const [isPaymentProcessing, setIsPaymentProcessing] = useState(false);
     const [cartProducts, setCartProducts] = useState([]);
     const [deliveryAddress, setDeliveryAddress] = useState(null);
+    const [isFooterVisible, setFooterVisible] = useState(false);
 
     // Recuperar del localStorage
     const cartDetailsFromStorage = localStorage.getItem('cartDetails');
@@ -189,6 +191,10 @@ const PaymentMethod = () => {
             setIsPaymentProcessing(false); // Asegúrate de restablecer el estado, independientemente del resultado
         }
     };
+
+    const toggleFooter = () => {
+        setFooterVisible(!isFooterVisible);
+    };
     
     const goProfile = () => {
         navigate('/profile')
@@ -200,6 +206,7 @@ const PaymentMethod = () => {
     <>
         <div className="method__container">
             <TitlePage/>
+            <h2 className='titlecardselect'>Selecciona la tarjeta:</h2>
             <div className="method__cards">
                 {cards.length > 0 ? (
                     cards.map((card) => (
@@ -330,6 +337,8 @@ const PaymentMethod = () => {
                 },
             }}
         />
+
+        <Footer  className="footerprofile" isFooterVisible={isFooterVisible} toggleFooter={toggleFooter} />
     </>
     )
 };

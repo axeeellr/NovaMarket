@@ -38,7 +38,7 @@ function TitlePage() {
         window.history.back();
     };
 
-    const titleClassName = location.pathname.startsWith('/shop') ? 'title title__shop' : 'title';
+    const titleClassName = location.pathname.startsWith('/shop') ? 'title title__shop' : 'title titleNo';
 
     return (
         <>
