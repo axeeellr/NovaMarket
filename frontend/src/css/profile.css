@@ -391,6 +391,7 @@
     .profile__container{
         margin-left: 20%;
         padding: 30px;
+        min-height: 100vh;
     }
 
     .profile{

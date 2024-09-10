@@ -8,6 +8,7 @@ const AdminDelivery = () => {
     const [orders, setOrders] = useState([]);
     const [selectedOrder, setSelectedOrder] = useState(null);
     const [newStatus, setNewStatus] = useState('');
+    const statusOrder = ['Recibido', 'En Preparación', 'En Camino', 'Entregado'];
 
     useEffect(() => {
         axios.get('https://novamarket.onrender.com/sales')
@@ -30,22 +31,32 @@ const AdminDelivery = () => {
         setNewStatus(''); // Resetea el estado cuando vuelves a la lista
     };
 
+    const getNextStatus = (currentStatus, newStatus) => {
+        const currentIndex = statusOrder.indexOf(currentStatus);
+        const newIndex = statusOrder.indexOf(newStatus);
+        return newIndex > currentIndex; // Devuelve true si el nuevo estado es posterior al estado actual
+    };
+
     const handleSaveStatus = () => {
         if (selectedOrder) {
-            axios.put(`https://novamarket.onrender.com/status/${selectedOrder.cartId}`, { status: newStatus })
-                .then(response => {
-                    setOrders(prevOrders =>
-                        prevOrders.map(order =>
-                            order.cartId === selectedOrder.cartId
-                                ? { ...order, status: newStatus }
-                                : order
-                        )
-                    );
-                    setSelectedOrder({ ...selectedOrder, status: newStatus }); // Actualiza el estado del pedido seleccionado
-                })
-                .catch(error => {
-                    console.error('Error al actualizar el estado del pedido:', error);
-                });
+            if (getNextStatus(selectedOrder.status, newStatus)) {
+                axios.put(`https://novamarket.onrender.com/status/${selectedOrder.cartId}`, { status: newStatus })
+                    .then(response => {
+                        setOrders(prevOrders =>
+                            prevOrders.map(order =>
+                                order.cartId === selectedOrder.cartId
+                                    ? { ...order, status: newStatus }
+                                    : order
+                            )
+                        );
+                        setSelectedOrder({ ...selectedOrder, status: newStatus }); // Actualiza el estado del pedido seleccionado
+                    })
+                    .catch(error => {
+                        console.error('Error al actualizar el estado del pedido:', error);
+                    });
+            } else {
+                alert('No se puede cambiar a un estado anterior.');
+            }
         }
     };
 
@@ -82,8 +93,8 @@ const AdminDelivery = () => {
                                         ></iframe>
                                     </div>
                                     <div className="buttons-map">
-                                        <button onClick={() => openGoogleMaps(selectedOrder.address.latitude, selectedOrder.address.longitude)}>Google Maps</button>
-                                        <button onClick={() => openWaze(selectedOrder.address.latitude, selectedOrder.address.longitude)}>Waze</button>
+                                        <button onClick={() => openGoogleMaps(selectedOrder.address.latitude, selectedOrder.address.longitude)}>Ver en Google Maps</button>
+                                        <button onClick={() => openWaze(selectedOrder.address.latitude, selectedOrder.address.longitude)}>Ver en Waze</button>
                                     </div>
                                 </div>
                             </>
