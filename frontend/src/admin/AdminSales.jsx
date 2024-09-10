@@ -38,14 +38,20 @@ const AdminSales = () => {
     const handleCompleteClick = sale => {
         axios.put(`https://novamarket.onrender.com/status/${sale.cartId}`, { status: 1 })
             .then(response => {
-                setSales(prevSales =>
-                    prevSales.map(s => s.id === sale.id ? { ...s, status: 1 } : s)
-                );
+                setSales(prevSales => {
+                    const updatedSales = prevSales.map(s => 
+                        s.id === sale.id ? { ...s, status: 1 } : s // Actualiza solo la venta seleccionada
+                    );
+                    console.log('Ventas actualizadas:', updatedSales);
+                    return updatedSales;
+                });
             })
             .catch(error => {
                 console.error('Error al actualizar el estado de la venta:', error);
             });
     };
+    
+    
 
     const formatTime = dateString => {
         const date = new Date(dateString);
@@ -86,7 +92,7 @@ const AdminSales = () => {
                                     <tr key={item.id}>
                                         <td>{item.productName}</td>
                                         <td>{item.quantity}</td>
-                                        <td>${item.price.toFixed(2)}</td>
+                                        <td>${item.price}</td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -108,14 +114,14 @@ const AdminSales = () => {
                             </thead>
                             <tbody>
                                 {sales.map(sale => (
-                                    <tr key={sale.id} style={{ backgroundColor: sale.status === 1 ? 'lightgreen' : '' }}>
+                                    <tr key={sale.cartId} style={{ backgroundColor: sale.status == 1 ? 'lightgreen' : '' }}>
                                         <td>{sale.cartId}</td>
                                         <td>{sale.cartName}</td>
                                         <td>{sale.userName}</td>
                                         <td>{sale.cartType}</td>
                                         <td>
                                             <button onClick={() => handleSaleClick(sale)}>Ver Detalles</button>
-                                            {sale.cartType === 'Recoger en tienda' && sale.status !== 1 && (
+                                            {sale.cartType === 'Recoger en tienda' && sale.status != 1 && (
                                                 <button onClick={() => handleCompleteClick(sale)} className='completed'>
                                                     <FontAwesomeIcon icon={faCheck} />
                                                 </button>
