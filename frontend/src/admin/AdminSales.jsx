@@ -38,13 +38,8 @@ const AdminSales = () => {
     const handleCompleteClick = sale => {
         axios.put(`https://novamarket.onrender.com/status/${sale.cartId}`, { status: 1 })
             .then(response => {
-                setSales(prevSales => {
-                    const updatedSales = prevSales.map(s => 
-                        s.id === sale.id ? { ...s, status: 1 } : s // Actualiza solo la venta seleccionada
-                    );
-                    console.log('Ventas actualizadas:', updatedSales);
-                    return updatedSales;
-                });
+                // Recargar la página para actualizar la lista de ventas
+                window.location.reload();
             })
             .catch(error => {
                 console.error('Error al actualizar el estado de la venta:', error);
@@ -52,17 +47,22 @@ const AdminSales = () => {
     };
     
     
-
+    
     const formatTime = dateString => {
         const date = new Date(dateString);
-        return date.toTimeString().substr(0, 5); // 'HH:mm'
+        // Formatea el tiempo como 'HH:mm'
+        const hours = date.getUTCHours().toString().padStart(2, '0');
+        const minutes = date.getUTCMinutes().toString().padStart(2, '0');
+        return `${hours}:${minutes}`;
     };
-
+    
     const addHour = dateString => {
         const date = new Date(dateString);
-        date.setHours(date.getHours() + 1);
+        // Añade una hora a la fecha
+        date.setUTCHours(date.getUTCHours() + 1);
         return date;
-    };
+    };    
+    
 
     return (
         <>
