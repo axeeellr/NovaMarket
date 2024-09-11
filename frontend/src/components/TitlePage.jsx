@@ -55,7 +55,7 @@ function TitlePage() {
                 <h1>{currentPage}</h1>
             </div>
         </>
-    );
+    )
 }
 
 export default TitlePage;
