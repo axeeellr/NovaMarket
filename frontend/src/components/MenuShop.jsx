@@ -13,14 +13,63 @@ const MenuShop = ({ menuVisible, toggleMenuVisibility }) => {
 
     return (
         <div className={`shop__menu ${menuVisible ? 'visible' : 'hidden'}`} onClick={handleMenuClick}>
-            <NavLink to="/shop" onClick={handleLinkClick}><p>Inicio</p></NavLink>
-            <NavLink to="/shop/meats" onClick={handleLinkClick}><p>Carnes</p></NavLink>
-            <NavLink to="/shop/fruits" onClick={handleLinkClick}><p>Frutas y Verduras</p></NavLink>
-            <NavLink to="/shop/grains" onClick={handleLinkClick}><p>Granos básicos</p></NavLink>
-            <NavLink to="/shop/hygiene" onClick={handleLinkClick}><p>Higiene personal</p></NavLink>
-            <NavLink to="/shop/cleaning" onClick={handleLinkClick}><p>Limpieza</p></NavLink>
-            <NavLink to="/shop/dairy" onClick={handleLinkClick}><p>Lácteos</p></NavLink>
-            <NavLink to="/shop/cereal" onClick={handleLinkClick}><p>Cereal</p></NavLink>
+            <NavLink 
+                to="/shop" 
+                end
+                onClick={handleLinkClick} 
+                className={({ isActive }) => (isActive ? 'selected' : '')}
+            >
+                <p>Inicio</p>
+            </NavLink>
+            <NavLink 
+                to="/shop/meats" 
+                onClick={handleLinkClick} 
+                className={({ isActive }) => (isActive ? 'selected' : '')}
+            >
+                <p>Carnes</p>
+            </NavLink>
+            <NavLink 
+                to="/shop/fruits" 
+                onClick={handleLinkClick} 
+                className={({ isActive }) => (isActive ? 'selected' : '')}
+            >
+                <p>Frutas y Verduras</p>
+            </NavLink>
+            <NavLink 
+                to="/shop/grains" 
+                onClick={handleLinkClick} 
+                className={({ isActive }) => (isActive ? 'selected' : '')}
+            >
+                <p>Granos básicos</p>
+            </NavLink>
+            <NavLink 
+                to="/shop/hygiene" 
+                onClick={handleLinkClick} 
+                className={({ isActive }) => (isActive ? 'selected' : '')}
+            >
+                <p>Higiene personal</p>
+            </NavLink>
+            <NavLink 
+                to="/shop/cleaning" 
+                onClick={handleLinkClick} 
+                className={({ isActive }) => (isActive ? 'selected' : '')}
+            >
+                <p>Limpieza</p>
+            </NavLink>
+            <NavLink 
+                to="/shop/dairy" 
+                onClick={handleLinkClick} 
+                className={({ isActive }) => (isActive ? 'selected' : '')}
+            >
+                <p>Lácteos</p>
+            </NavLink>
+            <NavLink 
+                to="/shop/snacks" 
+                onClick={handleLinkClick} 
+                className={({ isActive }) => (isActive ? 'selected' : '')}
+            >
+                <p>Snacks</p>
+            </NavLink>
         </div>
     );
 };

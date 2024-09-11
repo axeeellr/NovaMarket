@@ -137,6 +137,9 @@
     width: 130px;
 }
 
+a.selected p{
+    color: #C5B28A !important;
+}
 
 /* Tooltip container */
 .tooltip {

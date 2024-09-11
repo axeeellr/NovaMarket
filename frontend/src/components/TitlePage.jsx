@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import '../css/title.css';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,13 +7,14 @@ import { faArrowCircleLeft } from '@fortawesome/free-solid-svg-icons';
 
 function TitlePage() {
     const location = useLocation();
-    let currentPage = ''
+    const navigate = useNavigate();
+    let currentPage = '';
 
-    if(location.pathname.startsWith('/product/')){
+    if (location.pathname.startsWith('/product/')) {
         currentPage = decodeURIComponent(location.pathname.split('/product/')[1]);
-    }else if(location.pathname.startsWith('/historial/')){
+    } else if (location.pathname.startsWith('/historial/')) {
         currentPage = 'Historial';
-    }else{
+    } else {
         const pageTitles = {
             '/profile': 'Perfil',
             '/cart':  'Carrito',
@@ -34,8 +35,13 @@ function TitlePage() {
         currentPage = pageTitles[location.pathname];
     }
 
-    const goBack = () => {
-        window.history.back();
+    const goBack = (e) => {
+        e.preventDefault(); 
+        if (location.pathname === '/shop') {
+            navigate('/'); 
+        } else {
+            window.history.back();
+        }
     };
 
     const titleClassName = location.pathname.startsWith('/shop') ? 'title title__shop' : 'title titleNo';

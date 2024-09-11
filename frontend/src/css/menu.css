@@ -171,7 +171,7 @@ a{
         right: -10px;
     }
 
-    .active{
+    .pc__menu__option.active{
         color: #C5B28A;
         font-weight: bold;
         border-left: 6px solid #C5B28A;
