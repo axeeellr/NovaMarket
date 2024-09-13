@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faArrowRight, faCircle } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faArrowRight, faCircle, faUpDownLeftRight } from '@fortawesome/free-solid-svg-icons';
 
 const fruits = 'https://novamarket-img.s3.us-east-2.amazonaws.com/cleaning.jpg';
 import '../css/fruits.css';
@@ -176,6 +176,29 @@ const App = () => {
         setMenuVisible(!menuVisible);
     };
 
+    const handleDragStart = (e) => {
+        e.preventDefault();
+        const menu = document.querySelector('.menu-products');
+        if (menu) {
+            const rect = menu.getBoundingClientRect();
+            const offsetX = e.clientX - rect.left;
+            const offsetY = e.clientY - rect.top;
+
+            const onMouseMove = (e) => {
+                menu.style.left = `${e.clientX - offsetX}px`;
+                menu.style.top = `${e.clientY - offsetY}px`;
+            };
+
+            const onMouseUp = () => {
+                document.removeEventListener('mousemove', onMouseMove);
+                document.removeEventListener('mouseup', onMouseUp);
+            };
+
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+        }
+    };
+
     return (
         <>
             <TitlePage />
@@ -225,7 +248,12 @@ const App = () => {
 
                 {menuProductsVisible && selectedPoint && (
                     <div className="menu-products" style={{ left: menuPosition.left, top: menuPosition.top }} ref={menuRef}>
-                        
+                        <div
+                            className="drag-handle"
+                            onMouseDown={handleDragStart}
+                        >
+                            <FontAwesomeIcon icon={faUpDownLeftRight} className='drag-icon'/>
+                        </div>
                         <ul>
                             {products.map(product => (
                                 <li key={product.id} onClick={() => handleProductClick(product.name)}>
