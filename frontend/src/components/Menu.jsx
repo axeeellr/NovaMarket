@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import '../css/menu.css';
 import novalogoPc from '../assets/novamarketv3.png';
 const vendedor = 'https://novamarket-img.s3.us-east-2.amazonaws.com/vendedor.png';
 const qrCode = 'https://novamarket-img.s3.us-east-2.amazonaws.com/qrCode.png';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faStore, faBell, faUser, faCartPlus } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faStore, faUser, faCartPlus } from '@fortawesome/free-solid-svg-icons';
 
 function Menu() {
-    const location = useLocation();
-    const isProductPage = location.pathname.startsWith('/product/'); // Verifica si estás en la página de Product.jsx
-
+    const navigate = useNavigate();
     const [cartItemCount, setCartItemCount] = useState(0);
 
     useEffect(() => {
@@ -19,9 +17,15 @@ function Menu() {
         setCartItemCount(cart.length);
     }, []);
 
+    const handleChatClick = () => {
+        // Guarda en localStorage o utiliza un estado global para mantener el chat visible
+        localStorage.setItem('chatVisible', 'true');
+        navigate('/shop'); // Redirigir a la página /shop
+    };
+
     return (
         <>
-            <div className={`menu__container ${isProductPage ? 'menu__container__product' : ''}`}> {/* Agrega la clase adicional si estás en Product.jsx */}
+            <div className="menu__container">
                 <div className="menu">
                     <div className="menu__left">
                         <NavLink to="/">
@@ -87,7 +91,7 @@ function Menu() {
                         <p>Perfil</p>
                     </NavLink>
                 </div>
-                <div className="pc__chat">
+                <div className="pc__chat" onClick={handleChatClick}>
                     <div className="chat__thumbnailPc">
                         <img src={vendedor} />
                         <p>1</p>

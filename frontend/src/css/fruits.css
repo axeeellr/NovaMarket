@@ -204,7 +204,7 @@ a.selected p{
     left: 0;
     margin: 20px;
     z-index: 99;
-    color: #F2EBCF;
+    color: #F2EBCF !important;
 }
 
 .shop__menu {
@@ -410,10 +410,17 @@ a {
     width: 100%;
     display: flex;
     flex-direction: column;
-    justifsy-content: end;
+    justify-cosntent: end;
     padding: 20px 15px;
     color: #193E4E;
     overflow-y: scroll;
+}
+
+.chat__date {
+    text-align: center;
+    margin: 10px 0;
+    font-weight: 600;
+    color: #193E4E;
 }
 
 .message__received {
@@ -446,6 +453,7 @@ a {
     border-radius: 0.7rem;
     font-weight: 500;
     font-size: 17px;
+    box-shadow: 0px 0px 25px -10px rgba(0,0,0,0.40);
 }
 
 .chat__writer {
@@ -655,8 +663,71 @@ a {
         margin: auto 0;
     }
 
-    .chat__thumbnail.visible {
+    .help__close{
+        font-size: 30px;
+        margin: 15px;
+    }
+
+    .chat__container{
+        height: 90vh;
+    }
+
+    .chat__content{
+        padding: 50px;
+        background-coslor: rebeccapurple;
+    }
+
+    .chat__writer{
+        background-coslor: red;
+        padding: 0 50px;
+        width: 100%;
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        border-top: 1px solid #C5B28A;
+    }
+
+    .chat__writer form {
+        background-color: #C5B28A;
+        width: 100%;
+        height: 70%;
+        border-radius: 2.5em;
+        display: flex;
+        justify-constent: space-evenly;
+        align-itesms: center;
+    }
+    
+    .file__input {
+        display: inline-block;
+        position: relative;
+        text-align: center;
+    }
+    
+    .chat__writer input[type="file"] {
         display: none;
+    }
+    
+    .file__input__label {
+        display: none;
+    }
+    
+    .chat__writer input[type="text"] {
+        min-width: 90%;
+        background-colsor: red !important;
+        height: 70%;
+        background-color: transparent;
+        border: none;
+        font-size: 17px;
+        outline: none;
+    }
+    
+    .chat__writer button {
+        color: #193E4E;
+        background-color: #F2EBCF;
+        padding: 10px;
+        border-radius: 50%;
+        font-size: 18px;
+        margin: 0;
     }
 
     .chat__thumbnail img {

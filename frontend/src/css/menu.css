@@ -194,6 +194,7 @@ a{
         align-items: center;
         gap: 10px;
         height: 70px;
+        cursor: pointer;
     }
 
     .chat__thumbnailPc {

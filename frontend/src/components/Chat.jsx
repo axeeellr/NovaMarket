@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import io from 'socket.io-client';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSortDown, faPaperPlane, faImages } from '@fortawesome/free-solid-svg-icons';
@@ -17,6 +17,8 @@ const Chat = () => {
     const [message, setMessage] = useState('');
     const { user } = useUser(); // Obtén el usuario del contexto
     const userId = user.id; // Asumiendo que el contexto tiene un campo `id`
+    
+    const chatEndRef = useRef(null); // Referencia al final del chat
 
     useEffect(() => {
         // Obtener historial de mensajes desde el backend cuando el componente se monta
@@ -37,6 +39,11 @@ const Chat = () => {
         return () => socket.off('receive_message');
     }, [userId]);
 
+    // Efecto para desplazarse automáticamente al final del chat cuando los mensajes cambian
+    useEffect(() => {
+        chatEndRef.current?.scrollIntoView({ behavior: 'instant' });
+    }, [messages]);
+
     const toggleChatVisibility = () => {
         setChatVisible(!chatVisible);
         setThumbnailVisible(!thumbnailVisible);
@@ -49,6 +56,23 @@ const Chat = () => {
             socket.emit('send_message', { sender_id: userId, receiver_id: receiverId, content: message });
             setMessage('');
         }
+    };
+
+    useEffect(() => {
+        const chatVisible = localStorage.getItem('chatVisible') === 'true';
+        if (chatVisible) {
+            setTimeout(() => {
+                setChatVisible(true);
+                localStorage.removeItem('chatVisible'); // Limpia el estado después de usarlo
+            }, "1000");
+        }
+    }, []);
+    
+
+    // Función para formatear la fecha en formato "DD/MM"
+    const formatDate = (dateString) => {
+        const options = { day: '2-digit', month: '2-digit' };
+        return new Date(dateString).toLocaleDateString('es-ES', options);
     };
 
     return (
@@ -66,14 +90,24 @@ const Chat = () => {
                     <FontAwesomeIcon icon={faSortDown} className='chat__close' onClick={toggleChatVisibility} />
                 </div>
                 <div className="chat__content">
-                    {messages.map((msg, index) => (
-                        <div key={index} className={msg.sender_id === userId ? 'message__sent' : 'message__received'}>
-                            <div className="message__received__content">
-                                <p>{msg.content}</p>
+                    {messages.map((msg, index) => {
+                        const showDate = index === 0 || formatDate(msg.timestamp) !== formatDate(messages[index - 1]?.timestamp);
+
+                        return (
+                            <div key={index}>
+                                {/* Mostrar la fecha si es el primer mensaje o si cambia la fecha respecto al mensaje anterior */}
+                                {showDate && <div className="chat__date">{formatDate(msg.timestamp)}</div>}
+                                <div className={msg.sender_id === userId ? 'message__sent' : 'message__received'}>
+                                    <div className="message__received__content">
+                                        <p>{msg.content}</p>
+                                    </div>
+                                    <p className='message__time'>{new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                                </div>
                             </div>
-                            <p className='message__time'>{new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
-                        </div>
-                    ))}
+                        );
+                    })}
+                    {/* Div invisible para asegurarse de que el chat se desplace al final */}
+                    <div ref={chatEndRef}></div>
                 </div>
                 <div className="chat__writer">
                     <form onSubmit={sendMessage}>

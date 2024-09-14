@@ -53,8 +53,10 @@ const App = () => {
         // Verificar si el usuario ha visitado la página antes
         const hasVisited = localStorage.getItem('hasVisited');
         if (!hasVisited) {
-            setHelpVisible(true);
-            localStorage.setItem('hasVisited', 'true');
+            setTimeout(() => {
+                setHelpVisible(true);
+                localStorage.setItem('hasVisited', 'true');
+            }, "1000");
         }
     }, [arrows]);
 

@@ -5,6 +5,7 @@
     bottom: 0;
     height: 92vh;
     width: 100%;
+    margin-top: 100px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -89,5 +90,36 @@
     background: transparent;
 }
 
+
+@media only screen and (min-width: 768px){
+    .verification{
+        background-coslor: red;
+        width: 70%;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .verification img{
+        display: none;
+    }
+
+    #wrapper #form input{
+        height: 150px;
+        width: 15%;
+    }
+
+    .verification__info h2 {
+        color: #193E4E;
+        font-size: 28px;
+    }
+    
+    .verification__info p {
+        color: #193E4E;
+        font-size: 20px;
+        max-width: 50%;
+    }
+}
 
 
