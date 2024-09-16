@@ -34,8 +34,8 @@ const Snacks = () => {
 
     const arrows = [
         { name: 'nada', id: 'nada', x: 0.2, y: 0.3 },
-        { name: 'Ir a Higiene', id: 'Atrás', x: 0.40, y: 0.30 },
-        { name: 'Ir a Lácteos', id: 'Adelante', x: 0.60, y: 0.30 },
+        { name: 'Ir a Higiene', id: 'Atrás', x: 0.49, y: 0.27 },
+        { name: 'Ir a Lácteos', id: 'Adelante', x: 0.52, y: 0.27 },
     ];
 
     const imgRef = useRef(null);
@@ -205,26 +205,55 @@ const Snacks = () => {
 
     const handleDragStart = (e) => {
         e.preventDefault();
+        
         const menu = document.querySelector('.menu-products');
         if (menu) {
             const rect = menu.getBoundingClientRect();
             const offsetX = e.clientX - rect.left;
             const offsetY = e.clientY - rect.top;
-
+    
             const onMouseMove = (e) => {
-                menu.style.left = `${e.clientX - offsetX}px`;
-                menu.style.top = `${e.clientY - offsetY}px`;
+                const left = e.clientX - offsetX;
+                const top = e.clientY - offsetY;
+                menu.style.left = `${left}px`;
+                menu.style.top = `${top}px`;
             };
-
+    
             const onMouseUp = () => {
                 document.removeEventListener('mousemove', onMouseMove);
                 document.removeEventListener('mouseup', onMouseUp);
             };
-
+    
+            const onTouchMove = (e) => {
+                const touch = e.touches[0];
+                const left = touch.clientX - offsetX;
+                const top = touch.clientY - offsetY;
+                menu.style.left = `${left}px`;
+                menu.style.top = `${top}px`;
+            };
+    
+            const onTouchEnd = () => {
+                document.removeEventListener('touchmove', onTouchMove);
+                document.removeEventListener('touchend', onTouchEnd);
+            };
+    
+            // Start dragging
             document.addEventListener('mousemove', onMouseMove);
             document.addEventListener('mouseup', onMouseUp);
+    
+            document.addEventListener('touchmove', onTouchMove);
+            document.addEventListener('touchend', onTouchEnd);
         }
     };
+    
+    // Also make sure that the menu's initial position is correctly set when it is shown
+    useEffect(() => {
+        if (menuRef.current) {
+            const menu = menuRef.current;
+            menu.left = `${menuPosition.left}`;
+            menu.top = `${menuPosition.top}`;
+        }
+    }, [menuPosition]);
 
     return (
         <>

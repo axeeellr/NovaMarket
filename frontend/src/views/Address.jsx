@@ -71,7 +71,7 @@ const Address = () => {
                     value={addressName}
                     onChange={(e) => setAddressName(e.target.value)}
                 />
-                <FontAwesomeIcon icon={faEdit} className="editName" />
+                <FontAwesomeIcon icon={faEdit} className="editNameAddress" />
             </div>
             <div className="address">
                 <Map onSelectLocation={handleSelectLocation} />

@@ -533,6 +533,7 @@ a {
     justify-content: center;
     align-items: start;
     min-width: 200px;
+    touch-actiosn: none;
 }
 
 .drag-handle{
