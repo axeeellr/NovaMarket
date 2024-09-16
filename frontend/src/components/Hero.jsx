@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import { useUser } from '../UserContext';
 import logo from '../assets/novamarketv3.png';
-import videobackground from '../assets/NovaMarket.mp4';
+import videobackground from '../assets/NovaMarketVideo.mp4';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBasketShopping } from '@fortawesome/free-solid-svg-icons';

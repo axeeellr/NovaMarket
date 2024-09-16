@@ -11,6 +11,7 @@ import { faSquareMinus, faSquarePlus, faCartShopping } from '@fortawesome/free-s
 import Menu from '../components/Menu';
 import TitlePage from '../components/TitlePage';
 import Cart from '../components/AddToCart';
+import LoadingPage from '../components/LoadingScreen'; // Importa el componente de carga
 
 const fetchProductDataByName = async (productName) => {
     try {
@@ -49,11 +50,18 @@ function Product() {
     const { addToCart } = Cart();
     const [quantity, setQuantity] = useState(1);
     const [recommendations, setRecommendations] = useState([]);
+    const [loading, setLoading] = useState(true); // Estado para manejar la carga
 
     useEffect(() => {
-        if (!product) {
-            fetchProductDataByName(name).then(setProduct);
-        }
+        const fetchData = async () => {
+            if (!product) {
+                const productData = await fetchProductDataByName(name);
+                setProduct(productData);
+            } else {
+                setLoading(false); // Datos del producto ya están disponibles
+            }
+        };
+        fetchData();
     }, [name, product]);
 
     useEffect(() => {
@@ -62,6 +70,7 @@ function Product() {
                 // Seleccionar productos aleatorios de la misma categoría
                 const randomProducts = data.sort(() => 0.5 - Math.random()).slice(0, 5);
                 setRecommendations(randomProducts);
+                setLoading(false); // Datos recomendados ya están disponibles
             });
         }
     }, [product]);
@@ -88,6 +97,10 @@ function Product() {
         // Navegar a la página del producto recomendado
         navigate(`/product/${recProduct.name}`, { state: { productData: recProduct } });
     };
+
+    if (loading) {
+        return <LoadingPage />; // Mostrar el componente de carga mientras los datos están siendo obtenidos
+    }
 
     if (!product) {
         return (

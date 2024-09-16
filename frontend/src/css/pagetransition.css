@@ -3,7 +3,7 @@
     position: relative;
     width: 100%;
     height: 100vh; /* Ocupa toda la altura de la ventana */
-    overflow: hidden; /* Oculta el desbordamiento */
+    overflows: hidden; /* Oculta el desbordamiento */
   }
   
   /* Estilos para la animación de transición */

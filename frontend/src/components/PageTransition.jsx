@@ -8,11 +8,9 @@ const PageTransition = ({ children }) => {
   const [transitionKey, setTransitionKey] = useState(location.pathname);
 
   useEffect(() => {
-    // Actualiza la clave de transición solo si la ruta ha cambiado
     setTransitionKey(location.pathname);
   }, [location.pathname]);
 
-  // Verifica si la ruta debe tener transición
   const shouldTransition = location.pathname.startsWith('/shop');
 
   return (
@@ -22,7 +20,7 @@ const PageTransition = ({ children }) => {
         classNames={shouldTransition ? 'fade' : 'no-fade'}
         timeout={500}
       >
-        <div className={shouldTransition ? 'transition-wrapper' : 'no-transition-wrapper'}>
+        <div className="transition-wrapper">
           {children}
         </div>
       </CSSTransition>

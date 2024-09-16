@@ -25,25 +25,46 @@ const Verification = () => {
             if (value && index < 3) {
                 document.getElementById(`code-input-${index + 1}`).focus();
             }
+        } else if (value === '' && code[index] !== '') { // Manejar retroceso
+            const newCode = [...code];
+            newCode[index] = '';
+            setCode(newCode);
+
+            // Mover al input anterior automáticamente si es necesario
+            if (index > 0) {
+                document.getElementById(`code-input-${index - 1}`).focus();
+            }
         }
     };
 
     const handleSubmit = async () => {
         const verificationCode = code.join('');
+        
+        // Mostrar toaster de cargando
+        const loadingToast = toast.loading('Cargando...');
+        
         try {
             const response = await axios.post('https://novamarket.onrender.com/verify-code', {
                 userId,
                 verificationCode,
             });
+            
+            // Quitar el toaster de cargando
+            toast.dismiss(loadingToast);
+            
             if (response.data.verified) {
                 navigate('/');
             } else {
                 toast.error('¡Código incorrecto!');
             }
         } catch (error) {
+            // Quitar el toaster de cargando
+            toast.dismiss(loadingToast);
+            toast.error('Error al verificar el código');
             console.error('Error al verificar el código:', error);
         }
     };
+    
 
     return (
         <>

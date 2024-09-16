@@ -2,14 +2,15 @@
     position: fixed;
     right: 0;
     left: 0;
-    bottom: 0;
-    height: 92vh;
+    leftd: 0;
+    height: 100vh;
     width: 100%;
-    margin-top: 100px;
+    margin-tops: 75px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    background-colsor: red;
 }
 
 .verification__info {

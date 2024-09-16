@@ -70,10 +70,13 @@ function Login() {
             return;
         }
 
+        const toastId = toast.loading('Cargando...');
+
         try {
             const response = await axios.post('https://novamarket.onrender.com/login', { email: loginEmail, password: loginPassword });
             const user = response.data.user;
             login(user);
+            toast.dismiss(toastId); // Cierra el toaster de carga
             if (user.role === 'admin') {
                 navigate('/admin');
             } else {
@@ -81,20 +84,25 @@ function Login() {
             }
         } catch (error) {
             console.error(error);
+            toast.dismiss(toastId); // Cierra el toaster de carga
             toast('¡Datos incorrectos!');
         }
     };
 
     const handleGoogleLogin = async (credentialResponse) => {
+        const toastId = toast.loading('Cargando...');
+
         try {
             const response = await axios.post('https://novamarket.onrender.com/google-login', {
                 token: credentialResponse.credential
             });
             const user = response.data.user;
             login(user);
+            toast.dismiss(toastId); // Cierra el toaster de carga
             navigate('/');
         } catch (error) {
             console.error('Error al iniciar sesión con Google:', error);
+            toast.dismiss(toastId); // Cierra el toaster de carga
             toast('¡Error al iniciar sesión con Google!');
         }
     };
@@ -118,14 +126,17 @@ function Login() {
         }
 
         const encryptedPassword = encryptData(registroPassword);
+        const toastId = toast.loading('Cargando...');
 
         try {
             const response = await axios.post('https://novamarket.onrender.com/registro', { name: registroNombre, email: registroEmail, password: encryptedPassword });
             const user = response.data.user;
             login(user);
+            toast.dismiss(toastId); // Cierra el toaster de carga
             navigate('/verification'); // Redirige a la página de verificación
         } catch (error) {
             console.error(error);
+            toast.dismiss(toastId); // Cierra el toaster de carga
             if (error.response && error.response.data && error.response.data.error === 'El correo electrónico ya está registrado') {
                 toast('¡El correo electrónico ya está registrado!');
             } else {

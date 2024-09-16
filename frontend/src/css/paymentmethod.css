@@ -270,6 +270,7 @@
 
 .summary__product__image img{
     height: 100%;
+    width: 100%;
 }
 
 .summary__product__information{
