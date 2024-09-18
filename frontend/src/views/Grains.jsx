@@ -31,7 +31,7 @@ const App = () => {
         { name: 'Azucar', id: 'Azucar', x: 0.07, y: 0.8 },
         { name: 'Sal', id: 'Sal', x: 0.23, y: 0.7 },
         { name: 'Pan de Caja', id: 'Pan de Caja', x: 0.53, y: 0.6 },
-        { name: 'Sardinas', id: 'Sardinas', x: 0.65, y: 0.5 },
+        { name: 'Sardina', id: 'Sardina', x: 0.65, y: 0.5 },
         /*{ name: 'Aceite', id: 'Aceite', x: 0.93, y: 0.2 },
         { name: 'Macarrones', id: 'Macarrones', x: 0.22, y: 0.38 },*/
     ];

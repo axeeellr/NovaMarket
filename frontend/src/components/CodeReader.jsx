@@ -44,7 +44,7 @@ const CodeReader = (props) => {
             <QrReader
                 constraints={{
                     video: {
-                        facingMode: 'environment' // Selecciona la cámara trasera
+                        facingMode: {exact: "environment" } // Selecciona la cámara trasera
                     }
                 }}
                 onResult={(result, error) => {

@@ -24,11 +24,11 @@ const App = () => {
     const points = [
         { name: 'nada', id: 'nada', x: 0.2, y: 0.3 },
         { name: 'Shampoo', id: 'Shampoo', x: 0.19, y: 0.7 },
-        { name: 'Jabón', id: 'Jabon', x: 0.1, y: 0.55 },
-        { name: 'Crema', id: 'Crema', x: 0.15, y: 0.34 },
+        { name: 'Jabón de higiene personal', id: 'Jabon de higiene personal', x: 0.1, y: 0.55 },
+        { name: 'Crema corporal', id: 'Crema corporal', x: 0.15, y: 0.34 },
         { name: 'Pasta dental', id: 'Pasta dental', x: 0.18, y: 0.14 },
         { name: 'Papel higiénico', id: 'Papel higiénico', x: 0.43, y: 0.09 },
-        { name: 'Protector solar', id: 'Naranjas', x: 0.35, y: 0.47 },
+        { name: 'Protector solar', id: 'Protector solar', x: 0.35, y: 0.47 },
     ];
 
     const arrows = [
