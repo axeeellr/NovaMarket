@@ -1,3 +1,7 @@
+.profile__container{
+    padding-bottom: 10px;
+}
+
 .profile{
     display: flex;
     gap: 30px;
