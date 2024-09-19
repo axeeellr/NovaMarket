@@ -30,7 +30,7 @@ const Chat = () => {
         // Escuchar nuevos mensajes desde el servidor
         socket.on('receive_message', (data) => {
             // Solo agregar el mensaje si pertenece a la conversación del usuario actual
-            if (data.sender_id === userId || data.receiver_id === userId) {
+            if (data.sender_id !== userId) {
                 setMessages((prevMessages) => [...prevMessages, data]);
             }
         });
@@ -53,10 +53,25 @@ const Chat = () => {
         e.preventDefault();
         if (message.trim()) {
             const receiverId = 1; // ID del administrador
-            socket.emit('send_message', { sender_id: userId, receiver_id: receiverId, content: message });
+    
+            // Crear el objeto del mensaje a enviar
+            const newMessage = {
+                sender_id: userId,
+                receiver_id: receiverId,
+                content: message,
+                timestamp: new Date().toISOString() // Añadimos una marca de tiempo local
+            };
+    
+            // Emitir el mensaje al servidor
+            socket.emit('send_message', newMessage);
+    
+            // Actualizar los mensajes localmente sin esperar al servidor
+            setMessages((prevMessages) => [...prevMessages, newMessage]);
+    
+            // Limpiar el input
             setMessage('');
         }
-    };
+    };    
 
     useEffect(() => {
         const chatVisible = localStorage.getItem('chatVisible') === 'true';
