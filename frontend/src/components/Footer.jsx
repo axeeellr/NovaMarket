@@ -14,7 +14,7 @@ function Footer({ isFooterVisible, toggleFooter, className }) {
                 <div className="footer__top">
                     <div className="footer__about">
                         <h2>Sobre Nosotros</h2>
-                        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nisi eveniet eaque animi, cupiditate totam et fugit, expedita rem, debitis tempore reiciendis ullam optio? Consequuntur voluptatibus ipsum accusantium veritatis laudantium iste est eius? Ullam provident iusto, minima temporibus.</p>
+                        <p>NovaMarket es la solución al dilema entre las necesidades de los usuarios y la realidad de las compras de supermercado. Con NovaMarket puedes escanear los productos a comprar, crear tu propio carrito de compras virtual, tienda online, atención personalizada y más. Hacer filas y pasar un mal momento nunca volverá a ser parte de tu vida.</p>
                     </div>
                     <div className="footer__categories">
                         <h2>Integrantes</h2>
