@@ -317,34 +317,47 @@ app.post('/registro', (req, res) => {
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
 
-    // Aquí agregamos la lógica para verificar las credenciales del usuario.
-    // En primer lugar, recuperamos el usuario con el correo electrónico proporcionado.
+    // Buscar usuario por correo electrónico
     pool.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
         if (err) {
             return res.status(500).json({ error: 'Error al iniciar sesión' });
         }
 
-        // Verificamos si se encontró un usuario con el correo electrónico proporcionado
         if (results.length > 0) {
             const user = results[0];
             const encryptedPasswordFromDB = user.password;
 
-            // Desciframos la contraseña almacenada en la base de datos
-            const decryptedPasswordFromDB = decryptData(encryptedPasswordFromDB);
+            // Verificamos si el usuario ha sido verificado
+            if (user.verified === 0) {
+                // Si el usuario no ha sido verificado, generamos un nuevo código de verificación
+                const newVerificationCode = Math.floor(1000 + Math.random() * 9000).toString();
 
-            // Verificamos si la contraseña proporcionada coincide con la contraseña almacenada descifrada
-            if (password === decryptedPasswordFromDB) {
-                // Si las contraseñas coinciden, se inicia sesión correctamente
-                return res.status(200).json({
-                    message: 'Inicio de sesión exitoso',
-                    user: user
+                // Actualizamos el nuevo código en la base de datos
+                pool.query('UPDATE users SET verification_token = ? WHERE email = ?', [newVerificationCode, email], (updateErr) => {
+                    if (updateErr) {
+                        return res.status(500).json({ error: 'Error al generar nuevo código de verificación' });
+                    }
+
+                    // Enviamos el nuevo código de verificación al correo
+                    sendVerificationEmail(email, newVerificationCode);
+
+                    return res.status(401).json({ message: 'Usuario no verificado. Se ha enviado un nuevo código de verificación a su correo electrónico.' });
                 });
             } else {
-                // Si las contraseñas no coinciden, devolvemos un error de credenciales inválidas
-                return res.status(401).json({ error: 'Credenciales inválidas' });
+                // Si el usuario está verificado, verificamos la contraseña
+                const decryptedPasswordFromDB = decryptData(encryptedPasswordFromDB);
+
+                if (password === decryptedPasswordFromDB) {
+                    return res.status(200).json({
+                        message: 'Inicio de sesión exitoso',
+                        user: user
+                    });
+                } else {
+                    return res.status(401).json({ error: 'Credenciales inválidas' });
+                }
             }
         } else {
-            // Si no se encuentra un usuario con el correo electrónico proporcionado, devolvemos un error
+            // Si el usuario no está registrado
             return res.status(401).json({ error: 'Credenciales inválidas' });
         }
     });
