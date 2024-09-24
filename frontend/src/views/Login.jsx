@@ -59,35 +59,45 @@ function Login() {
 
     const handleLogin = async (e) => {
         e.preventDefault();
-
+    
         if (!validateEmail(loginEmail)) {
             toast('¡Correo electrónico no válido!');
             return;
         }
-
+    
         if (!validatePassword(loginPassword)) {
             toast('¡La contraseña requiere al menos 8 caracteres con números y letras!');
             return;
         }
-
+    
         const toastId = toast.loading('Cargando...');
-
+    
         try {
             const response = await axios.post('https://novamarket.onrender.com/login', { email: loginEmail, password: loginPassword });
             const user = response.data.user;
             login(user);
+            
+            // Verificar si el usuario está verificado
+            const verificationResponse = await axios.get(`https://novamarket.onrender.com/check-verification-status?userId=${user.id}`);
+            
             toast.dismiss(toastId); // Cierra el toaster de carga
-            if (user.role === 'admin') {
-                navigate('/admin');
+    
+            if (!verificationResponse.data.verified) {
+                navigate('/verification');  // Redirige a la página de verificación
             } else {
-                navigate('/');
+                // Redirige según el rol del usuario
+                if (user.role === 'admin') {
+                    navigate('/admin');
+                } else {
+                    navigate('/');
+                }
             }
         } catch (error) {
             console.error(error);
             toast.dismiss(toastId); // Cierra el toaster de carga
             toast('¡Datos incorrectos!');
         }
-    };
+    };    
 
     const handleGoogleLogin = async (credentialResponse) => {
         const toastId = toast.loading('Cargando...');
