@@ -93,12 +93,20 @@ function Login() {
                 }
             }
         } catch (error) {
-            console.error(error);
             toast.dismiss(toastId); // Cierra el toaster de carga
-            toast('¡Datos incorrectos!');
+    
+            // Verifica si el error está relacionado con la falta de verificación
+            if (error.response && error.response.data && error.response.data.message === 'Usuario no verificado. Se ha enviado un nuevo código de verificación a su correo electrónico.') {
+                toast('¡Usuario no verificado! Se ha enviado un nuevo código a tu correo electrónico.');
+                navigate('/verification'); // Redirige a la página de verificación
+            } else {
+                toast('¡Datos incorrectos!');
+            }
+    
+            console.error('Error de login:', error);
         }
-    };    
-
+    };
+        
     const handleGoogleLogin = async (credentialResponse) => {
         const toastId = toast.loading('Cargando...');
 
