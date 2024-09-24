@@ -4,6 +4,7 @@ import { QrReader } from 'react-qr-reader';
 
 const CodeReader = (props) => {
     const [data, setData] = useState('No result');
+    const [key, setKey] = useState(0);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -39,10 +40,18 @@ const CodeReader = (props) => {
 
     }, [data, navigate]);
 
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setKey(key + 1); // Cambia la clave para forzar la recarga del componente
+        }, 500); // Dale un retraso antes de inicializar la cámara (500ms)
+
+        return () => clearTimeout(timer); // Limpiar el temporizador en el desmontaje
+    }, []);
+
     return (
         <>
             <QrReader
-                key="environment"
+                key={key} // Cambiar clave para reinicializar el lector QR
                 constraints={{ facingMode: 'environment' }}
                 onResult={(result, error) => {
                     if (!!result) {
