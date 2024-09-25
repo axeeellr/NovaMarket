@@ -317,7 +317,6 @@ app.post('/registro', (req, res) => {
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
 
-    // Buscar usuario por correo electrónico
     pool.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
         if (err) {
             return res.status(500).json({ error: 'Error al iniciar sesión' });
@@ -325,26 +324,29 @@ app.post('/login', (req, res) => {
 
         if (results.length > 0) {
             const user = results[0];
-            const encryptedPasswordFromDB = user.password;
 
-            // Verificamos si el usuario ha sido verificado
             if (user.verified === 0) {
-                // Si el usuario no ha sido verificado, generamos un nuevo código de verificación
+                // El usuario no ha verificado su correo, generar nuevo código
                 const newVerificationCode = Math.floor(1000 + Math.random() * 9000).toString();
 
-                // Actualizamos el nuevo código en la base de datos
-                pool.query('UPDATE users SET verification_token = ? WHERE email = ?', [newVerificationCode, email], (updateErr) => {
-                    if (updateErr) {
+                // Actualizar el código de verificación en la base de datos
+                pool.query('UPDATE users SET verification_token = ? WHERE email = ?', [newVerificationCode, email], (err, result) => {
+                    if (err) {
                         return res.status(500).json({ error: 'Error al generar nuevo código de verificación' });
                     }
 
-                    // Enviamos el nuevo código de verificación al correo
+                    // Enviar el nuevo correo de verificación
                     sendVerificationEmail(email, newVerificationCode);
 
-                    return res.status(401).json({ message: 'Usuario no verificado. Se ha enviado un nuevo código de verificación a su correo electrónico.' });
+                    return res.status(200).json({
+                        message: 'Correo no verificado. Nuevo código enviado, por favor verifica tu correo.',
+                        redirect: '/verification',
+                        user: user
+                    });
                 });
             } else {
-                // Si el usuario está verificado, verificamos la contraseña
+                // Verificar la contraseña si el correo ya está verificado
+                const encryptedPasswordFromDB = user.password;
                 const decryptedPasswordFromDB = decryptData(encryptedPasswordFromDB);
 
                 if (password === decryptedPasswordFromDB) {
@@ -357,7 +359,6 @@ app.post('/login', (req, res) => {
                 }
             }
         } else {
-            // Si el usuario no está registrado
             return res.status(401).json({ error: 'Credenciales inválidas' });
         }
     });

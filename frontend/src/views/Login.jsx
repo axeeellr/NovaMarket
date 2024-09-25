@@ -76,34 +76,20 @@ function Login() {
             const response = await axios.post('https://novamarket.onrender.com/login', { email: loginEmail, password: loginPassword });
             const user = response.data.user;
             login(user);
-            
-            // Verificar si el usuario está verificado
-            const verificationResponse = await axios.get(`https://novamarket.onrender.com/check-verification-status?userId=${user.id}`);
-            
-            toast.dismiss(toastId); // Cierra el toaster de carga
     
-            if (!verificationResponse.data.verified) {
-                navigate('/verification');  // Redirige a la página de verificación
+            toast.dismiss(toastId);
+    
+            if (response.data.redirect === '/verification') {
+                navigate('/verification');
+            } else if (user.role === 'admin') {
+                navigate('/admin');
             } else {
-                // Redirige según el rol del usuario
-                if (user.role === 'admin') {
-                    navigate('/admin');
-                } else {
-                    navigate('/');
-                }
+                navigate('/');
             }
         } catch (error) {
-            toast.dismiss(toastId); // Cierra el toaster de carga
-    
-            // Verifica si el error está relacionado con la falta de verificación
-            if (error.response && error.response.data && error.response.data.message === 'Usuario no verificado. Se ha enviado un nuevo código de verificación a su correo electrónico.') {
-                toast('¡Usuario no verificado! Se ha enviado un nuevo código a tu correo electrónico.');
-                navigate('/verification'); // Redirige a la página de verificación
-            } else {
-                toast('¡Datos incorrectos!');
-            }
-    
-            console.error('Error de login:', error);
+            console.error(error);
+            toast.dismiss(toastId);
+            toast('¡Datos incorrectos!');
         }
     };
         
