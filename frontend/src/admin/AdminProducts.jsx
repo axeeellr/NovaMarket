@@ -7,7 +7,7 @@ import AdminHeader from '../components/HeaderAdmin';
 
 const AdminProducts = () => {
     const [products, setProducts] = useState([]);
-    const [newProduct, setNewProduct] = useState({ category: '', name: '', price: '', weight: '', code: '', brand: '', calories: '', type: '' });
+    const [newProduct, setNewProduct] = useState({ category: '', name: '', price: '', weight: '', code: '', brand: '', calories: '', type: '', barcode: '' });
     const [selectedCategory, setSelectedCategory] = useState('All');
     const [editProduct, setEditProduct] = useState(null);
     const fileInput = useRef(null);
@@ -80,6 +80,7 @@ const AdminProducts = () => {
         formData.append('weight', newProduct.weight);
         formData.append('category', newProduct.category);
         formData.append('type', newProduct.type);
+        formData.append('type', newProduct.barcode);
 
         if (fileInput.current.files[0]) {
             formData.append('file', fileInput.current.files[0]);
@@ -92,7 +93,7 @@ const AdminProducts = () => {
                 }
             });
             setProducts([...products, { ...newProduct, id: response.data.id }]);
-            setNewProduct({ category: '', name: '', price: '', weight: '', code: '', brand: '', calories: '', type: ''});
+            setNewProduct({ category: '', name: '', price: '', weight: '', code: '', brand: '', calories: '', type: '', barcode : ''});
             fileInput.current.value = null; // Limpiar el campo de archivo
         } catch (error) {
             console.error('Error adding product:', error);
@@ -141,6 +142,7 @@ const AdminProducts = () => {
                     <div className="add-product-form">
                         <input type="text" placeholder="Nombre" name="name" value={editProduct ? editProduct.name : newProduct.name} onChange={handleChange} />
                         <input type="text" placeholder="Código (nm-producto-0)" name="code" value={editProduct ? editProduct.code : newProduct.code} onChange={handleChange} />
+                        <input type="text" placeholder="Código de barra" name="barcode" value={editProduct ? editProduct.barcode : newProduct.barcode} onChange={handleChange} />
                         <input type="text" placeholder="Marca" name="brand" value={editProduct ? editProduct.brand : newProduct.brand} onChange={handleChange} />
                         <input type="number" placeholder="Precio" name="price" value={editProduct ? editProduct.price : newProduct.price} onChange={handleChange} />
                         <input type="text" placeholder="Peso (g, kg, lb, l)" name="weight" value={editProduct ? editProduct.weight : newProduct.weight} onChange={handleChange} />

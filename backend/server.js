@@ -390,7 +390,7 @@ app.get('/data/:id', (req, res) => {
 //Ruta para encontrar el producto por QR
 app.get('/product', (req, res) => {
     const qrCode = req.query.code;
-    pool.query('SELECT * FROM products WHERE code = ?', [qrCode], (err, results) => {
+    pool.query('SELECT * FROM products WHERE barcode = ?', [qrCode], (err, results) => {
         if (err) {
             return res.status(500).json({ error: 'Error al consultar la base de datos' });
         }
@@ -951,7 +951,7 @@ app.get('/products', (req, res) => {
 
 // Ruta para añadir un nuevo producto con imagen subida a S3
 app.post('/products', upload.single('file'), async (req, res) => {
-    const { category, name, price, weight, code, brand, calories, type } = req.body;
+    const { category, name, price, weight, code, brand, calories, type, barcode } = req.body;
     const file = req.file;
 
     // Configurar los parámetros para S3
@@ -968,7 +968,7 @@ app.post('/products', upload.single('file'), async (req, res) => {
 
         // Guardar la información del producto en la base de datos
         const query = 'INSERT INTO products (category, name, price, weight, img, code, brand, calories, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
-        pool.query(query, [category, name, price, weight, `https://novamarket-img.s3.amazonaws.com/${code}`, code, brand, calories, type], (err, result) => {
+        pool.query(query, [category, name, price, weight, `https://novamarket-img.s3.amazonaws.com/${code}`, code, brand, calories, type, barcode], (err, result) => {
             if (err) {
                 return res.status(500).json({ error: 'Error al añadir producto' });
             }
@@ -992,7 +992,7 @@ app.delete('/products/:id', (req, res) => {
 // Endpoint para actualizar un producto
 app.put('/products/:id', upload.single('file'), async (req, res) => {
     const productId = req.params.id;
-    const { name, code, brand, calories, price, weight, category, type } = req.body;
+    const { name, code, brand, calories, price, weight, category, type, barcode } = req.body;
     const file = req.file;
 
     try {
@@ -1026,7 +1026,7 @@ app.put('/products/:id', upload.single('file'), async (req, res) => {
 
                     // Actualizar el producto en la base de datos
                     const query = `UPDATE products SET name = ?, code = ?, brand = ?, calories = ?, price = ?, img = ?, weight = ?, category = ?, type = ? WHERE id = ?`;
-                    pool.query(query, [name, code, brand, calories, price, `https://novamarket-img.s3.amazonaws.com/${code}`, weight, category, type, productId], (updateErr, results) => {
+                    pool.query(query, [name, code, brand, calories, price, `https://novamarket-img.s3.amazonaws.com/${code}`, weight, category, type, barcode, productId], (updateErr, results) => {
                         if (updateErr) {
                             console.error('Error updating product:', updateErr);
                             return res.status(500).json({ error: 'Error updating product' });
@@ -1046,7 +1046,7 @@ app.put('/products/:id', upload.single('file'), async (req, res) => {
         } else {
             // Si no hay archivo, simplemente actualiza el producto sin cambiar la imagen
             const query = `UPDATE products SET name = ?, code = ?, brand = ?, calories = ?, price = ?, weight = ?, category = ?, type = ? WHERE id = ?`;
-            pool.query(query, [name, code, brand, calories, price, weight, category, type, productId], (updateErr, results) => {
+            pool.query(query, [name, code, brand, calories, price, weight, category, type, barcode, productId], (updateErr, results) => {
                 if (updateErr) {
                     console.error('Error updating product:', updateErr);
                     return res.status(500).json({ error: 'Error updating product' });
