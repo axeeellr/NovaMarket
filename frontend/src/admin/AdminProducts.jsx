@@ -51,6 +51,7 @@ const AdminProducts = () => {
         formData.append('weight', editProduct.weight);
         formData.append('category', editProduct.category);
         formData.append('type', editProduct.type);
+        formData.append('barcode', editProduct.barcode);
 
         if (fileInput.current.files[0]) {
             formData.append('file', fileInput.current.files[0]);
@@ -80,7 +81,7 @@ const AdminProducts = () => {
         formData.append('weight', newProduct.weight);
         formData.append('category', newProduct.category);
         formData.append('type', newProduct.type);
-        formData.append('type', newProduct.barcode);
+        formData.append('barcode', newProduct.barcode);
 
         if (fileInput.current.files[0]) {
             formData.append('file', fileInput.current.files[0]);

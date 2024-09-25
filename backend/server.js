@@ -967,7 +967,7 @@ app.post('/products', upload.single('file'), async (req, res) => {
         const data = await s3.send(new PutObjectCommand(uploadParams));
 
         // Guardar la información del producto en la base de datos
-        const query = 'INSERT INTO products (category, name, price, weight, img, code, brand, calories, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        const query = 'INSERT INTO products (category, name, price, weight, img, code, brand, calories, type, barcode) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
         pool.query(query, [category, name, price, weight, `https://novamarket-img.s3.amazonaws.com/${code}`, code, brand, calories, type, barcode], (err, result) => {
             if (err) {
                 return res.status(500).json({ error: 'Error al añadir producto' });
@@ -1025,7 +1025,7 @@ app.put('/products/:id', upload.single('file'), async (req, res) => {
                     await s3.send(new PutObjectCommand(uploadParams));
 
                     // Actualizar el producto en la base de datos
-                    const query = `UPDATE products SET name = ?, code = ?, brand = ?, calories = ?, price = ?, img = ?, weight = ?, category = ?, type = ? WHERE id = ?`;
+                    const query = `UPDATE products SET name = ?, code = ?, brand = ?, calories = ?, price = ?, img = ?, weight = ?, category = ?, type = ?, barcode = ? WHERE id = ?`;
                     pool.query(query, [name, code, brand, calories, price, `https://novamarket-img.s3.amazonaws.com/${code}`, weight, category, type, barcode, productId], (updateErr, results) => {
                         if (updateErr) {
                             console.error('Error updating product:', updateErr);
@@ -1045,7 +1045,7 @@ app.put('/products/:id', upload.single('file'), async (req, res) => {
             });
         } else {
             // Si no hay archivo, simplemente actualiza el producto sin cambiar la imagen
-            const query = `UPDATE products SET name = ?, code = ?, brand = ?, calories = ?, price = ?, weight = ?, category = ?, type = ? WHERE id = ?`;
+            const query = `UPDATE products SET name = ?, code = ?, brand = ?, calories = ?, price = ?, weight = ?, category = ?, type = ?, barcode = ? WHERE id = ?`;
             pool.query(query, [name, code, brand, calories, price, weight, category, type, barcode, productId], (updateErr, results) => {
                 if (updateErr) {
                     console.error('Error updating product:', updateErr);
