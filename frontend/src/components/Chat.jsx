@@ -8,7 +8,7 @@ import '../css/fruits.css';
 // Supongamos que tienes un contexto de usuario para obtener el ID del usuario.
 import { useUser } from '../UserContext';
 
-const socket = io.connect('https://novamarket.onrender.com');
+const socket = io.connect('https://novamarketbackend.onrender.com');
 
 const Chat = () => {
     const [chatVisible, setChatVisible] = useState(false);
@@ -22,7 +22,7 @@ const Chat = () => {
 
     useEffect(() => {
         // Obtener historial de mensajes desde el backend cuando el componente se monta
-        fetch(`https://novamarket.onrender.com/chats/${userId}`)
+        fetch(`https://novamarketbackend.onrender.com/chats/${userId}`)
             .then((res) => res.json())
             .then((data) => setMessages(data))
             .catch((err) => console.error('Error al cargar mensajes:', err));

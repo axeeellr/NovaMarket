@@ -11,7 +11,7 @@ const AdminDelivery = () => {
     const statusOrder = ['Recibido', 'En Preparación', 'En Camino', 'Entregado'];
 
     useEffect(() => {
-        axios.get('https://novamarket.onrender.com/sales')
+        axios.get('https://novamarketbackend.onrender.com/sales')
             .then(response => {
                 const filteredOrders = response.data.filter(sale => sale.cartType === 'Domicilio');
                 setOrders(filteredOrders);
@@ -40,7 +40,7 @@ const AdminDelivery = () => {
     const handleSaveStatus = () => {
         if (selectedOrder) {
             if (getNextStatus(selectedOrder.status, newStatus)) {
-                axios.put(`https://novamarket.onrender.com/status/${selectedOrder.cartId}`, { status: newStatus })
+                axios.put(`https://novamarketbackend.onrender.com/status/${selectedOrder.cartId}`, { status: newStatus })
                     .then(response => {
                         setOrders(prevOrders =>
                             prevOrders.map(order =>

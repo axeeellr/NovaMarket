@@ -15,7 +15,7 @@ const EditProfile = ({ isModalOpen, toggleModal }) => {
 
     useEffect(() => {
         if (user.id) {
-            axios.get(`https://novamarket.onrender.com/data/${user.id}`)
+            axios.get(`https://novamarketbackend.onrender.com/data/${user.id}`)
                 .then(response => {
                     const userData = response.data.user;
                     setName(userData.name);
@@ -36,10 +36,10 @@ const EditProfile = ({ isModalOpen, toggleModal }) => {
         }
     
         try {
-            const response = await axios.put(`https://novamarket.onrender.com/data/${user.id}`, updatedData);
+            const response = await axios.put(`https://novamarketbackend.onrender.com/data/${user.id}`, updatedData);
             if (response.status === 200) {
                 toast.success('¡Datos actualizados!');
-                axios.get(`https://novamarket.onrender.com/data/${user.id}`)
+                axios.get(`https://novamarketbackend.onrender.com/data/${user.id}`)
                     .then(response => {
                         const userData = response.data.user;
                         login(userData);

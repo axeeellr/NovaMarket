@@ -18,7 +18,7 @@ const AdminProducts = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await axios.get('https://novamarket.onrender.com/products');
+                const response = await axios.get('https://novamarketbackend.onrender.com/products');
                 setProducts(response.data);
             } catch (error) {
                 console.error('Error fetching products:', error);
@@ -30,7 +30,7 @@ const AdminProducts = () => {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`https://novamarket.onrender.com/products/${id}`);
+            await axios.delete(`https://novamarketbackend.onrender.com/products/${id}`);
             setProducts(products.filter(product => product.id !== id));
         } catch (error) {
             console.error('Error deleting product:', error);
@@ -58,7 +58,7 @@ const AdminProducts = () => {
         }
 
         try {
-            await axios.put(`https://novamarket.onrender.com/products/${editProduct.id}`, formData, {
+            await axios.put(`https://novamarketbackend.onrender.com/products/${editProduct.id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -88,7 +88,7 @@ const AdminProducts = () => {
         }
 
         try {
-            const response = await axios.post('https://novamarket.onrender.com/products', formData, {
+            const response = await axios.post('https://novamarketbackend.onrender.com/products', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }

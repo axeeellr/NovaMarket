@@ -15,7 +15,7 @@ import LoadingPage from '../components/LoadingScreen'; // Importa el componente 
 
 const fetchProductDataByName = async (productName) => {
     try {
-        const response = await fetch(`https://novamarket.onrender.com/productByName?name=${productName}`);
+        const response = await fetch(`https://novamarketbackend.onrender.com/productByName?name=${productName}`);
         if (!response.ok) {
             throw new Error('Producto no encontrado');
         }
@@ -30,7 +30,7 @@ const fetchProductDataByName = async (productName) => {
 
 const fetchRecommendedProducts = async (category) => {
     try {
-        const response = await fetch(`https://novamarket.onrender.com/productsByCategory?category=${category}`);
+        const response = await fetch(`https://novamarketbackend.onrender.com/productsByCategory?category=${category}`);
         if (!response.ok) {
             throw new Error('Recomendaciones no disponibles');
         }

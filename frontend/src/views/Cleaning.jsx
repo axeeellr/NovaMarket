@@ -81,7 +81,7 @@ const App = () => {
         } else {
             setSelectedPoint(point);
             if (point) {
-                axios.get(`https://novamarket.onrender.com/api/products/${point.id}`)
+                axios.get(`https://novamarketbackend.onrender.com/api/products/${point.id}`)
                     .then(response => {
                         const fetchedProducts = response.data;
                         setProducts(fetchedProducts);

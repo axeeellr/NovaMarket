@@ -34,7 +34,7 @@ const Delivery = () => {
 
     const fetchUserAddresses = async () => {
         try {
-            const response = await fetch(`https://novamarket.onrender.com/getAddresses/${user.id}`);
+            const response = await fetch(`https://novamarketbackend.onrender.com/getAddresses/${user.id}`);
             if (response.ok) {
                 const data = await response.json();
                 setAddresses(data.addresses);
@@ -103,7 +103,7 @@ const Delivery = () => {
 
     const confirmDeleteAddress = async () => {
         try {
-            const response = await fetch(`https://novamarket.onrender.com/deleteAddress/${addressToDelete.id}`, { method: 'DELETE' });
+            const response = await fetch(`https://novamarketbackend.onrender.com/deleteAddress/${addressToDelete.id}`, { method: 'DELETE' });
             if (response.ok) {
                 toast.success('Dirección eliminada exitosamente');
                 setAddresses(addresses.filter((address) => address.id !== addressToDelete.id));

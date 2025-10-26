@@ -44,7 +44,7 @@ const Verification = () => {
         const loadingToast = toast.loading('Cargando...');
         
         try {
-            const response = await axios.post('https://novamarket.onrender.com/verify-code', {
+            const response = await axios.post('https://novamarketbackend.onrender.com/verify-code', {
                 userId,
                 verificationCode,
             });

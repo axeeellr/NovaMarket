@@ -44,7 +44,7 @@ const CodeReader = (props) => {
     // Enviar el código de barras al servidor para obtener información del producto
     useEffect(() => {
         if (data !== 'No result') {
-            fetch(`https://novamarket.onrender.com/product?code=${encodeURIComponent(data)}`)
+            fetch(`https://novamarketbackend.onrender.com/product?code=${encodeURIComponent(data)}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.error) {

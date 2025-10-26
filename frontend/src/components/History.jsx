@@ -14,7 +14,7 @@ const History = ({ user }) => {
 
     const fetchUserCarts = async () => {
         try {
-            const response = await fetch(`https://novamarket.onrender.com/getCarts/${user.id}`);
+            const response = await fetch(`https://novamarketbackend.onrender.com/getCarts/${user.id}`);
             if (response.ok) {
                 const data = await response.json();
                 setCarts(data.carts);

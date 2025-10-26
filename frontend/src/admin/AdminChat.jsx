@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import '../css/adminchat.css';
 
-const socket = io.connect('https://novamarket.onrender.com');
+const socket = io.connect('https://novamarketbackend.onrender.com');
 
 const AdminChat = () => {
     
@@ -17,7 +17,7 @@ const AdminChat = () => {
 
     useEffect(() => {
         // Obtener la lista de usuarios
-        fetch('https://novamarket.onrender.com/chats/users')
+        fetch('https://novamarketbackend.onrender.com/chats/users')
             .then((res) => res.json())
             .then((data) => setUsers(data));
     }, []);
@@ -50,7 +50,7 @@ const AdminChat = () => {
         setCurrentUser(user);
 
         // Obtener historial de mensajes del usuario seleccionado
-        fetch(`https://novamarket.onrender.com/chats/${user.id}`)
+        fetch(`https://novamarketbackend.onrender.com/chats/${user.id}`)
             .then((res) => res.json())
             .then((data) => setMessages(data));
     };

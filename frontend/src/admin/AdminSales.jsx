@@ -12,7 +12,7 @@ const AdminSales = () => {
 
     useEffect(() => {
         // Fetch sales from backend
-        axios.get('https://novamarket.onrender.com/sales')
+        axios.get('https://novamarketbackend.onrender.com/sales')
             .then(response => {
                 const filteredSales = response.data.filter(sale => sale.cartType !== 'Domicilio');
                 const sortedSales = filteredSales.sort((a, b) => {
@@ -36,7 +36,7 @@ const AdminSales = () => {
     };
 
     const handleCompleteClick = sale => {
-        axios.put(`https://novamarket.onrender.com/status/${sale.cartId}`, { status: 1 })
+        axios.put(`https://novamarketbackend.onrender.com/status/${sale.cartId}`, { status: 1 })
             .then(response => {
                 // Recargar la página para actualizar la lista de ventas
                 window.location.reload();

@@ -30,7 +30,7 @@ const PaymentMethod = () => {
     // Función para obtener las tarjetas de crédito del usuario
     const fetchUserCards = async () => {
         try {
-            const response = await fetch(`https://novamarket.onrender.com/getCards/${user.id}`);
+            const response = await fetch(`https://novamarketbackend.onrender.com/getCards/${user.id}`);
             if (response.ok) {
                 const data = await response.json();
                 setCards(data.cards);
@@ -44,7 +44,7 @@ const PaymentMethod = () => {
 
     const fetchDeliveryAddress = async (addressId) => {
         try {
-            const response = await fetch(`https://novamarket.onrender.com/getAddress/${addressId}`);
+            const response = await fetch(`https://novamarketbackend.onrender.com/getAddress/${addressId}`);
             if (response.ok) {
                 const data = await response.json();
                 setDeliveryAddress(data.address);
@@ -110,7 +110,7 @@ const PaymentMethod = () => {
                 const statusValue = (parsedCartDetails.type === 'qr' ? 'Entregado' : 'Recibido')
 
                 // 1. Guardar en la tabla `cart`.
-                const cartResponse = await fetch('https://novamarket.onrender.com/addCart', {
+                const cartResponse = await fetch('https://novamarketbackend.onrender.com/addCart', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -138,7 +138,7 @@ const PaymentMethod = () => {
                 // 2. Guardar en la tabla `cart_items`.
                 // Recorre cada elemento del carrito y guarda en `cart_items`.
                 for (const item of cart) {
-                    const itemResponse = await fetch('https://novamarket.onrender.com/addCartItem', {
+                    const itemResponse = await fetch('https://novamarketbackend.onrender.com/addCartItem', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -156,7 +156,7 @@ const PaymentMethod = () => {
                 }
 
                 // 3. Enviar la factura al correo del usuario
-                const invoiceResponse = await fetch('https://novamarket.onrender.com/completePurchase', {
+                const invoiceResponse = await fetch('https://novamarketbackend.onrender.com/completePurchase', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

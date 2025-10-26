@@ -41,7 +41,7 @@ function Login() {
             if (user) {
                 const userId = user.id;
                 try {
-                    const response = await axios.get(`https://novamarket.onrender.com/check-verification-status?userId=${userId}`);
+                    const response = await axios.get(`https://novamarketbackend.onrender.com/check-verification-status?userId=${userId}`);
                     if (!response.data.verified) {
                         localStorage.removeItem('firstVisit');
                         localStorage.removeItem('user');
@@ -73,7 +73,7 @@ function Login() {
         const toastId = toast.loading('Cargando...');
     
         try {
-            const response = await axios.post('https://novamarket.onrender.com/login', { email: loginEmail, password: loginPassword });
+            const response = await axios.post('https://novamarketbackend.onrender.com/login', { email: loginEmail, password: loginPassword });
             const user = response.data.user;
             login(user);
     
@@ -97,7 +97,7 @@ function Login() {
         const toastId = toast.loading('Cargando...');
 
         try {
-            const response = await axios.post('https://novamarket.onrender.com/google-login', {
+            const response = await axios.post('https://novamarketbackend.onrender.com/google-login', {
                 token: credentialResponse.credential
             });
             const user = response.data.user;
@@ -133,7 +133,7 @@ function Login() {
         const toastId = toast.loading('Cargando...');
 
         try {
-            const response = await axios.post('https://novamarket.onrender.com/registro', { name: registroNombre, email: registroEmail, password: encryptedPassword });
+            const response = await axios.post('https://novamarketbackend.onrender.com/registro', { name: registroNombre, email: registroEmail, password: encryptedPassword });
             const user = response.data.user;
             login(user);
             toast.dismiss(toastId); // Cierra el toaster de carga

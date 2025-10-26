@@ -56,7 +56,7 @@ const PaymentMethods = ({ user }) => {
         }
 
         try {
-            const response = await fetch('https://novamarket.onrender.com/cards', {
+            const response = await fetch('https://novamarketbackend.onrender.com/cards', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(cardData)
@@ -79,7 +79,7 @@ const PaymentMethods = ({ user }) => {
 
     const fetchUserCards = async () => {
         try {
-            const response = await fetch(`https://novamarket.onrender.com/getCards/${user.id}`);
+            const response = await fetch(`https://novamarketbackend.onrender.com/getCards/${user.id}`);
             if (response.ok) {
                 const data = await response.json();
                 setCards(data.cards);
