@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import '../css/menu.css';
 import novalogoPc from '../assets/novamarketv3.png';
 const vendedor = 'https://novamarket-img.s3.us-east-2.amazonaws.com/vendedor.png';
-const qrCode = 'https://novamarket-img.s3.us-east-2.amazonaws.com/qrCode.png';
+import qrCode from '../assets/barcode.png';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faStore, faUser, faCartPlus } from '@fortawesome/free-solid-svg-icons';

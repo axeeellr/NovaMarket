@@ -53,6 +53,10 @@ a{
     border-radius: 50%;
 }
 
+.scannerIcon img{
+    filter: brightness(0) saturate(100%) invert(73%) sepia(45%) saturate(220%) hue-rotate(3deg) brightness(91%) contrast(87%);
+}
+
 .active{
     color: #C5B28A;
 }
