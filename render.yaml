@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: novamarket-api
+    env: node
+    plan: free
+    buildCommand: npm ci
+    startCommand: node server.js
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: 18
+    healthCheckPath: /health
+    allowOrigins:
+      - ${CORS_ORIGIN}
